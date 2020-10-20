@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-orders
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: mongo-orders    
+  template:
+    metadata:
+      labels:
+        name: mongo-orders
+    spec:
+      containers:
+        - name: mongo-orders
+          image: mongo   
+          ports:
+          - containerPort: 27017
+          imagePullPolicy: Always
+      hostname: mongo-orders
+      restartPolicy: Always
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-orders
+spec:
+  selector:
+    name: mongo-orders
+  ports:
+  - name: "27017"
+    port: 27017
+    targetPort: 27017
+status:
+  loadBalancer: {}

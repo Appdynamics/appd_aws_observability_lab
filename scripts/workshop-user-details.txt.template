@@ -1,0 +1,20 @@
+------------------------------------------------------------------------------------------------------------------
+
+Controller URL: https://${ADWRKSHP_CONTROLLER_HOST}/controller/
+
+------------------------------------------------------------------------------------------------------------------
+
+Controller Login Credentials:
+
+Account: ${ADWRKSHP_CONTROLLER_ACCT_NAME}
+Username: ${ADWRKSHP_LABUSER_KEY}
+Password: ${ADWRKSHP_LABUSER_PWD}
+
+------------------------------------------------------------------------------------------------------------------
+
+Pre-Modernization APM Application Name: ${ADWRKSHP_APM_APP_NAME_PRE}
+Pre-Modernization EUM Application Name: ${ADWRKSHP_EUM_APP_NAME_PRE}
+
+Post-Modernization APM Application Name: ${ADWRKSHP_APM_APP_NAME_POST}
+Post-Modernization EUM Application Name: ${ADWRKSHP_EUM_APP_NAME_POST}
+

@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: browser-load
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: browser-load    
+  template:
+    metadata:
+      labels:
+        name: browser-load
+    spec:
+      containers:
+        - name: browser-load
+          image: james201010/adfinmod_loadgen_pre:latest
+          envFrom:
+            - configMapRef:
+                name: appd-app-config
+          env:
+            - name: ENABLE_BROWSER_LOAD
+              value: "1"
+            - name: ENABLE_APPROVAL_LOAD
+              value: "0"
+            - name: ENABLE_POLICY_LOAD
+              value: "0"
+          imagePullPolicy: Always
+      hostname: browser-load
+      restartPolicy: Always

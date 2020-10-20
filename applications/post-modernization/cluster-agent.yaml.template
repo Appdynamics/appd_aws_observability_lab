@@ -1,0 +1,16 @@
+apiVersion: appdynamics.com/v1alpha1
+kind: Clusteragent
+metadata:
+  name: k8s-cluster-agent
+  namespace: appdynamics
+spec:
+  appName: "${ADWRKSHP_APM_APP_NAME}"
+  controllerUrl: "${ADWRKSHP_CONTROLLER_URL_FULL}"
+  account: "${ADWRKSHP_CONTROLLER_ACCT_NAME}"
+  # docker image info
+  image: "appdynamics/cluster-agent:latest"
+  serviceAccountName: appdynamics-cluster-agent
+
+  ### Uncomment the following two lines if you need pull secrets
+  #imagePullSecrets:
+  #  name: "<your-docker-pull-secret-name>"

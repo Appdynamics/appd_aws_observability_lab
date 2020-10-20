@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: per-loan-services
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: per-loan-services    
+  template:
+    metadata:
+      labels:
+        name: per-loan-services
+    spec:
+      serviceAccountName: appd-app-services
+      initContainers:
+      - name: appd-agent-repo
+        image: docker.io/appdynamics/java-agent:20.8.0
+        command: ["cp", "-ra", "/opt/appdynamics/.", "/opt/temp"]
+        volumeMounts:
+        - mountPath: /opt/temp
+          name: shared-files
+      volumes:
+        - name: shared-files
+          emptyDir: {}
+      containers:
+        - name: per-loan-services
+          image: james201010/adfinmod_java_repositories_pre:latest   
+          envFrom:
+            - configMapRef:
+                name: appd-app-config
+          env:
+            - name: JAVA_TOOL_OPTIONS
+              value: -javaagent:/opt/appdynamics/javaagent.jar
+            - name: DEBUG_LEVEL
+              value: debug
+            - name: APPDYNAMICS_AGENT_TIER_NAME
+              value: PerLoanServices
+            - name: APPDYNAMICS_AGENT_NODE_NAME
+              value: PerLoanServices-Node-1
+            - name: AWS_DEFAULT_REGION
+              value: "us-west-2"
+            - name: ENABLE_IRP
+              value: "true"
+          ports:
+          - containerPort: 8080
+          volumeMounts:
+            - mountPath: /opt/appdynamics
+              name: shared-files
+          imagePullPolicy: Always
+      restartPolicy: Always
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: per-loan-services
+spec:
+  selector:
+    name: per-loan-services
+  ports:
+  - name: "8080"
+    port: 8080
+    targetPort: 8080
+status:
+  loadBalancer: {}
