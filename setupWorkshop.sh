@@ -57,6 +57,8 @@ if [ $LEN -lt 5 ]; then
   exit 1
 fi
 
+# TODO check to make sure the user did not copy "<YOUR USER NAME>"
+
 
 echo ""
 echo "CloudWorkshop|INFO| - Updating packages and Java JRE"
