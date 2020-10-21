@@ -31,7 +31,7 @@ Avi is the Chief Technology Officer (CTO) for AD Financial and has tasked his te
 
 ## 1: Understand the Current Application
 
-It has been over a year since the Dev team refactored the online application, containerized services and moved them out of the data center into the cloud.  There is no current architecture diagram for the application though many changes have been made since its original deployment. An accurate assessment of the items below are required so the team can create a viable modernization plan:
+It has been over a year since the Dev team refactored the online application, containerized services and moved them out of the data center into the cloud.  There is no current architecture diagram for the application and many changes have been made since its original deployment. An accurate assessment of the items below are required so the team can create a viable modernization plan:
 
 1.	Inventory of all application components, the hosts they run on, and the technologies in use
 2.	Inventory of all dependencies across service APIs
@@ -52,12 +52,13 @@ Once we have an inventory of the application components, services, and dependenc
 
 With so many new cloud services and technologies available today, it is difficult to qualify the ones that will not only satisfy the business and engineering requirements but also promote fast adoption across the different teams involved in the modernization effort without imposing a huge learning curve.
 
-To that end, the appropriate level of scope must also be identified to ensure the modernization project milestones and timelines are achieved.  Avis team has narrowed the scope of this modernization project to adopt two new AWS services.
+To that end, the appropriate level of scope must also be identified to ensure the modernization project milestones and timelines are achieved.  Avi's team has narrowed the scope of this modernization project to adopt three new AWS services.
 
 1.	A container orchestration solution that can automate the process of scaling, managing, updating, and removing containers.
 2.	A storage solution for audit data that is secure, can scale, has redundancy, and supports high ingestion rates.
+3.  A highly available relation database solution that offers Multi-AZ capability with automatic failover to achieve high availability.
 
-AWS offers multiple services for container orchestration and for storage and after assessing the features of the services available, the team made a final decision on the two services that would best meet their technical and business requirements.  
+AWS offers multiple services for container orchestration and for storage and after assessing the features of the services available, the team made a final decision on the three services that would best meet their technical and business requirements.  
 
 <br>
 
@@ -73,6 +74,11 @@ AWS offers multiple services for container orchestration and for storage and aft
 
 <br>
 
+:small_blue_diamond: **Database Solution Winner!**
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class='fa fa-check-square'></i> **Relational Database Service (RDS)**
+
+<br>
 
 ## 4: Baseline Performance and End User Experience
 
@@ -87,6 +93,26 @@ Consolidating metrics from the siloed tools currently in use by the teams at var
 
 ## 5: Minimize Operational Risk
 
-Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+The additional challenges associated with modernizing a large enterprise application are not always immediately evident. Behind the scenes though, there is a significant impact for development and operations teams who are building and releasing these applications, and they often encounter the following:
+
+- **Distributed Architectures:** Microservices, containers, Kubernetes and the use of multiple AWS Availability Zones have created a more expansive and richer IT landscape.
+
+- **Additional Dependencies:** APIs that connect to third-party services outside of the organization may not always perform as expected. The customer does not care who is at fault, they simply want a frictionless engagement with the applications.
+
+- **Faster Release Cycles:** Release frequencies have shifted - to monthly, weekly, daily, or even hourly deployments. No matter how minor some releases may seem, they all have the potential to impact the customer experience.
 
 
+Historically, monitoring has reflected the departmental nature of Development and IT Operations teams, who each used a tool for their area of responsibility, such as:
+
+![image](/images/the_backstory/siloed_tools.png)
+
+Proliferation of these tools has often led to:
+
+- **Finger Pointing:** More time spent proving innocence vs. collaborating, results in slower Root Cause Analysis (RCA) and poor team collaboration.
+
+- **Lack of Visibility:** No insight into end-to-end execution times, which causes “watermelon KPIs,” i.e. looks green, but users still struggle.
+
+- **Suboptimal Prioritization:** Teams are unaware of the true business impact of what has occurred.
+
+
+The operations team needs to keep their end users happy and maximize revenue. AppDynamics helps ensure optimal user experience by measuring key performance metrics and reporting on any deviations in real-time. However, AppDynamics goes beyond alerts by pinpointing where an issue is occurring and providing AI-driven remediation recommendations. This capability is especially important to proactively identify potential issues before they result in degraded customer experiences and potential lost business.
