@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: per-loan-services
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       name: per-loan-services    
@@ -36,10 +36,10 @@ spec:
               value: debug
             - name: APPDYNAMICS_AGENT_TIER_NAME
               value: PerLoanServices
-            - name: APPDYNAMICS_AGENT_NODE_NAME
-              value: PerLoanServices-Node-1
-            - name: AWS_DEFAULT_REGION
-              value: "us-west-2"
+            - name: APPDYNAMICS_JAVA_AGENT_REUSE_NODE_NAME
+              value: "true"
+            - name: APPDYNAMICS_JAVA_AGENT_REUSE_NODE_NAME_PREFIX
+              value: PerLoanServices-Node
             - name: ENABLE_IRP
               value: "true"
           ports:

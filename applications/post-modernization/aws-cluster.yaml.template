@@ -10,6 +10,7 @@ availabilityZones: ["${ADWRKSHP_CLOUD_REGION}a", "${ADWRKSHP_CLOUD_REGION}b"]
 
 managedNodeGroups:
 - name: nodegroup
+  instanceType: m5a.large
   desiredCapacity: 2
 
 iam:

@@ -40,8 +40,6 @@ spec:
               value: PolicyServices
             - name: APPDYNAMICS_AGENT_NODE_NAME
               value: PolicyServices-Node-1
-            - name: AWS_DEFAULT_REGION
-              value: "us-west-2"
             - name: ENABLE_IRP
               value: "true"
           ports:
