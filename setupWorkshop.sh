@@ -46,16 +46,22 @@ echo "##########################################################################
 # validate mandatory environment variables.
 
 if [ -z "$appd_workshop_user" ]; then
-    echo "CloudWorkshop|ERROR| - 'appd_workshop_user' environment variable not set or is not at least five characters in length."
+    echo "CloudWorkshop|ERROR| - 'appd_workshop_user' environment variable not set or is not at least five alpha characters in length."
   exit 1
 fi
 
 LEN=$(echo ${#appd_workshop_user})
 
 if [ $LEN -lt 5 ]; then
-    echo "CloudWorkshop|ERROR| - 'appd_workshop_user' environment variable not set or is not at least five characters in length."
+    echo "CloudWorkshop|ERROR| - 'appd_workshop_user' environment variable not set or is not at least five alpha characters in length."
   exit 1
 fi
+
+#if ! [[ "$appd_workshop_user" =~ [^a-zA-Z\ ] ]]; then
+#  echo ""
+#else
+#  echo "CloudWorkshop|ERROR| - 'appd_workshop_user' environment variable not set or is not at least five alpha characters in length."
+#fi
 
 # TODO check to make sure the user did not copy "<YOUR USER NAME>"
 
