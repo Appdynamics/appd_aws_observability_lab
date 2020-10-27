@@ -465,10 +465,10 @@
                         "type": "ProcessingAction",
                         "properties": {
                             "minDuration": 150,
-                            "maxDuration": 1200,
+                            "maxDuration": 2200,
                             "numCores": 2,
                             "numThreadsPerCore": 1,
-                            "load": 0.3
+                            "load": 0.1
                         }
                     },
                     {
@@ -535,7 +535,7 @@
                         "type": "ProcessingAction",
                         "properties": {
                             "minDuration": 150,
-                            "maxDuration": 1600,
+                            "maxDuration": 1800,
                             "numCores": 2,
                             "numThreadsPerCore": 1,
                             "load": 0.3
