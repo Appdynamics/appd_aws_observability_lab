@@ -363,7 +363,7 @@ controllerTasks:
   - taskType: "CONTROLLER_TASK_CREATE_BRUM_APP"
     inputTags:
       - tagKey: "@[ADWRKSHP_EUM_APP_NAME_POST]"
-        tagValue: "AD-Fin-PostMod-Web-@[ADWRKSHP_LABUSER_KEY]"  
+        tagValue: "AD-Fin-PreMod-Web-@[ADWRKSHP_LABUSER_KEY]"  
         
     templateTargets:
     
@@ -388,7 +388,7 @@ controllerTasks:
     taskName: "adfin-db-collector-post"
     inputTags:
       - tagKey: "@[ADWRKSHP_CLOUD_DB_INST_NAME]"
-        tagValue: "AD-Fin-PostMod-@[ADWRKSHP_LABUSER_KEY]"    
+        tagValue: "PostMod-MySQL-@[ADWRKSHP_LABUSER_KEY]"    
       - tagKey: "@[ADWRKSHP_CLOUD_DB_INST_TYPE]"
         tagValue: "MYSQL"    
       - tagKey: "@[ADWRKSHP_DB_AGENT_NAME]"
@@ -413,7 +413,7 @@ controllerTasks:
     taskName: "adfin-db-collector-pre"
     inputTags:
       - tagKey: "@[ADWRKSHP_CLOUD_DB_INST_NAME]"
-        tagValue: "AD-Fin-PreMod-@[ADWRKSHP_LABUSER_KEY]"    
+        tagValue: "PreMod-MySQL-@[ADWRKSHP_LABUSER_KEY]"    
       - tagKey: "@[ADWRKSHP_CLOUD_DB_INST_TYPE]"
         tagValue: "MYSQL"    
       - tagKey: "@[ADWRKSHP_DB_AGENT_NAME]"
@@ -596,5 +596,7 @@ cloudTasks:
         targetTags:
           - tagKey: "${ADWRKSHP_CLOUD_STORG_INST_3}"
             tagValue: "@[ADWRKSHP_CLOUD_STORG_INST_NAME_3]"
+
+
 
 
