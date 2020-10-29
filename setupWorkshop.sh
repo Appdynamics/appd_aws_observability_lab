@@ -77,7 +77,7 @@ echo ""
 #echo "CloudWorkshop|INFO|     - Updating packages and Java JRE ......"
 
 #set -x  # temporarily turn command display OFF.
-sudo yum -y update
+#sudo yum -y update
 #set +x  # turn command display back ON.
 
 #echo "CloudWorkshop|INFO|     - Updating packages and Java JRE ....."
