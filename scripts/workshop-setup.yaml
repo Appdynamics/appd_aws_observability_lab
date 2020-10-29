@@ -166,7 +166,7 @@ vaultInfo:
       
 templates:
   - templateName: "docker-app-conf"
-    sourceFile: "/opt/appdynamics/AD-Cloud-Modernization/applications/app-deployment/ad-financial/aws-pre-mod/application.env.template"
+    sourceFile: "/opt/appdynamics/appd_lab_repo/applications/pre-modernization/application.env.template"
     destinationFile: "/opt/appdynamics/workshopuser/pre-mod-docker/application.env"
     tags:
       - tagKey: "${ADWRKSHP_CONTROLLER_HOST}"
@@ -196,7 +196,7 @@ templates:
  
        
   - templateName: "kube-cluster-conf"
-    sourceFile: "/opt/appdynamics/AD-Cloud-Modernization/applications/app-deployment/ad-financial/aws-post-mod/kube-config/aws-cluster.yaml.template"
+    sourceFile: "/opt/appdynamics/appd_lab_repo/applications/post-modernization/aws-cluster.yaml.template"
     destinationFile: "/opt/appdynamics/workshopuser/post-mod-kube-cluster/cluster.yaml"
     tags:
       - tagKey: "${ADWRKSHP_CLOUD_REGION}"
@@ -207,7 +207,7 @@ templates:
 
 
   - templateName: "kube-cluster-agent-conf"
-    sourceFile: "/opt/appdynamics/AD-Cloud-Modernization/applications/app-deployment/ad-financial/aws-post-mod/kube-config/cluster-agent.yaml.template"
+    sourceFile: "/opt/appdynamics/appd_lab_repo/applications/post-modernization/cluster-agent.yaml.template"
     destinationFile: "/opt/appdynamics/workshopuser/post-mod-kube-ca/cluster-agent.yaml"
     tags:
       - tagKey: "${ADWRKSHP_APM_APP_NAME}"
@@ -219,7 +219,7 @@ templates:
 
 
   - templateName: "kube-app-conf"
-    sourceFile: "/opt/appdynamics/AD-Cloud-Modernization/applications/app-deployment/ad-financial/aws-post-mod/kube-config/config-map.yaml.template"
+    sourceFile: "/opt/appdynamics/appd_lab_repo/applications/post-modernization/config-map.yaml.template"
     destinationFile: "/opt/appdynamics/workshopuser/post-mod-kube-app/config-map.yaml"
     tags:
       - tagKey: "${ADWRKSHP_CONTROLLER_HOST}"
@@ -265,7 +265,7 @@ templates:
         tagValue: "@[ADWRKSHP_LABUSER_KEY]"    
 
   - templateName: "workshop-user-details"
-    sourceFile: "/opt/appdynamics/AD-Cloud-Modernization/applications/setup-teardown/workshops/aws/ad-financial-modern/workshop-user-details.txt.template"
+    sourceFile: "/opt/appdynamics/appd_lab_repo/applications/scripts/workshop-user-details.txt.template"
     destinationFile: "/home/ec2-user/environment/workshop-user-details.txt"
     tags:
       - tagKey: "${ADWRKSHP_CONTROLLER_HOST}"
