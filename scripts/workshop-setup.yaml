@@ -265,7 +265,7 @@ templates:
         tagValue: "@[ADWRKSHP_LABUSER_KEY]"    
 
   - templateName: "workshop-user-details"
-    sourceFile: "/opt/appdynamics/appd_lab_repo/applications/scripts/workshop-user-details.txt.template"
+    sourceFile: "/opt/appdynamics/appd_lab_repo/scripts/workshop-user-details.txt.template"
     destinationFile: "/home/ec2-user/environment/workshop-user-details.txt"
     tags:
       - tagKey: "${ADWRKSHP_CONTROLLER_HOST}"
@@ -298,7 +298,7 @@ controllerTasks:
   - taskType: "CONTROLLER_TASK_CREATE_APM_APP"
     inputTags:
       - tagKey: "@[ADWRKSHP_APM_APP_NAME_PRE]"
-        tagValue: "@[ADWRKSHP_LABUSER_KEY]-ADFin-Pre"
+        tagValue: "AD-Fin-PreMod-@[ADWRKSHP_LABUSER_KEY]"
         
     templateTargets:    
       - templateName: "docker-app-conf"
@@ -315,7 +315,7 @@ controllerTasks:
   - taskType: "CONTROLLER_TASK_CREATE_BRUM_APP"
     inputTags:
       - tagKey: "@[ADWRKSHP_EUM_APP_NAME_PRE]"
-        tagValue: "@[ADWRKSHP_LABUSER_KEY]-ADFin-Pre-Web"
+        tagValue: "AD-Fin-PreMod-Web-@[ADWRKSHP_LABUSER_KEY]"
   
     templateTargets:
       - templateName: "docker-app-conf"
@@ -336,7 +336,7 @@ controllerTasks:
   - taskType: "CONTROLLER_TASK_CREATE_APM_APP"
     inputTags:
       - tagKey: "@[ADWRKSHP_APM_APP_NAME_POST]"
-        tagValue: "@[ADWRKSHP_LABUSER_KEY]-ADFin-Post"
+        tagValue: "AD-Fin-PostMod-@[ADWRKSHP_LABUSER_KEY]"
       - tagKey: "@[ADWRKSHP_APM_APP_TYPE]"
         tagValue: "@[ADWRKSHP_APM_APP_TYPE_K8S]"
   
@@ -363,7 +363,7 @@ controllerTasks:
   - taskType: "CONTROLLER_TASK_CREATE_BRUM_APP"
     inputTags:
       - tagKey: "@[ADWRKSHP_EUM_APP_NAME_POST]"
-        tagValue: "@[ADWRKSHP_LABUSER_KEY]-ADFin-Post-Web"  
+        tagValue: "AD-Fin-PreMod-Web-@[ADWRKSHP_LABUSER_KEY]"  
         
     templateTargets:
     
@@ -388,7 +388,7 @@ controllerTasks:
     taskName: "adfin-db-collector-post"
     inputTags:
       - tagKey: "@[ADWRKSHP_CLOUD_DB_INST_NAME]"
-        tagValue: "@[ADWRKSHP_LABUSER_KEY]-RDS-Post"    
+        tagValue: "PostMod-MySQL-@[ADWRKSHP_LABUSER_KEY]"    
       - tagKey: "@[ADWRKSHP_CLOUD_DB_INST_TYPE]"
         tagValue: "MYSQL"    
       - tagKey: "@[ADWRKSHP_DB_AGENT_NAME]"
@@ -413,7 +413,7 @@ controllerTasks:
     taskName: "adfin-db-collector-pre"
     inputTags:
       - tagKey: "@[ADWRKSHP_CLOUD_DB_INST_NAME]"
-        tagValue: "@[ADWRKSHP_LABUSER_KEY]-RDS-Pre"    
+        tagValue: "PreMod-MySQL-@[ADWRKSHP_LABUSER_KEY]"    
       - tagKey: "@[ADWRKSHP_CLOUD_DB_INST_TYPE]"
         tagValue: "MYSQL"    
       - tagKey: "@[ADWRKSHP_DB_AGENT_NAME]"
