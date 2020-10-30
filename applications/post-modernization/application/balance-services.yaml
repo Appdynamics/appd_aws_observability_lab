@@ -38,8 +38,13 @@ spec:
               value: BalanceServices
             - name: APPDYNAMICS_JAVA_AGENT_REUSE_NODE_NAME
               value: "true"
+
             - name: APPDYNAMICS_JAVA_AGENT_REUSE_NODE_NAME_PREFIX
-              value: BalanceServices-Node
+              valueFrom: 
+                configMapKeyRef:
+                  name: appd-app-config
+                  key: ADWRKSHP_NODE_PFX_BALNCSRVCS
+
             - name: ENABLE_IRP
               value: "true"
           ports:

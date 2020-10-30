@@ -40,8 +40,13 @@ spec:
               value: AccountManagement
             - name: APPDYNAMICS_JAVA_AGENT_REUSE_NODE_NAME
               value: "true"
+
             - name: APPDYNAMICS_JAVA_AGENT_REUSE_NODE_NAME_PREFIX
-              value: AccountManagement-Node              
+              valueFrom: 
+                configMapKeyRef:
+                  name: appd-app-config
+                  key: ADWRKSHP_NODE_PFX_ACCTMGMT
+
             - name: ENABLE_IRP
               value: "true"
           ports:

@@ -165,6 +165,15 @@ vaultInfo:
       value: /v1/kv/cloud-labs/dbagent-s3-auth
       
 templates:
+  - templateName: "docker-compose-conf"
+    sourceFile: "/opt/appdynamics/AD-Cloud-Modernization/applications/pre-modernization/docker-compose.yaml.template"
+    destinationFile: "/opt/appdynamics/workshopuser/pre-mod-docker/docker-compose.yaml"
+    tags:
+      - tagKey: "${ADWRKSHP_RANDOM_UUID}"
+        tagValue: "@[ADWRKSHP_RANDOM_UUID]"
+
+
+
   - templateName: "docker-app-conf"
     sourceFile: "/opt/appdynamics/appd_lab_repo/applications/pre-modernization/application.env.template"
     destinationFile: "/opt/appdynamics/workshopuser/pre-mod-docker/application.env"
@@ -222,6 +231,9 @@ templates:
     sourceFile: "/opt/appdynamics/appd_lab_repo/applications/post-modernization/config-map.yaml.template"
     destinationFile: "/opt/appdynamics/workshopuser/post-mod-kube-app/config-map.yaml"
     tags:
+      - tagKey: "${ADWRKSHP_RANDOM_UUID}"
+        tagValue: "@[ADWRKSHP_RANDOM_UUID]"
+
       - tagKey: "${ADWRKSHP_CONTROLLER_HOST}"
         tagValue: "@[ADWRKSHP_CONTROLLER_HOST]"
         
@@ -464,7 +476,12 @@ controllerTasks:
  # This task not only creates the RBAC User but also creates the RBAC Role
  # for the user and links the user to the role
   - taskType: "CONTROLLER_TASK_CREATE_RBAC_USER"
-    templateTargets:            
+    templateTargets:   
+      - templateName: "docker-compose-conf"
+        targetTags:
+          - tagKey: "${ADWRKSHP_RANDOM_UUID}"
+            tagValue: "@[ADWRKSHP_RANDOM_UUID]"    
+
       - templateName: "docker-app-conf"
         targetTags:
           - tagKey: "${ADWRKSHP_CONTROLLER_HOST}"
@@ -493,6 +510,9 @@ controllerTasks:
 
           - tagKey: "${ADWRKSHP_LABUSER_KEY}"
             tagValue: "@[ADWRKSHP_LABUSER_KEY]"    
+
+          - tagKey: "${ADWRKSHP_RANDOM_UUID}"
+            tagValue: "@[ADWRKSHP_RANDOM_UUID]"    
 
 
       - templateName: "kube-cluster-agent-conf"

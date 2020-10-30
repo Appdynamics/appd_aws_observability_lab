@@ -38,8 +38,15 @@ spec:
               value: debug
             - name: APPDYNAMICS_AGENT_TIER_NAME
               value: OrderProcessing
-            - name: APPDYNAMICS_AGENT_NODE_NAME
-              value: OrderProcessing-Node-1
+            - name: APPDYNAMICS_JAVA_AGENT_REUSE_NODE_NAME
+              value: "true"
+
+            - name: APPDYNAMICS_JAVA_AGENT_REUSE_NODE_NAME_PREFIX
+              valueFrom: 
+                configMapKeyRef:
+                  name: appd-app-config
+                  key: ADWRKSHP_NODE_PFX_ORDRPROCESSG
+
             - name: ENABLE_IRP
               value: "true"
           ports:

@@ -38,8 +38,13 @@ spec:
               value: BizLoanServices
             - name: APPDYNAMICS_JAVA_AGENT_REUSE_NODE_NAME
               value: "true"
+
             - name: APPDYNAMICS_JAVA_AGENT_REUSE_NODE_NAME_PREFIX
-              value: BizLoanServices-Node
+              valueFrom: 
+                configMapKeyRef:
+                  name: appd-app-config
+                  key: ADWRKSHP_NODE_PFX_BIZLOANSRVCS
+
             - name: ENABLE_IRP
               value: "true"
           ports:
