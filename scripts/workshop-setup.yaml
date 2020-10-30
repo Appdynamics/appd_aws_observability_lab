@@ -166,7 +166,7 @@ vaultInfo:
       
 templates:
   - templateName: "docker-compose-conf"
-    sourceFile: "/opt/appdynamics/AD-Cloud-Modernization/applications/pre-modernization/docker-compose.yaml.template"
+    sourceFile: "/opt/appdynamics/appd_lab_repo/applications/pre-modernization/docker-compose.yaml.template"
     destinationFile: "/opt/appdynamics/workshopuser/pre-mod-docker/docker-compose.yaml"
     tags:
       - tagKey: "${ADWRKSHP_RANDOM_UUID}"
