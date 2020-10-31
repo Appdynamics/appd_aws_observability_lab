@@ -172,6 +172,9 @@ templates:
       - tagKey: "${ADWRKSHP_RANDOM_UUID}"
         tagValue: "@[ADWRKSHP_RANDOM_UUID]"
 
+      - tagKey: "${ADWRKSHP_LABUSER_KEY}"
+        tagValue: "@[ADWRKSHP_LABUSER_KEY]"
+
 
 
   - templateName: "docker-app-conf"
