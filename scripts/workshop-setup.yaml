@@ -444,32 +444,32 @@ controllerTasks:
 
 
 
-  - taskType: "CONTROLLER_TASK_SET_DASHBOARD_PERMISSIONS"
-    inputTags:
-      - tagKey: "@[ADWRKSHP_DASHBOARD_ID]"
-        tagValue: "1603"    
-      - tagKey: "@[ADWRKSHP_DASHBOARD_ACTION_VIEW]"
-        tagValue: "true"    
-      - tagKey: "@[ADWRKSHP_DASHBOARD_ACTION_EDIT]"
-        tagValue: "false"
-      - tagKey: "@[ADWRKSHP_DASHBOARD_ACTION_DELETE]"
-        tagValue: "false"
-      - tagKey: "@[ADWRKSHP_DASHBOARD_ACTION_SHARE]"
-        tagValue: "false"    
+#  - taskType: "CONTROLLER_TASK_SET_DASHBOARD_PERMISSIONS"
+#    inputTags:
+#      - tagKey: "@[ADWRKSHP_DASHBOARD_ID]"
+#        tagValue: "1603"    
+#      - tagKey: "@[ADWRKSHP_DASHBOARD_ACTION_VIEW]"
+#        tagValue: "true"    
+#      - tagKey: "@[ADWRKSHP_DASHBOARD_ACTION_EDIT]"
+#        tagValue: "false"
+#      - tagKey: "@[ADWRKSHP_DASHBOARD_ACTION_DELETE]"
+#        tagValue: "false"
+#      - tagKey: "@[ADWRKSHP_DASHBOARD_ACTION_SHARE]"
+#        tagValue: "false"    
 
 
-  - taskType: "CONTROLLER_TASK_SET_DASHBOARD_PERMISSIONS"
-    inputTags:
-      - tagKey: "@[ADWRKSHP_DASHBOARD_ID]"
-        tagValue: "1604"    
-      - tagKey: "@[ADWRKSHP_DASHBOARD_ACTION_VIEW]"
-        tagValue: "true"    
-      - tagKey: "@[ADWRKSHP_DASHBOARD_ACTION_EDIT]"
-        tagValue: "false"
-      - tagKey: "@[ADWRKSHP_DASHBOARD_ACTION_DELETE]"
-        tagValue: "false"
-      - tagKey: "@[ADWRKSHP_DASHBOARD_ACTION_SHARE]"
-        tagValue: "false"    
+#  - taskType: "CONTROLLER_TASK_SET_DASHBOARD_PERMISSIONS"
+#    inputTags:
+#      - tagKey: "@[ADWRKSHP_DASHBOARD_ID]"
+#        tagValue: "1604"    
+#      - tagKey: "@[ADWRKSHP_DASHBOARD_ACTION_VIEW]"
+#        tagValue: "true"    
+#      - tagKey: "@[ADWRKSHP_DASHBOARD_ACTION_EDIT]"
+#        tagValue: "false"
+#      - tagKey: "@[ADWRKSHP_DASHBOARD_ACTION_DELETE]"
+#        tagValue: "false"
+#      - tagKey: "@[ADWRKSHP_DASHBOARD_ACTION_SHARE]"
+#        tagValue: "false"    
 
 
  # !!!! Ensure that this is the last controller task in the in the list
