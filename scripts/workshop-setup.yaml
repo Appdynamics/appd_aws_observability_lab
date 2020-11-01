@@ -313,7 +313,7 @@ controllerTasks:
   - taskType: "CONTROLLER_TASK_CREATE_APM_APP"
     inputTags:
       - tagKey: "@[ADWRKSHP_APM_APP_NAME_PRE]"
-        tagValue: "AD-Fin-PreMod-@[ADWRKSHP_LABUSER_KEY]"
+        tagValue: "@[ADWRKSHP_LABUSER_KEY]-AD-Fin-PreMod"
         
     templateTargets:    
       - templateName: "docker-app-conf"
@@ -330,7 +330,7 @@ controllerTasks:
   - taskType: "CONTROLLER_TASK_CREATE_BRUM_APP"
     inputTags:
       - tagKey: "@[ADWRKSHP_EUM_APP_NAME_PRE]"
-        tagValue: "AD-Fin-PreMod-Web-@[ADWRKSHP_LABUSER_KEY]"
+        tagValue: "@[ADWRKSHP_LABUSER_KEY]-AD-Fin-PreMod-Web"
   
     templateTargets:
       - templateName: "docker-app-conf"
@@ -351,7 +351,7 @@ controllerTasks:
   - taskType: "CONTROLLER_TASK_CREATE_APM_APP"
     inputTags:
       - tagKey: "@[ADWRKSHP_APM_APP_NAME_POST]"
-        tagValue: "AD-Fin-PostMod-@[ADWRKSHP_LABUSER_KEY]"
+        tagValue: "@[ADWRKSHP_LABUSER_KEY]-AD-Fin-PostMod"
       - tagKey: "@[ADWRKSHP_APM_APP_TYPE]"
         tagValue: "@[ADWRKSHP_APM_APP_TYPE_K8S]"
   
@@ -378,7 +378,7 @@ controllerTasks:
   - taskType: "CONTROLLER_TASK_CREATE_BRUM_APP"
     inputTags:
       - tagKey: "@[ADWRKSHP_EUM_APP_NAME_POST]"
-        tagValue: "AD-Fin-PostMod-Web-@[ADWRKSHP_LABUSER_KEY]"  
+        tagValue: "@[ADWRKSHP_LABUSER_KEY]-AD-Fin-PostMod-Web"  
         
     templateTargets:
     
@@ -403,7 +403,7 @@ controllerTasks:
     taskName: "adfin-db-collector-post"
     inputTags:
       - tagKey: "@[ADWRKSHP_CLOUD_DB_INST_NAME]"
-        tagValue: "AD-Fin-PostMod-@[ADWRKSHP_LABUSER_KEY]"    
+        tagValue: "@[ADWRKSHP_LABUSER_KEY]-AD-Fin-PostMod"    
       - tagKey: "@[ADWRKSHP_CLOUD_DB_INST_TYPE]"
         tagValue: "MYSQL"    
       - tagKey: "@[ADWRKSHP_DB_AGENT_NAME]"
@@ -428,7 +428,7 @@ controllerTasks:
     taskName: "adfin-db-collector-pre"
     inputTags:
       - tagKey: "@[ADWRKSHP_CLOUD_DB_INST_NAME]"
-        tagValue: "AD-Fin-PreMod-@[ADWRKSHP_LABUSER_KEY]"    
+        tagValue: "@[ADWRKSHP_LABUSER_KEY]-AD-Fin-PreMod"    
       - tagKey: "@[ADWRKSHP_CLOUD_DB_INST_TYPE]"
         tagValue: "MYSQL"    
       - tagKey: "@[ADWRKSHP_DB_AGENT_NAME]"
