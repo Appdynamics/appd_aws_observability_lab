@@ -11,8 +11,8 @@
                         "name": "policy-processing",
                         "type": "ProcessingAction",
                         "properties": {
-                            "minDuration": 800,
-                            "maxDuration": 2400,
+                            "minDuration": 400,
+                            "maxDuration": 900,
                             "numCores": 2,
                             "numThreadsPerCore": 3,
                             "load": 0.2
@@ -69,7 +69,7 @@
                         "type": "ProcessingAction",
                         "properties": {
                             "minDuration": 600,
-                            "maxDuration": 2200,
+                            "maxDuration": 900,
                             "numCores": 2,
                             "numThreadsPerCore": 3,
                             "load": 0.5
@@ -124,8 +124,8 @@
                         "name": "quote-processing",
                         "type": "ProcessingAction",
                         "properties": {
-                            "minDuration": 900,
-                            "maxDuration": 2200,
+                            "minDuration": 400,
+                            "maxDuration": 900,
                             "numCores": 2,
                             "numThreadsPerCore": 3,
                             "load": 0.2
@@ -395,8 +395,8 @@
                         "name": "loan-processing",
                         "type": "ProcessingAction",
                         "properties": {
-                            "minDuration": 900,
-                            "maxDuration": 2200,
+                            "minDuration": 1100,
+                            "maxDuration": 2700,
                             "numCores": 2,
                             "numThreadsPerCore": 1,
                             "load": 0.2
@@ -429,7 +429,7 @@
                         "name": "loan-processing",
                         "type": "ProcessingAction",
                         "properties": {
-                            "minDuration": 1200,
+                            "minDuration": 1400,
                             "maxDuration": 2700,
                             "numCores": 2,
                             "numThreadsPerCore": 1,
@@ -464,8 +464,8 @@
                         "name": "loan-processing",
                         "type": "ProcessingAction",
                         "properties": {
-                            "minDuration": 1200,
-                            "maxDuration": 2800,
+                            "minDuration": 1400,
+                            "maxDuration": 3100,
                             "numCores": 2,
                             "numThreadsPerCore": 1,
                             "load": 0.1
@@ -499,7 +499,7 @@
                         "name": "loan-processing",
                         "type": "ProcessingAction",
                         "properties": {
-                            "minDuration": 1200,
+                            "minDuration": 1400,
                             "maxDuration": 2800,
                             "numCores": 2,
                             "numThreadsPerCore": 1,
@@ -534,8 +534,8 @@
                         "name": "loan-processing",
                         "type": "ProcessingAction",
                         "properties": {
-                            "minDuration": 1000,
-                            "maxDuration": 2500,
+                            "minDuration": 1500,
+                            "maxDuration": 2800,
                             "numCores": 2,
                             "numThreadsPerCore": 1,
                             "load": 0.3
@@ -570,8 +570,8 @@
                         "name": "loan-processing",
                         "type": "ProcessingAction",
                         "properties": {
-                            "minDuration": 1200,
-                            "maxDuration": 2590,
+                            "minDuration": 1400,
+                            "maxDuration": 2700,
                             "numCores": 2,
                             "numThreadsPerCore": 1,
                             "load": 0.2
