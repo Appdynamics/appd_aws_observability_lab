@@ -238,6 +238,7 @@ services:
       - ENABLE_BROWSER_LOAD=1
       - ENABLE_APPROVAL_LOAD=0
       - ENABLE_POLICY_LOAD=0
+      - ENABLE_LOAN_LOAD=0
     restart: always
 
   approval-load:
@@ -248,8 +249,19 @@ services:
       - ENABLE_BROWSER_LOAD=0
       - ENABLE_APPROVAL_LOAD=1
       - ENABLE_POLICY_LOAD=0
+      - ENABLE_LOAN_LOAD=0
     restart: always
 
+  loan-load:
+    image: james201010/adfinmod_loadgen_pre:latest
+    container_name: loan-load
+    env_file: application.env
+    environment:
+      - ENABLE_BROWSER_LOAD=0
+      - ENABLE_APPROVAL_LOAD=0
+      - ENABLE_POLICY_LOAD=0
+      - ENABLE_LOAN_LOAD=1
+    restart: always
 
   # load:
   #   container_name: load
