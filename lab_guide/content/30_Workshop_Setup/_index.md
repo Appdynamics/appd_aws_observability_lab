@@ -1,11 +1,8 @@
 +++
 title = "Workshop Setup"
-chapter = true
+chapter = false
 weight = 30
 +++
-
-# Workshop Setup
-
 
 Zoe is the Technical Lead for the modernization project at AD Financial.  She will walk you through the steps to get the workshop setup completed.  Please review the steps below and associated <i class='fas fa-bolt'></i> notes to ensure a smooth setup.
 

@@ -6,15 +6,13 @@ weight = 5
 
 ![image](/images/workshop_setup/ad_team_tech_lead.png)
 
-<i class='fas fa-asterisk'></i> **TBD --- provide links to check each of the resources mentioned below**
-
 {{% notice warning %}}
 You must have enough available VPCs, Elastic IPs, and NAT Gatweways in the region you are working in to successfully create an EKS Cluster with a managed node group of 2 nodes.
 {{% /notice %}}
 
 <br>
 
-### Let's do this ! <i class='fas fa-cog fa-spin'></i>
+## Let's do this ! <i class='fas fa-cog fa-spin'></i>
 
 <br>
 
@@ -71,7 +69,7 @@ The output from the setup script when it ends, should look like this:
 ![image](/images/workshop_setup/setup-output-end.png)
 
 
-### What the setup utility does
+## What the setup utility does
 
 **01)** Installs Java JDK 1.8 <i class='fas fa-asterisk'></i>
 
@@ -128,14 +126,9 @@ The output from the setup script when it ends, should look like this:
 
 <br>
 
-### Next
-
-Once the setup utility has finished, you can find your login credentials to your AppDynamics Controller by using the commands below:
-
-```
-cd /home/ec2-user/environment
-
-cat workshop-user-details.txt
-```
+## Next <i class='fas fa-cog fa-spin'></i>
 
 While you are waiting for the setup utility to finish, you can go to the next section to find out why **AD Financial** selected **AppDynamics** as their **preferred observability solution**.
+
+
+<i class='fas fa-asterisk'></i> **TBD --- provide links to check each of the resources needed for EKS mentioned above**

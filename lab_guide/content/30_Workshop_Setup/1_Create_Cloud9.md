@@ -27,7 +27,7 @@ Cloud9 requires third-party-cookies. You can whitelist the [specific domains]( h
 {{% /notice %}}
 
 
-### Launch Cloud9 in your closest region:
+## Launch Cloud9 in your closest region:
 
 - **N. California** 
   - [https://us-west-1.console.aws.amazon.com/cloud9/home?region=us-west-1](https://us-west-1.console.aws.amazon.com/cloud9/home?region=us-west-1)
@@ -52,7 +52,7 @@ Cloud9 requires third-party-cookies. You can whitelist the [specific domains]( h
 You **must use** the **t2.large** instance type for this workshop.  If the **t2.large** instance type is not available in the region you first selected, please choose a different region where the **t2.large** instance type is available.
 {{% /notice %}}
 
-### Select your options:
+## Select your options:
 
 - Select **Create environment**
 - Name it **AppD-Workshop**, click Next.

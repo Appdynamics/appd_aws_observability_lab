@@ -17,7 +17,7 @@ Cloud9 normally manages IAM credentials dynamically. This isn’t currently comp
 
 ![c9configure](/images/workshop_setup/c9_configure_02.png)
 
-### Validate the IAM Role
+## Validate the IAM Role
 
 Use the [GetCallerIdentity](https://docs.aws.amazon.com/cli/latest/reference/sts/get-caller-identity.html) CLI command to validate that the Cloud9 IDE is using the correct IAM role.
 

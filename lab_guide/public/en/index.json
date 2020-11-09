@@ -1,0 +1,96 @@
+[
+	{	"pageTitle": "Index",
+		"relativePagePath": "/en/"
+	},
+	{
+		"pageTitle": "Backstory",
+		"relativePagePath": "/en/10_backstory.html"
+	},
+	{
+		"pageTitle": "Getting Started",
+		"relativePagePath": "/en/20_getting_started.html"
+	},
+	{
+		"pageTitle": "AWS Event Engine",
+		"relativePagePath": "/en/20_getting_started/1_aws_event_engine.html"
+	},
+	{
+		"pageTitle": "AWS Account",
+		"relativePagePath": "/en/20_getting_started/2_aws_account.html"
+	},
+	{
+		"pageTitle": "Workshop Setup",
+		"relativePagePath": "/en/30_workshop_setup.html"
+	},
+	{
+		"pageTitle": "Create Cloud9 Workspace",
+		"relativePagePath": "/en/30_workshop_setup/1_create_cloud9.html"
+	},
+	{
+		"pageTitle": "Create IAM Role for Workspace",
+		"relativePagePath": "/en/30_workshop_setup/2_create_iam_role.html"
+	},
+	{
+		"pageTitle": "Attach IAM Role to Workspace",
+		"relativePagePath": "/en/30_workshop_setup/3_attach_iam_role.html"
+	},
+	{
+		"pageTitle": "Update Cloud9 Workspace",
+		"relativePagePath": "/en/30_workshop_setup/4_cloud9_update.html"
+	},
+	{
+		"pageTitle": "Start Your Engines ! ",
+		"relativePagePath": "/en/30_workshop_setup/5_start_engines.html"
+	},
+	{
+		"pageTitle": "AppDynamics Advantage",
+		"relativePagePath": "/en/40_appdynamics_advantage.html"
+	},
+	{
+		"pageTitle": "Mobilize",
+		"relativePagePath": "/en/50_mobilize.html"
+	},
+	{
+		"pageTitle": "Review AD Financial",
+		"relativePagePath": "/en/50_mobilize/1_review_app.html"
+	},
+	{
+		"pageTitle": " Flow Maps",
+		"relativePagePath": "/en/50_mobilize/2_flowmaps.html"
+	},
+	{
+		"pageTitle": "Business Transactions",
+		"relativePagePath": "/en/50_mobilize/3_business_txns.html"
+	},
+	{
+		"pageTitle": "Servers and Containers",
+		"relativePagePath": "/en/50_mobilize/4_servers_containers.html"
+	},
+	{
+		"pageTitle": "End User Monitoring",
+		"relativePagePath": "/en/50_mobilize/5_browser_rum.html"
+	},
+	{
+		"pageTitle": "Databases",
+		"relativePagePath": "/en/50_mobilize/6_databases.html"
+	},
+	{
+		"pageTitle": "Summary",
+		"relativePagePath": "/en/50_mobilize/7_summary.html"
+	},
+	{
+		"pageTitle": "Modernize",
+		"relativePagePath": "/en/60_modernize.html"
+	},
+	{
+		"pageTitle": "Operate",
+		"relativePagePath": "/en/70_operate.html"
+	},
+	{
+		"pageTitle": "Wrapup",
+		"relativePagePath": "/en/80_wrapup.html"
+	},
+	{
+		"pageTitle": "Workshop Cleanup",
+		"relativePagePath": "/en/80_wrapup/1_workshop_teardown.html"
+	}]

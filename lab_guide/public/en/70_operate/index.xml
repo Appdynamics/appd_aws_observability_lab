@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Operate on AppDynamics Workshop</title>
+    <link>/en/70_operate.html</link>
+    <description>Recent content in Operate on AppDynamics Workshop</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    
+	<atom:link href="/en/70_operate/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+  </channel>
+</rss>

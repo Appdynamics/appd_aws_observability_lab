@@ -1,10 +1,8 @@
 +++
 title = "Wrapup"
-chapter = true
+chapter = false
 weight = 80
 +++
-
-# Wrapup
 
 <i class='fas fa-asterisk'></i> **TBD --- more content coming here**
 

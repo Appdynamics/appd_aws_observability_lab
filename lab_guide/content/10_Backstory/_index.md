@@ -1,8 +1,10 @@
 +++
 title = "Backstory"
-chapter = true
+chapter = false
 weight = 10
 +++
+
+**!!!!! TODO Condense Backstory and make it more concise !!!!!**
 
 ![image](/images/the_backstory/ad_financial_logo_lrg.png)
 
@@ -56,29 +58,22 @@ To that end, the appropriate level of scope must also be identified to ensure th
 
 1.	A container orchestration solution that can automate the process of scaling, managing, updating, and removing containers.
 2.	A storage solution for audit data that is secure, can scale, has redundancy, and supports high ingestion rates.
-3.  A highly available relation database solution that offers Multi-AZ capability with automatic failover to achieve high availability.
+3.  A highly resilient relational database solution that offers Multi-AZ capability with automatic failover to achieve high availability.
 
 AWS offers multiple services for container orchestration and for storage and after assessing the features of the services available, the team made a final decision on the three services that would best meet their technical and business requirements.  
 
-<br>
+&nbsp;&nbsp;&nbsp;&nbsp;:small_blue_diamond: **Container Orchestration Winner!**
 
-:small_blue_diamond: **Container Orchestration Winner!**
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class='fa fa-check-square'></i> **Elastic Kubernetes Service (EKS)**
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class='fa fa-check-square'></i> **Elastic Kubernetes Service (EKS)**
+&nbsp;&nbsp;&nbsp;&nbsp;:small_blue_diamond: **Storage Solution Winner!**
 
-<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class='fa fa-check-square'></i> **Simple Storage Service (S3)**
 
-:small_blue_diamond: **Storage Solution Winner!**
+&nbsp;&nbsp;&nbsp;&nbsp;:small_blue_diamond: **Database Solution Winner!**
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class='fa fa-check-square'></i> **Simple Storage Service (S3)**
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class='fa fa-check-square'></i> **Relational Database Service (RDS)**
 
-<br>
-
-:small_blue_diamond: **Database Solution Winner!**
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class='fa fa-check-square'></i> **Relational Database Service (RDS)**
-
-<br>
 
 ## 4: Baseline Performance and End User Experience
 

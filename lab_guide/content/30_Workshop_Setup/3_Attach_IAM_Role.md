@@ -8,7 +8,7 @@ weight = 3
 
 1 . Follow [this deep link to find your Cloud9 EC2 instance](https://console.aws.amazon.com/ec2/v2/home?#Instances:tag:Name=AppD-Workshop;sort=desc:launchTime).
 
-2 . Select the instance, then choose **Actions / Instance Settings / Modify IAM Role**
+2 . Select the instance, then choose **Actions / Security / Modify IAM Role**
 
 
 ![image](/images/workshop_setup/iam_attach_role_01.png)

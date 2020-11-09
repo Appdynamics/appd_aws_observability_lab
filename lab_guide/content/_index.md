@@ -1,14 +1,14 @@
 ---
-title: "Observability With AppDynamics"
-chapter: true
+title: "Advanced Observability with AppDynamics"
+chapter: false
 weight: 1
 ---
 
-# AWS MODERNIZATION WORKSHOP: ADVANCED OBSERVABILITY WITH APPDYNAMICS
-
 ![image](/images/appd_logo.png)
 
-Welcome to the Advanced Observability with AppDynamics workshop!  In this workshop you will learn and apply modernization strategies that keep your digital-first organization moving at speed, ensure operational optimization, avoid unnecessary risks, and maximize your innovation!
+**Welcome to the Advanced Observability with AppDynamics workshop!**
+
+**In this workshop you will learn and apply modernization strategies that keep your digital-first organization moving at speed, ensure operational optimization, avoid unnecessary risks, and maximize your innovation!**
 
 ![image](/images/ad_financial_logo.png)
 ![image](/images/01_flowmap.png)
@@ -33,11 +33,11 @@ In this workshop you will experience the challenges associated with the legendar
 
 ## Workshop Structure
 
-The workshop is broken into the sections listed below.  Plan on 2.5 hours to complete the course.
+The workshop is divided into the sections listed below.  Plan on 2.5 hours to complete the course.
 
 * **Prerequisites** ***(10 minutes)*** - Create and configure a Cloud9 instance, an IAM Admin Role, and check for EKS resources
 * **Workshop setup** ***(30 minutes)*** - Run a script that creates AWS resources, deploys applications, and configures AppDynamics
-* **ApppDynamics Advantage** ***(10 minutes)*** - Review how AppDynamics provides value to your modernization effort
+* **AppDynamics Advantage** ***(10 minutes)*** - Review how AppDynamics provides value to your modernization effort
 * **Workshop exercises** ***(90 minutes)*** - Divided into three modules: mobilize, modernize, operate
 * **Cleanup Resources** ***(10 minutes)*** - Run a script to tear down workshop resources  
   
