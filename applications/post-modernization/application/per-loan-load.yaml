@@ -25,6 +25,8 @@ spec:
               value: "1"
             - name: ENABLE_POLICY_LOAD
               value: "0"
+            - name: ENABLE_LOAN_LOAD
+              value: "1"
           imagePullPolicy: Always
       hostname: per-loan-load
       restartPolicy: Always
