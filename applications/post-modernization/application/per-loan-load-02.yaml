@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: per-loan-load-02
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: per-loan-load-02  
+  template:
+    metadata:
+      labels:
+        name: per-loan-load-02
+    spec:
+      containers:
+        - name: per-loan-load-02
+          image: james201010/adfinmod_loadgen_pre:latest
+          envFrom:
+            - configMapRef:
+                name: appd-app-config
+          env:
+            - name: ENABLE_BROWSER_LOAD
+              value: "0"
+            - name: ENABLE_APPROVAL_LOAD
+              value: "0"
+            - name: ENABLE_POLICY_LOAD
+              value: "0"
+            - name: ENABLE_LOAN_LOAD
+              value: "1"
+          imagePullPolicy: Always
+      hostname: per-loan-load-02
+      restartPolicy: Always

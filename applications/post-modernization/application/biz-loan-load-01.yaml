@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: biz-loan-load
+  name: biz-loan-load-01
 spec:
   replicas: 1
   selector:
     matchLabels:
-      name: biz-loan-load    
+      name: biz-loan-load-01    
   template:
     metadata:
       labels:
-        name: biz-loan-load
+        name: biz-loan-load-01
     spec:
       containers:
-        - name: biz-loan-load
+        - name: biz-loan-load-01
           image: james201010/adfinmod_loadgen_pre:latest
           envFrom:
             - configMapRef:
@@ -26,7 +26,7 @@ spec:
             - name: ENABLE_POLICY_LOAD
               value: "0"
             - name: ENABLE_LOAN_LOAD
-              value: "1"              
+              value: "0"              
           imagePullPolicy: Always
-      hostname: biz-loan-load
+      hostname: biz-loan-load-01
       restartPolicy: Always
