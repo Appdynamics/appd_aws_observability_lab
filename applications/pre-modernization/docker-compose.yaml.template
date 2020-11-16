@@ -18,6 +18,7 @@ services:
     environment:
       - APPDYNAMICS_SIM_ENABLED=true
       - APPDYNAMICS_DOCKER_ENABLED=true
+      #- APPDYNAMICS_AGENT_ENABLE_CONTAINERIDASHOSTID=true
       #- APPDYNAMICS_AGENT_UNIQUE_HOST_ID=${ADWRKSHP_LABUSER_KEY}-${ADWRKSHP_RANDOM_UUID}
     volumes:
       - /etc/localtime:/etc/localtime:ro

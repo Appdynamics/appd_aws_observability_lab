@@ -15,7 +15,7 @@ spec:
       serviceAccountName: appd-app-services
       initContainers:
       - name: appd-agent-repo
-        image: docker.io/appdynamics/java-agent:20.8.0
+        image: james201010/adfinmod_java_agent:latest
         command: ["cp", "-ra", "/opt/appdynamics/.", "/opt/temp"]
         volumeMounts:
         - mountPath: /opt/temp
