@@ -2,7 +2,7 @@
 
 creditCheckUrl: "http://www.equifax.com"
 creditCheckLowerRandomIntervalStr: "1"
-creditCheckUpperRandomIntervalStr: "12"
+creditCheckUpperRandomIntervalStr: "6"
 
 performanceModifiers:
   - name: "loan_approval"
