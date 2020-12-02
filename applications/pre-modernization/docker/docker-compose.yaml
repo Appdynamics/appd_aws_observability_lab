@@ -64,10 +64,12 @@ services:
     container_name: loan-services
     volumes:
       - './app-graph.json:/app-graph.json'
+      - './repos-config.yaml:/repos-config.yaml'
       - java-agent:/opt/appdynamics/java-agent/
     env_file: application.env
     environment: 
       - GRAPH_FILE=/app-graph.json
+      - REPOS_CONFIG_FILE=/repos-config.yaml
       - JAVA_TOOL_OPTIONS=-javaagent:/opt/appdynamics/java-agent/javaagent.jar
       - DEBUG_LEVEL=debug
       - APPDYNAMICS_AGENT_TIER_NAME=LoanServices
