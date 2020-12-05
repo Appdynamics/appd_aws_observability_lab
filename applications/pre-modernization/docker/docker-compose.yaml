@@ -6,13 +6,15 @@ services:
     container_name: java-agent
     hostname: java-agent
     image: appdynamics/java-agent:latest
+    # image: james201010/adfinmod_java_agent:latest
     volumes:
       - java-agent:/opt/appdynamics  
 
   machine-agent:
     container_name: machine-agent
-    hostname: machine-agent
-    image: appdynamics/machine-agent-analytics:latest    
+    # hostname: machine-agent
+    image: appdynamics/machine-agent-analytics:latest 
+    # image: james201010/adfinmod_machine_agent:latest
     restart: always
     env_file: application.env
     environment:
@@ -28,7 +30,7 @@ services:
 
   adfindb:
     container_name: adfindb
-    hostname: adfindb
+    # hostname: adfindb
     image: mysql:5.7
     command: --default-authentication-plugin=mysql_native_password
     restart: always
@@ -40,27 +42,27 @@ services:
   mongo-stocks:
     image: mongo
     container_name: mongo-stocks
-    hostname: mongo-stocks
+    # hostname: mongo-stocks
     expose: 
       - 27017
 
   mongo-orders:
     image: mongo
     container_name: mongo-orders
-    hostname: mongo-orders
+    # hostname: mongo-orders
     expose: 
       - 27017
 
   mongo-policies:
     image: mongo
     container_name: mongo-policies
-    hostname: mongo-policies
+    # hostname: mongo-policies
     expose: 
       - 27017
 
   loan-services:
     image: james201010/adfinmod_java_repositories_pre:latest
-    hostname: loan-services
+    # hostname: loan-services
     container_name: loan-services
     volumes:
       - './app-graph.json:/app-graph.json'
@@ -81,7 +83,7 @@ services:
 
   balance-services:
     image: james201010/adfinmod_java_repositories_pre:latest
-    hostname: balance-services
+    # hostname: balance-services
     container_name: balance-services
     volumes:
       - './app-graph.json:/app-graph.json'
@@ -100,7 +102,7 @@ services:
 
   authentication-services:
     image: james201010/adfinmod_java_services_pre:latest
-    hostname: authentication-services
+    # hostname: authentication-services
     container_name: authentication-services
     volumes:
       - './app-graph.json:/app-graph.json'
@@ -117,7 +119,7 @@ services:
 
   session-tracking:
     image: james201010/adfinmod_java_services_pre:latest
-    hostname: session-tracking
+    # hostname: session-tracking
     container_name: session-tracking
     volumes:
       - './app-graph.json:/app-graph.json'
@@ -134,7 +136,7 @@ services:
 
   account-management:
     image: james201010/adfinmod_java_services_pre:latest
-    hostname: account-management
+    # hostname: account-management
     container_name: account-management
     volumes:
       - './app-graph.json:/app-graph.json'
@@ -151,7 +153,7 @@ services:
 
   quote-services:
     image: james201010/adfinmod_java_services_pre:latest
-    hostname: quote-services
+    # hostname: quote-services
     container_name: quote-services
     volumes:
       - './app-graph.json:/app-graph.json'
@@ -170,7 +172,7 @@ services:
 
   order-processing:
     image: james201010/adfinmod_java_services_pre:latest
-    hostname: order-processing
+    # hostname: order-processing
     container_name: order-processing
     volumes:
       - './app-graph.json:/app-graph.json'
@@ -189,7 +191,7 @@ services:
 
   policy-services:
     image: james201010/adfinmod_java_services_pre:latest
-    hostname: policy-services
+    # hostname: policy-services
     container_name: policy-services
     volumes:
       - './app-graph.json:/app-graph.json'
@@ -208,7 +210,7 @@ services:
 
   web-front-end:
     image: james201010/adfinmod_java_webapps_pre:latest
-    hostname: web-front-end
+    # hostname: web-front-end
     container_name: web-front-end
     volumes:
       - './app-graph.json:/app-graph.json'
