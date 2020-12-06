@@ -14,8 +14,8 @@ spec:
       serviceAccountName: appdynamics-infraviz
       containers:
       - name: appd-infra-agent
-        #image: james201010/adfinmod_machine_agent:latest
-        image: appdynamics/machine-agent-analytics:latest
+        image: james201010/adfinmod_machine_agent:latest
+        #image: appdynamics/machine-agent-analytics:latest
         imagePullPolicy: IfNotPresent
         env:
         - name: APPDYNAMICS_SIM_ENABLED
