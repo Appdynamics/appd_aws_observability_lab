@@ -75,6 +75,7 @@ services:
       - GRAPH_FILE=/app-graph.json
       - JAVA_TOOL_OPTIONS=-javaagent:/opt/appdynamics/java-agent/javaagent.jar
       - DEBUG_LEVEL=debug
+      - ADWRKSHP_TIER_SRVC_NAME=LoanServices
       - APPDYNAMICS_AGENT_TIER_NAME=LoanServices
       - APPDYNAMICS_AGENT_NODE_NAME=LoanServices-${ADWRKSHP_RANDOM_UUID}-1
       #- APPDYNAMICS_AGENT_UNIQUE_HOST_ID=${ADWRKSHP_LABUSER_KEY}-${ADWRKSHP_RANDOM_UUID}
@@ -94,7 +95,8 @@ services:
     environment: 
       - GRAPH_FILE=/app-graph.json
       - JAVA_TOOL_OPTIONS=-javaagent:/opt/appdynamics/java-agent/javaagent.jar
-      - DEBUG_LEVEL=debug      
+      - DEBUG_LEVEL=debug
+      - ADWRKSHP_TIER_SRVC_NAME=BalanceServices
       - APPDYNAMICS_AGENT_TIER_NAME=BalanceServices
       - APPDYNAMICS_AGENT_NODE_NAME=BalanceServices-${ADWRKSHP_RANDOM_UUID}-1
       #- APPDYNAMICS_AGENT_UNIQUE_HOST_ID=${ADWRKSHP_LABUSER_KEY}-${ADWRKSHP_RANDOM_UUID}
@@ -114,7 +116,8 @@ services:
     environment: 
       - GRAPH_FILE=/app-graph.json
       - JAVA_TOOL_OPTIONS=-javaagent:/opt/appdynamics/java-agent/javaagent.jar
-      - DEBUG_LEVEL=debug 
+      - DEBUG_LEVEL=debug
+      - ADWRKSHP_TIER_SRVC_NAME=AuthenticationServices
       - APPDYNAMICS_AGENT_TIER_NAME=AuthenticationServices
       - APPDYNAMICS_AGENT_NODE_NAME=AuthenticationServices-${ADWRKSHP_RANDOM_UUID}-1
       #- APPDYNAMICS_AGENT_UNIQUE_HOST_ID=${ADWRKSHP_LABUSER_KEY}-${ADWRKSHP_RANDOM_UUID}
@@ -132,7 +135,8 @@ services:
     environment: 
       - GRAPH_FILE=/app-graph.json
       - JAVA_TOOL_OPTIONS=-javaagent:/opt/appdynamics/java-agent/javaagent.jar
-      - DEBUG_LEVEL=debug    
+      - DEBUG_LEVEL=debug
+      - ADWRKSHP_TIER_SRVC_NAME=SessionTracking
       - APPDYNAMICS_AGENT_TIER_NAME=SessionTracking
       - APPDYNAMICS_AGENT_NODE_NAME=SessionTracking-${ADWRKSHP_RANDOM_UUID}-1
       #- APPDYNAMICS_AGENT_UNIQUE_HOST_ID=${ADWRKSHP_LABUSER_KEY}-${ADWRKSHP_RANDOM_UUID}
@@ -150,7 +154,8 @@ services:
     environment: 
       - GRAPH_FILE=/app-graph.json
       - JAVA_TOOL_OPTIONS=-javaagent:/opt/appdynamics/java-agent/javaagent.jar
-      - DEBUG_LEVEL=debug 
+      - DEBUG_LEVEL=debug
+      - ADWRKSHP_TIER_SRVC_NAME=AccountManagement
       - APPDYNAMICS_AGENT_TIER_NAME=AccountManagement
       - APPDYNAMICS_AGENT_NODE_NAME=AccountManagement-${ADWRKSHP_RANDOM_UUID}-1
       #- APPDYNAMICS_AGENT_UNIQUE_HOST_ID=${ADWRKSHP_LABUSER_KEY}-${ADWRKSHP_RANDOM_UUID}
@@ -168,7 +173,8 @@ services:
     environment: 
       - GRAPH_FILE=/app-graph.json
       - JAVA_TOOL_OPTIONS=-javaagent:/opt/appdynamics/java-agent/javaagent.jar
-      - DEBUG_LEVEL=debug 
+      - DEBUG_LEVEL=debug
+      - ADWRKSHP_TIER_SRVC_NAME=QuoteServices
       - APPDYNAMICS_AGENT_TIER_NAME=QuoteServices
       - APPDYNAMICS_AGENT_NODE_NAME=QuoteServices-${ADWRKSHP_RANDOM_UUID}-1
       #- APPDYNAMICS_AGENT_UNIQUE_HOST_ID=${ADWRKSHP_LABUSER_KEY}-${ADWRKSHP_RANDOM_UUID}
@@ -188,7 +194,8 @@ services:
     environment: 
       - GRAPH_FILE=/app-graph.json
       - JAVA_TOOL_OPTIONS=-javaagent:/opt/appdynamics/java-agent/javaagent.jar
-      - DEBUG_LEVEL=debug      
+      - DEBUG_LEVEL=debug
+      - ADWRKSHP_TIER_SRVC_NAME=OrderProcessing
       - APPDYNAMICS_AGENT_TIER_NAME=OrderProcessing
       - APPDYNAMICS_AGENT_NODE_NAME=OrderProcessing-${ADWRKSHP_RANDOM_UUID}-1
       #- APPDYNAMICS_AGENT_UNIQUE_HOST_ID=${ADWRKSHP_LABUSER_KEY}-${ADWRKSHP_RANDOM_UUID}
@@ -208,7 +215,8 @@ services:
     environment: 
       - GRAPH_FILE=/app-graph.json
       - JAVA_TOOL_OPTIONS=-javaagent:/opt/appdynamics/java-agent/javaagent.jar
-      - DEBUG_LEVEL=debug      
+      - DEBUG_LEVEL=debug
+      - ADWRKSHP_TIER_SRVC_NAME=PolicyServices
       - APPDYNAMICS_AGENT_TIER_NAME=PolicyServices
       - APPDYNAMICS_AGENT_NODE_NAME=PolicyServices-${ADWRKSHP_RANDOM_UUID}-1
       #- APPDYNAMICS_AGENT_UNIQUE_HOST_ID=${ADWRKSHP_LABUSER_KEY}-${ADWRKSHP_RANDOM_UUID}
@@ -228,7 +236,8 @@ services:
     environment: 
       - GRAPH_FILE=/app-graph.json
       - JAVA_TOOL_OPTIONS=-javaagent:/opt/appdynamics/java-agent/javaagent.jar
-      - DEBUG_LEVEL=debug      
+      - DEBUG_LEVEL=debug
+      - ADWRKSHP_TIER_SRVC_NAME=WebFrontEnd
       - APPDYNAMICS_AGENT_TIER_NAME=WebFrontEnd
       - APPDYNAMICS_AGENT_NODE_NAME=WebFrontEnd-${ADWRKSHP_RANDOM_UUID}-1
       #- APPDYNAMICS_AGENT_UNIQUE_HOST_ID=${ADWRKSHP_LABUSER_KEY}-${ADWRKSHP_RANDOM_UUID}

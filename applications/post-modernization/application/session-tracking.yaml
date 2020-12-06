@@ -15,7 +15,8 @@ spec:
       serviceAccountName: appd-app-services
       initContainers:
       - name: appd-agent-repo
-        image: james201010/adfinmod_java_agent:latest
+        #image: james201010/adfinmod_java_agent:latest
+        image: appdynamics/java-agent:latest
         command: ["cp", "-ra", "/opt/appdynamics/.", "/opt/temp"]
         volumeMounts:
         - mountPath: /opt/temp
@@ -36,8 +37,18 @@ spec:
               value: -javaagent:/opt/appdynamics/javaagent.jar
             - name: DEBUG_LEVEL
               value: debug
+            - name: ADWRKSHP_TIER_SRVC_NAME
+              valueFrom: 
+                configMapKeyRef:
+                  name: appd-app-config
+                  key: ADWRKSHP_TIER_SRVC_NAME_SESSNTRACK
+
             - name: APPDYNAMICS_AGENT_TIER_NAME
-              value: SessionTracking
+              valueFrom: 
+                configMapKeyRef:
+                  name: appd-app-config
+                  key: ADWRKSHP_TIER_NAME_SESSNTRACK
+
             - name: APPDYNAMICS_JAVA_AGENT_REUSE_NODE_NAME
               value: "true"
 
