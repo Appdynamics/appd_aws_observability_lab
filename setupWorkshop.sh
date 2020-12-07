@@ -43,19 +43,44 @@ echo ""
 
 echo "########################################################################################    STARTING APPDYNAMICS CLOUD WORKSHOP PREREQUISITES    ################################################################################"
 
-# validate mandatory environment variables.
 
-if [ -z "$appd_workshop_user" ]; then
+
+
+# !!!!!!!!! NEW STUFF HERE - START
+
+# check to see if user_id file exists and if so read in the user_id
+if [ -f "/opt/appdynamics/setup_progress/appd_workshop_user.txt" ]; then
+
+  appd_workshop_user=$(cat /opt/appdynamics/workshopuser/setupprogress/appd_workshop_user.txt)
+
+else
+  
+  # validate mandatory environment variables.
+
+  if [ -z "$appd_workshop_user" ]; then
     echo "CloudWorkshop|ERROR| - 'appd_workshop_user' environment variable not set or is not at least five alpha characters in length."
-  exit 1
-fi
+    exit 1
+  fi
 
-LEN=$(echo ${#appd_workshop_user})
+  LEN=$(echo ${#appd_workshop_user})
 
-if [ $LEN -lt 5 ]; then
+  if [ $LEN -lt 5 ]; then
     echo "CloudWorkshop|ERROR| - 'appd_workshop_user' environment variable not set or is not at least five alpha characters in length."
-  exit 1
-fi
+    exit 1
+  fi
+
+  # write the user_id to a file
+  echo "$appd_workshop_user" > /opt/appdynamics/workshopuser/setupprogress/appd_workshop_user.txt
+
+
+fi	
+
+
+
+# !!!!!!!!! NEW STUFF HERE - END
+
+
+
 
 #if ! [[ "$appd_workshop_user" =~ [^a-zA-Z\ ] ]]; then
 #  echo ""
