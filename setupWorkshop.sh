@@ -43,7 +43,24 @@ echo ""
 
 echo "########################################################################################    STARTING APPDYNAMICS CLOUD WORKSHOP PREREQUISITES    ################################################################################"
 
+# check to see if we have the XFS file system
+df_output=$(df -khT)
 
+if [[ $df_output == *"/dev/nvme0n1p1 xfs"* ]]; then
+  echo "CloudWorkshop|ERROR| - Oops, :(  it looks like you may have accidentally selected Amazon Linux instead of Amazon Linux 2 for the Platform option."
+  echo "CloudWorkshop|ERROR| - Please discard this Cloud9 instance and create a new one with the required Amazon Linux 2 Platform option."
+  #echo "$df_output"
+  exit 1
+fi
+
+
+# check to see if user_id file exists and if so read in the user_id
+if [ -f "/home/ec2-user/appd_workshop_user.txt" ]; then
+
+  appd_workshop_user=$(cat /home/ec2-user/appd_workshop_user.txt)
+
+else
+  
   # validate mandatory environment variables.
 
   if [ -z "$appd_workshop_user" ]; then
@@ -58,15 +75,26 @@ echo "##########################################################################
     exit 1
   fi
 
+
   if [ "$appd_workshop_user" == "<YOUR USER NAME>" ]; then
     echo "CloudWorkshop|ERROR| - 'appd_workshop_user' environment variable not set properly. It should be at least five alpha characters in length."
-    echo "CloudWorkshop|ERROR| - 'appd_workshop_user' environment variable should not be set to '<YOUR USER NAME>'."
+    echo "CloudWorkshop|ERROR| - 'appd_workshop_user' environment variable should not be set to <YOUR USER NAME>."
     exit 1
-
   fi
 
-# TODO check to make sure the user did not copy "<YOUR USER NAME>"
+  # write the user_id to a file
+  echo "$appd_workshop_user" > /home/ec2-user/appd_workshop_user.txt
 
+fi	
+
+# !!!!!!! BEGIN BIG IF BLOCK !!!!!!!
+if [ -f "/home/ec2-user/appd_workshop_setup.txt" ]; then
+
+  appd_wrkshp_last_setupstep_done=$(cat /home/ec2-user/appd_workshop_setup.txt)
+
+  java -DworkshopUtilsConf=/opt/appdynamics/appd_lab_repo/scripts/workshop-setup.yaml -DworkshopLabUserPrefix=${appd_workshop_user} -DworkshopAction=setup -DlastSetupStepDone=${appd_wrkshp_last_setupstep_done} -DshowWorkshopBanner=false -jar /opt/appdynamics/appd_lab_repo/scripts/AD-Workshop-Utils.jar
+
+else
 
 echo ""
 echo "CloudWorkshop|INFO| - Updating packages and Java JRE"
@@ -75,8 +103,6 @@ echo ""
 #set +x  # turn command display back ON.
 
 ##### Install Java 1.8
-
-#echo "CloudWorkshop|INFO|     - Updating packages and Java JRE ......"
 
 #set -x  # temporarily turn command display OFF.
 #sudo yum -y update
@@ -100,7 +126,6 @@ sudo curl --silent -L -o /etc/yum.repos.d/corretto.repo https://yum.corretto.aws
 sudo yum install -y java-1.8.0-amazon-corretto-devel
 #set +x  # turn command display back ON.
 
-#echo "CloudWorkshop|INFO|     - Updating packages and Java JRE ..."
 
 #set -x  # temporarily turn command display OFF.
 java -version
@@ -130,6 +155,12 @@ git clone https://github.com/Appdynamics/appd_aws_observability_lab.git appd_lab
 cd /opt/appdynamics
 
 mkdir dbagent
+
+cd /opt/appdynamics/dbagent
+
+mkdir .svc
+
+cd /opt/appdynamics
 
 mkdir workshopuser
 
@@ -166,18 +197,30 @@ cp /opt/appdynamics/appd_lab_repo/applications/post-modernization/machineagent/*
 cp /opt/appdynamics/appd_lab_repo/applications/post-modernization/clusteragent/*.* /opt/appdynamics/workshopuser/post-mod-kube-ca/
 
 
-cp /opt/appdynamics/appd_lab_repo/scripts/deployEksCluster.sh /opt/appdynamics/workshopuser/
-chmod 777 /opt/appdynamics/workshopuser/deployEksCluster.sh
+# COPY SHELL FILES
+cp /opt/appdynamics/appd_lab_repo/scripts/createDBAgentSrvc.sh /opt/appdynamics/workshopuser/
+chmod 777 /opt/appdynamics/workshopuser/createDBAgentSrvc.sh
+
+cp /opt/appdynamics/appd_lab_repo/scripts/createDeployments.sh /opt/appdynamics/workshopuser/
+chmod 777 /opt/appdynamics/workshopuser/createDeployments.sh
+
+cp /opt/appdynamics/appd_lab_repo/scripts/createDockerAppSrvc.sh /opt/appdynamics/workshopuser/
+chmod 777 /opt/appdynamics/workshopuser/createDockerAppSrvc.sh
+
+cp /opt/appdynamics/appd_lab_repo/scripts/createSrvcs.sh /opt/appdynamics/workshopuser/
+chmod 777 /opt/appdynamics/workshopuser/createSrvcs.sh
+
+cp /opt/appdynamics/appd_lab_repo/scripts/deployClusterAgent.sh /opt/appdynamics/workshopuser/
+chmod 777 /opt/appdynamics/workshopuser/deployClusterAgent.sh
 
 cp /opt/appdynamics/appd_lab_repo/scripts/deployEksApplication.sh /opt/appdynamics/workshopuser/
 chmod 777 /opt/appdynamics/workshopuser/deployEksApplication.sh
 
+cp /opt/appdynamics/appd_lab_repo/scripts/deployEksCluster.sh /opt/appdynamics/workshopuser/
+chmod 777 /opt/appdynamics/workshopuser/deployEksCluster.sh
+
 cp /opt/appdynamics/appd_lab_repo/scripts/deployMachineAgent.sh /opt/appdynamics/workshopuser/
 chmod 777 /opt/appdynamics/workshopuser/deployMachineAgent.sh
-
-# !!!!!!!!!!!!!!! Cluster Agent Script Needs Arguement passed in when running
-cp /opt/appdynamics/appd_lab_repo/scripts/deployClusterAgent.sh /opt/appdynamics/workshopuser/
-chmod 777 /opt/appdynamics/workshopuser/deployClusterAgent.sh
 
 cp /opt/appdynamics/appd_lab_repo/scripts/exposeEksWebsite.sh /opt/appdynamics/workshopuser/
 chmod 777 /opt/appdynamics/workshopuser/exposeEksWebsite.sh
@@ -199,11 +242,35 @@ curl --silent -L https://raw.githubusercontent.com/Appdynamics/appd_aws_observab
 chmod 777 /home/ec2-user/environment/teardownWorkshop.sh
 
 
+##### Deployment files stuff
+
+cd /home/ec2-user/environment
+
+mkdir deployment
+
+cd /home/ec2-user/environment/deployment 
+
+mkdir post-mod-kube-app
+mkdir post-mod-kube-ca
+mkdir post-mod-kube-cluster
+mkdir post-mod-kube-ma
+mkdir pre-mod-docker
+
+cd /opt/appdynamics/workshopuser
+
+
 #set +x  # turn command display back ON.
 
 echo ""
 echo "CloudWorkshop|INFO| - Finished Updating packages and Java JRE"
 echo ""
 
-java -DworkshopUtilsConf=/opt/appdynamics/appd_lab_repo/scripts/workshop-setup.yaml -DworkshopLabUserPrefix=${appd_workshop_user} -DworkshopAction=setup -DshowWorkshopBanner=false -jar /opt/appdynamics/appd_lab_repo/scripts/AD-Workshop-Utils.jar
+# write last setup step file
+appd_wrkshp_last_setupstep_done="100"
 
+echo "$appd_wrkshp_last_setupstep_done" > /home/ec2-user/appd_workshop_setup.txt
+
+java -DworkshopUtilsConf=/opt/appdynamics/appd_lab_repo/scripts/workshop-setup.yaml -DworkshopLabUserPrefix=${appd_workshop_user} -DworkshopAction=setup -DlastSetupStepDone=${appd_wrkshp_last_setupstep_done} -DshowWorkshopBanner=false -jar /opt/appdynamics/appd_lab_repo/scripts/AD-Workshop-Utils.jar
+
+fi
+# !!!!!!! END BIG IF BLOCK !!!!!!!

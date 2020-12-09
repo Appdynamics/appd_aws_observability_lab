@@ -1,7 +1,9 @@
 !!com.appdynamics.cloud.modern.config.SetupConfig
 
-description: "Example AD-Workshop configuration"
+description: "AD-Advanced-Observability"
 teardownFilePath: "/opt/appdynamics/workshopuser/teardown/workshop-teardown.yaml"
+setupProgressDirectory: "/home/ec2-user"
+setupStepsFileName: "appd_workshop_setup.txt"
 cloudProvider: "aws"
 debugLogging: false
 
@@ -20,12 +22,14 @@ taskExecutionOrder:
     taskName: "workshop-prereqs-sh"
   - taskType: "SHELL_TASK"
     taskName: "deploy-db-agent"
+  - taskType: "SHELL_TASK"
+    taskName: "create-reboot-srvcs-sh"   
   - taskType: "CLOUD_TASKS"
     taskName: ""
   - taskType: "CONTROLLER_TASKS"
     taskName: ""
   - taskType: "SHELL_TASK"
-    taskName: "start-docker-app"
+    taskName: "start-docker-app"  
   - taskType: "SHELL_TASK"
     taskName: "create-kube-cluster"    
   - taskType: "SHELL_TASK"
@@ -42,12 +46,21 @@ shellTasks:
   - taskType: "SHELL_TASK_EXPAND_DISK_VOLUME"
     taskName: "expand-disk-volume"
     inputTags:
+      - tagKey: "@[ADWRKSHP_LAST_SETUP_STEP_TRIGGER]"
+        tagValue: "100"
+      - tagKey: "@[ADWRKSHP_NEXT_SETUP_STEP_TRIGGER]"
+        tagValue: "110"
       - tagKey: "@[ADWRKSHP_DISK_VOLUME_SIZE_GB]"
         tagValue: "80"
+
 
   - taskType: "SHELL_TASK_EXECUTE_SHELL_SCRIPT"
     taskName: "workshop-prereqs-sh"
     inputTags:
+      - tagKey: "@[ADWRKSHP_LAST_SETUP_STEP_TRIGGER]"
+        tagValue: "110"
+      - tagKey: "@[ADWRKSHP_NEXT_SETUP_STEP_TRIGGER]"
+        tagValue: "120"
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_FILEPATH]"
         tagValue: "/opt/appdynamics/workshopuser/workshopPrereqs.sh"
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_BEGIN_MSG]"
@@ -57,11 +70,13 @@ shellTasks:
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_INHERIT_IO]"
         tagValue: "true"
 
-
-
   - taskType: "SHELL_TASK_DEPLOY_DB_AGENT"
     taskName: "deploy-db-agent"
     inputTags:
+      - tagKey: "@[ADWRKSHP_LAST_SETUP_STEP_TRIGGER]"
+        tagValue: "120"
+      - tagKey: "@[ADWRKSHP_NEXT_SETUP_STEP_TRIGGER]"
+        tagValue: "130"
       - tagKey: "@[ADWRKSHP_DB_AGENT_HOME_DIR]"
         tagValue: "/opt/appdynamics/dbagent"
       - tagKey: "@[ADWRKSHP_DB_AGENT_NAME]"
@@ -71,11 +86,30 @@ shellTasks:
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_END_MSG]"
         tagValue: " - Finished Deployment of Database Agent"
 
+  - taskType: "SHELL_TASK_EXECUTE_SHELL_SCRIPT"
+    taskName: "create-reboot-srvcs-sh"
+    inputTags:
+      - tagKey: "@[ADWRKSHP_LAST_SETUP_STEP_TRIGGER]"
+        tagValue: "130"
+      - tagKey: "@[ADWRKSHP_NEXT_SETUP_STEP_TRIGGER]"
+        tagValue: "140"
+      - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_FILEPATH]"
+        tagValue: "/opt/appdynamics/workshopuser/createSrvcs.sh"
+      - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_BEGIN_MSG]"
+        tagValue: " - Starting service entry creation"
+      - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_END_MSG]"
+        tagValue: " - Finished service entry creation"
+      - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_INHERIT_IO]"
+        tagValue: "false"
 
 
   - taskType: "SHELL_TASK_EXECUTE_SHELL_SCRIPT"
     taskName: "create-kube-cluster"
     inputTags:
+      - tagKey: "@[ADWRKSHP_LAST_SETUP_STEP_TRIGGER]"
+        tagValue: "270"
+      - tagKey: "@[ADWRKSHP_NEXT_SETUP_STEP_TRIGGER]"
+        tagValue: "280"
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_FILEPATH]"
         tagValue: "/opt/appdynamics/workshopuser/deployEksCluster.sh"
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_BEGIN_MSG]"
@@ -89,6 +123,10 @@ shellTasks:
   - taskType: "SHELL_TASK_EXECUTE_SHELL_SCRIPT"
     taskName: "deploy-kube-application"
     inputTags:
+      - tagKey: "@[ADWRKSHP_LAST_SETUP_STEP_TRIGGER]"
+        tagValue: "280"
+      - tagKey: "@[ADWRKSHP_NEXT_SETUP_STEP_TRIGGER]"
+        tagValue: "290"
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_FILEPATH]"
         tagValue: "/opt/appdynamics/workshopuser/deployEksApplication.sh"
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_BEGIN_MSG]"
@@ -102,6 +140,10 @@ shellTasks:
   - taskType: "SHELL_TASK_EXECUTE_SHELL_SCRIPT"
     taskName: "deploy-kube-machine-agent"
     inputTags:
+      - tagKey: "@[ADWRKSHP_LAST_SETUP_STEP_TRIGGER]"
+        tagValue: "290"
+      - tagKey: "@[ADWRKSHP_NEXT_SETUP_STEP_TRIGGER]"
+        tagValue: "300"
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_FILEPATH]"
         tagValue: "/opt/appdynamics/workshopuser/deployMachineAgent.sh"
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_BEGIN_MSG]"
@@ -114,6 +156,10 @@ shellTasks:
   - taskType: "SHELL_TASK_EXECUTE_SHELL_SCRIPT"
     taskName: "deploy-cluster-agent"
     inputTags:
+      - tagKey: "@[ADWRKSHP_LAST_SETUP_STEP_TRIGGER]"
+        tagValue: "300"
+      - tagKey: "@[ADWRKSHP_NEXT_SETUP_STEP_TRIGGER]"
+        tagValue: "310"
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_FILEPATH]"
         tagValue: "/opt/appdynamics/workshopuser/deployClusterAgent.sh"
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_ARGUMENTS]"
@@ -128,6 +174,10 @@ shellTasks:
   - taskType: "SHELL_TASK_EXECUTE_SHELL_SCRIPT"
     taskName: "expose-kube-website"
     inputTags:
+      - tagKey: "@[ADWRKSHP_LAST_SETUP_STEP_TRIGGER]"
+        tagValue: "310"
+      - tagKey: "@[ADWRKSHP_NEXT_SETUP_STEP_TRIGGER]"
+        tagValue: "320"
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_FILEPATH]"
         tagValue: "/opt/appdynamics/workshopuser/exposeEksWebsite.sh"
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_BEGIN_MSG]"
@@ -140,6 +190,10 @@ shellTasks:
   - taskType: "SHELL_TASK_EXECUTE_SHELL_SCRIPT"
     taskName: "start-docker-app"
     inputTags:
+      - tagKey: "@[ADWRKSHP_LAST_SETUP_STEP_TRIGGER]"
+        tagValue: "260"
+      - tagKey: "@[ADWRKSHP_NEXT_SETUP_STEP_TRIGGER]"
+        tagValue: "270"
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_FILEPATH]"
         tagValue: "/opt/appdynamics/workshopuser/pre-mod-docker/start.sh"
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_BEGIN_MSG]"
@@ -311,7 +365,12 @@ templates:
 controllerTasks:
 
   - taskType: "CONTROLLER_TASK_CREATE_APM_APP"
+    taskName: "create-apm-app-premod"
     inputTags:
+      - tagKey: "@[ADWRKSHP_LAST_SETUP_STEP_TRIGGER]"
+        tagValue: "180"
+      - tagKey: "@[ADWRKSHP_NEXT_SETUP_STEP_TRIGGER]"
+        tagValue: "190"
       - tagKey: "@[ADWRKSHP_APM_APP_NAME_PRE]"
         tagValue: "@[ADWRKSHP_LABUSER_KEY]-AD-Fin-PreMod"
         
@@ -328,7 +387,12 @@ controllerTasks:
 
 
   - taskType: "CONTROLLER_TASK_CREATE_BRUM_APP"
+    taskName: "create-brum-app-premod"
     inputTags:
+      - tagKey: "@[ADWRKSHP_LAST_SETUP_STEP_TRIGGER]"
+        tagValue: "190"
+      - tagKey: "@[ADWRKSHP_NEXT_SETUP_STEP_TRIGGER]"
+        tagValue: "200"
       - tagKey: "@[ADWRKSHP_EUM_APP_NAME_PRE]"
         tagValue: "@[ADWRKSHP_LABUSER_KEY]-AD-Fin-PreMod-Web"
   
@@ -349,7 +413,12 @@ controllerTasks:
  
   
   - taskType: "CONTROLLER_TASK_CREATE_APM_APP"
+    taskName: "create-apm-app-postmod"
     inputTags:
+      - tagKey: "@[ADWRKSHP_LAST_SETUP_STEP_TRIGGER]"
+        tagValue: "200"
+      - tagKey: "@[ADWRKSHP_NEXT_SETUP_STEP_TRIGGER]"
+        tagValue: "210"
       - tagKey: "@[ADWRKSHP_APM_APP_NAME_POST]"
         tagValue: "@[ADWRKSHP_LABUSER_KEY]-AD-Fin-PostMod"
       - tagKey: "@[ADWRKSHP_APM_APP_TYPE]"
@@ -376,7 +445,12 @@ controllerTasks:
 
 
   - taskType: "CONTROLLER_TASK_CREATE_BRUM_APP"
+    taskName: "create-brum-app-postmod"
     inputTags:
+      - tagKey: "@[ADWRKSHP_LAST_SETUP_STEP_TRIGGER]"
+        tagValue: "210"
+      - tagKey: "@[ADWRKSHP_NEXT_SETUP_STEP_TRIGGER]"
+        tagValue: "220"
       - tagKey: "@[ADWRKSHP_EUM_APP_NAME_POST]"
         tagValue: "@[ADWRKSHP_LABUSER_KEY]-AD-Fin-PostMod-Web"  
         
@@ -402,6 +476,10 @@ controllerTasks:
   - taskType: "CONTROLLER_TASK_CREATE_DB_COLLECTOR"
     taskName: "adfin-db-collector-post"
     inputTags:
+      - tagKey: "@[ADWRKSHP_LAST_SETUP_STEP_TRIGGER]"
+        tagValue: "220"
+      - tagKey: "@[ADWRKSHP_NEXT_SETUP_STEP_TRIGGER]"
+        tagValue: "230"
       - tagKey: "@[ADWRKSHP_CLOUD_DB_INST_NAME]"
         tagValue: "@[ADWRKSHP_LABUSER_KEY]-AD-Fin-PostMod"    
       - tagKey: "@[ADWRKSHP_CLOUD_DB_INST_TYPE]"
@@ -427,6 +505,10 @@ controllerTasks:
   - taskType: "CONTROLLER_TASK_CREATE_DB_COLLECTOR"
     taskName: "adfin-db-collector-pre"
     inputTags:
+      - tagKey: "@[ADWRKSHP_LAST_SETUP_STEP_TRIGGER]"
+        tagValue: "230"
+      - tagKey: "@[ADWRKSHP_NEXT_SETUP_STEP_TRIGGER]"
+        tagValue: "240"
       - tagKey: "@[ADWRKSHP_CLOUD_DB_INST_NAME]"
         tagValue: "@[ADWRKSHP_LABUSER_KEY]-AD-Fin-PreMod"    
       - tagKey: "@[ADWRKSHP_CLOUD_DB_INST_TYPE]"
@@ -444,7 +526,12 @@ controllerTasks:
 
 
   - taskType: "CONTROLLER_TASK_SET_DASHBOARD_PERMISSIONS"
+    taskName: "set-dashboard-access-loancomp-1"
     inputTags:
+      - tagKey: "@[ADWRKSHP_LAST_SETUP_STEP_TRIGGER]"
+        tagValue: "240"
+      - tagKey: "@[ADWRKSHP_NEXT_SETUP_STEP_TRIGGER]"
+        tagValue: "250"
       - tagKey: "@[ADWRKSHP_DASHBOARD_ID]"
         tagValue: "376039"    
       - tagKey: "@[ADWRKSHP_DASHBOARD_ACTION_VIEW]"
@@ -491,6 +578,13 @@ controllerTasks:
  # This task not only creates the RBAC User but also creates the RBAC Role
  # for the user and links the user to the role
   - taskType: "CONTROLLER_TASK_CREATE_RBAC_USER"
+    taskName: "create-rbac-user"
+    inputTags:
+      - tagKey: "@[ADWRKSHP_LAST_SETUP_STEP_TRIGGER]"
+        tagValue: "250"
+      - tagKey: "@[ADWRKSHP_NEXT_SETUP_STEP_TRIGGER]"
+        tagValue: "260"
+
     templateTargets:   
       - templateName: "docker-compose-conf"
         targetTags:
@@ -568,7 +662,12 @@ cloudTasks:
 # the final values of the input tags are then passed to the target tags that are linked
 # to the controller DB collector task so the collector can be created
   - taskType: "CLOUD_TASK_CREATE_DB_AWS_RDS_MYSQL"
+    taskName: "create-db-aws-rds-mysql"
     inputTags:
+      - tagKey: "@[ADWRKSHP_LAST_SETUP_STEP_TRIGGER]"
+        tagValue: "140"
+      - tagKey: "@[ADWRKSHP_NEXT_SETUP_STEP_TRIGGER]"
+        tagValue: "150"
       - tagKey: "@[ADWRKSHP_CLOUD_DB_INST_NAME]"
         tagValue: "@[ADWRKSHP_LABUSER_KEY]-adfin-mysql-post"    
       - tagKey: "@[ADWRKSHP_CLOUD_DB_INST_TYPE]"
@@ -600,7 +699,12 @@ cloudTasks:
 
 
   - taskType: "CLOUD_TASK_CREATE_STORAGE_AWS_S3_BUCKET"
+    taskName: "create-storage-aws-s3-bucket-cash"
     inputTags:
+      - tagKey: "@[ADWRKSHP_LAST_SETUP_STEP_TRIGGER]"
+        tagValue: "150"
+      - tagKey: "@[ADWRKSHP_NEXT_SETUP_STEP_TRIGGER]"
+        tagValue: "160"
       - tagKey: "@[ADWRKSHP_CLOUD_STORG_INST_NAME_1]"
         tagValue: "adfin1-@[ADWRKSHP_LABUSER_KEY]-cashaccts"    
     templateTargets:    
@@ -611,7 +715,12 @@ cloudTasks:
 
 
   - taskType: "CLOUD_TASK_CREATE_STORAGE_AWS_S3_BUCKET"
+    taskName: "create-storage-aws-s3-bucket-bizloans"
     inputTags:
+      - tagKey: "@[ADWRKSHP_LAST_SETUP_STEP_TRIGGER]"
+        tagValue: "160"
+      - tagKey: "@[ADWRKSHP_NEXT_SETUP_STEP_TRIGGER]"
+        tagValue: "170"
       - tagKey: "@[ADWRKSHP_CLOUD_STORG_INST_NAME_2]"
         tagValue: "adfin2-@[ADWRKSHP_LABUSER_KEY]-bizloans"    
     templateTargets:    
@@ -622,7 +731,12 @@ cloudTasks:
 
 
   - taskType: "CLOUD_TASK_CREATE_STORAGE_AWS_S3_BUCKET"
+    taskName: "create-storage-aws-s3-bucket-perloans"
     inputTags:
+      - tagKey: "@[ADWRKSHP_LAST_SETUP_STEP_TRIGGER]"
+        tagValue: "170"
+      - tagKey: "@[ADWRKSHP_NEXT_SETUP_STEP_TRIGGER]"
+        tagValue: "180"
       - tagKey: "@[ADWRKSHP_CLOUD_STORG_INST_NAME_3]"
         tagValue: "adfin3-@[ADWRKSHP_LABUSER_KEY]-perloans"
         

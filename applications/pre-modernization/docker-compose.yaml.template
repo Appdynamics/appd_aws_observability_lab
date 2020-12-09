@@ -12,7 +12,6 @@ services:
 
   machine-agent:
     container_name: machine-agent
-    # hostname: machine-agent
     image: appdynamics/machine-agent-analytics:latest
     # image: james201010/adfinmod_machine_agent:latest    
     restart: always
@@ -21,7 +20,6 @@ services:
       - APPDYNAMICS_SIM_ENABLED=true
       - APPDYNAMICS_DOCKER_ENABLED=true
       - APPDYNAMICS_AGENT_ENABLE_CONTAINERIDASHOSTID=true
-      #- APPDYNAMICS_AGENT_UNIQUE_HOST_ID=${ADWRKSHP_LABUSER_KEY}-${ADWRKSHP_RANDOM_UUID}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock
@@ -63,7 +61,6 @@ services:
 
   loan-services:
     image: james201010/adfinmod_java_repositories_pre:latest
-    # hostname: loan-services
     container_name: loan-services
     volumes:
       - './repos-config.yaml:/repos-config.yaml'
@@ -78,7 +75,6 @@ services:
       - ADWRKSHP_TIER_SRVC_NAME=LoanServices
       - APPDYNAMICS_AGENT_TIER_NAME=LoanServices
       - APPDYNAMICS_AGENT_NODE_NAME=LoanServices-${ADWRKSHP_RANDOM_UUID}-1
-      #- APPDYNAMICS_AGENT_UNIQUE_HOST_ID=${ADWRKSHP_LABUSER_KEY}-${ADWRKSHP_RANDOM_UUID}
     depends_on:
       - "adfindb"
     expose:
@@ -86,7 +82,6 @@ services:
 
   balance-services:
     image: james201010/adfinmod_java_repositories_pre:latest
-    # hostname: balance-services
     container_name: balance-services
     volumes:
       - './app-graph.json:/app-graph.json'
@@ -99,7 +94,6 @@ services:
       - ADWRKSHP_TIER_SRVC_NAME=BalanceServices
       - APPDYNAMICS_AGENT_TIER_NAME=BalanceServices
       - APPDYNAMICS_AGENT_NODE_NAME=BalanceServices-${ADWRKSHP_RANDOM_UUID}-1
-      #- APPDYNAMICS_AGENT_UNIQUE_HOST_ID=${ADWRKSHP_LABUSER_KEY}-${ADWRKSHP_RANDOM_UUID}
     depends_on:
       - "adfindb"
     expose:
@@ -107,7 +101,6 @@ services:
 
   authentication-services:
     image: james201010/adfinmod_java_services_pre:latest
-    # hostname: authentication-services
     container_name: authentication-services
     volumes:
       - './app-graph.json:/app-graph.json'
@@ -120,13 +113,11 @@ services:
       - ADWRKSHP_TIER_SRVC_NAME=AuthenticationServices
       - APPDYNAMICS_AGENT_TIER_NAME=AuthenticationServices
       - APPDYNAMICS_AGENT_NODE_NAME=AuthenticationServices-${ADWRKSHP_RANDOM_UUID}-1
-      #- APPDYNAMICS_AGENT_UNIQUE_HOST_ID=${ADWRKSHP_LABUSER_KEY}-${ADWRKSHP_RANDOM_UUID}
     expose:
       - 8080
 
   session-tracking:
     image: james201010/adfinmod_java_services_pre:latest
-    # hostname: session-tracking
     container_name: session-tracking
     volumes:
       - './app-graph.json:/app-graph.json'
@@ -139,13 +130,11 @@ services:
       - ADWRKSHP_TIER_SRVC_NAME=SessionTracking
       - APPDYNAMICS_AGENT_TIER_NAME=SessionTracking
       - APPDYNAMICS_AGENT_NODE_NAME=SessionTracking-${ADWRKSHP_RANDOM_UUID}-1
-      #- APPDYNAMICS_AGENT_UNIQUE_HOST_ID=${ADWRKSHP_LABUSER_KEY}-${ADWRKSHP_RANDOM_UUID}
     expose:
       - 8080
 
   account-management:
     image: james201010/adfinmod_java_services_pre:latest
-    # hostname: account-management
     container_name: account-management
     volumes:
       - './app-graph.json:/app-graph.json'
@@ -158,13 +147,11 @@ services:
       - ADWRKSHP_TIER_SRVC_NAME=AccountManagement
       - APPDYNAMICS_AGENT_TIER_NAME=AccountManagement
       - APPDYNAMICS_AGENT_NODE_NAME=AccountManagement-${ADWRKSHP_RANDOM_UUID}-1
-      #- APPDYNAMICS_AGENT_UNIQUE_HOST_ID=${ADWRKSHP_LABUSER_KEY}-${ADWRKSHP_RANDOM_UUID}
     expose:
       - 8080
 
   quote-services:
     image: james201010/adfinmod_java_services_pre:latest
-    # hostname: quote-services
     container_name: quote-services
     volumes:
       - './app-graph.json:/app-graph.json'
@@ -177,7 +164,6 @@ services:
       - ADWRKSHP_TIER_SRVC_NAME=QuoteServices
       - APPDYNAMICS_AGENT_TIER_NAME=QuoteServices
       - APPDYNAMICS_AGENT_NODE_NAME=QuoteServices-${ADWRKSHP_RANDOM_UUID}-1
-      #- APPDYNAMICS_AGENT_UNIQUE_HOST_ID=${ADWRKSHP_LABUSER_KEY}-${ADWRKSHP_RANDOM_UUID}
     depends_on:
       - "mongo-stocks"
     expose:
@@ -185,7 +171,6 @@ services:
 
   order-processing:
     image: james201010/adfinmod_java_services_pre:latest
-    # hostname: order-processing
     container_name: order-processing
     volumes:
       - './app-graph.json:/app-graph.json'
@@ -198,7 +183,6 @@ services:
       - ADWRKSHP_TIER_SRVC_NAME=OrderProcessing
       - APPDYNAMICS_AGENT_TIER_NAME=OrderProcessing
       - APPDYNAMICS_AGENT_NODE_NAME=OrderProcessing-${ADWRKSHP_RANDOM_UUID}-1
-      #- APPDYNAMICS_AGENT_UNIQUE_HOST_ID=${ADWRKSHP_LABUSER_KEY}-${ADWRKSHP_RANDOM_UUID}
     depends_on:
       - "mongo-orders"
     expose:
@@ -206,7 +190,6 @@ services:
 
   policy-services:
     image: james201010/adfinmod_java_services_pre:latest
-    # hostname: policy-services
     container_name: policy-services
     volumes:
       - './app-graph.json:/app-graph.json'
@@ -219,7 +202,6 @@ services:
       - ADWRKSHP_TIER_SRVC_NAME=PolicyServices
       - APPDYNAMICS_AGENT_TIER_NAME=PolicyServices
       - APPDYNAMICS_AGENT_NODE_NAME=PolicyServices-${ADWRKSHP_RANDOM_UUID}-1
-      #- APPDYNAMICS_AGENT_UNIQUE_HOST_ID=${ADWRKSHP_LABUSER_KEY}-${ADWRKSHP_RANDOM_UUID}
     depends_on:
       - "mongo-policies"
     expose:
@@ -227,7 +209,6 @@ services:
 
   web-front-end:
     image: james201010/adfinmod_java_webapps_pre:latest
-    # hostname: web-front-end
     container_name: web-front-end
     volumes:
       - './app-graph.json:/app-graph.json'
@@ -240,7 +221,6 @@ services:
       - ADWRKSHP_TIER_SRVC_NAME=WebFrontEnd
       - APPDYNAMICS_AGENT_TIER_NAME=WebFrontEnd
       - APPDYNAMICS_AGENT_NODE_NAME=WebFrontEnd-${ADWRKSHP_RANDOM_UUID}-1
-      #- APPDYNAMICS_AGENT_UNIQUE_HOST_ID=${ADWRKSHP_LABUSER_KEY}-${ADWRKSHP_RANDOM_UUID}
     ports:
       - '8080:8080'
 
@@ -276,13 +256,6 @@ services:
       - ENABLE_POLICY_LOAD=0
       - ENABLE_LOAN_LOAD=1
     restart: always
-
-  # load:
-  #   container_name: load
-  #   build: 
-  #     context: ./load_container
-  #   volumes:
-  #     - './load.sh:/load.sh'
 
 
 volumes:
