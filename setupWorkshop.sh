@@ -46,7 +46,7 @@ echo "##########################################################################
 # check to see if we have the XFS file system
 df_output=$(df -khT)
 
-if [[ $df_output == *"/dev/nvme0n1p1 xfs"* ]]; then
+if [[ !$df_output != *"/dev/nvme0n1p1 xfs"* ]]; then
   echo "CloudWorkshop|ERROR| - Oops, :(  it looks like you may have accidentally selected Amazon Linux instead of Amazon Linux 2 for the Platform option."
   echo "CloudWorkshop|ERROR| - Please discard this Cloud9 instance and create a new one with the required Amazon Linux 2 Platform option."
   #echo "$df_output"
