@@ -248,13 +248,11 @@ cd /home/ec2-user/environment
 
 mkdir deployment
 
-cd /home/ec2-user/environment/deployment 
+cp /opt/appdynamics/appd_lab_repo/deployment/deployment.zip /home/ec2-user/environment/deployment/
 
-mkdir post-mod-kube-app
-mkdir post-mod-kube-ca
-mkdir post-mod-kube-cluster
-mkdir post-mod-kube-ma
-mkdir pre-mod-docker
+cd /home/ec2-user/environment/deployment
+
+unzip -q deployment.zip
 
 cd /opt/appdynamics/workshopuser
 
