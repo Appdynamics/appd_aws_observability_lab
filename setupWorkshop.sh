@@ -201,8 +201,8 @@ cp /opt/appdynamics/appd_lab_repo/applications/post-modernization/clusteragent/*
 cp /opt/appdynamics/appd_lab_repo/scripts/createDBAgentSrvc.sh /opt/appdynamics/workshopuser/
 chmod 777 /opt/appdynamics/workshopuser/createDBAgentSrvc.sh
 
-cp /opt/appdynamics/appd_lab_repo/scripts/createDeployments.sh /opt/appdynamics/workshopuser/
-chmod 777 /opt/appdynamics/workshopuser/createDeployments.sh
+#cp /opt/appdynamics/appd_lab_repo/scripts/createDeployments.sh /opt/appdynamics/workshopuser/
+#chmod 777 /opt/appdynamics/workshopuser/createDeployments.sh
 
 cp /opt/appdynamics/appd_lab_repo/scripts/createDockerAppSrvc.sh /opt/appdynamics/workshopuser/
 chmod 777 /opt/appdynamics/workshopuser/createDockerAppSrvc.sh
