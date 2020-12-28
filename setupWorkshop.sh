@@ -82,8 +82,17 @@ else
     exit 1
   fi
 
+
   # write the user_id to a file
   echo "$appd_workshop_user" > /home/ec2-user/appd_workshop_user.txt
+
+  # echo $USER = ec2-user
+
+  # write the C9 user to a file     example:  james.schneider
+  echo "$C9_USER" > /home/ec2-user/c9_user.txt
+
+  # write the Hostname to a file   example:  ip-172-31-14-237.us-west-1.compute.internal
+  echo "$HOSTNAME" > /home/ec2-user/c9_host.txt
 
 fi	
 
