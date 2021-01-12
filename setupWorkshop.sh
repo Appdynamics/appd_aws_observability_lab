@@ -89,10 +89,10 @@ else
   # echo $USER = ec2-user
 
   # write the C9 user to a file     example:  james.schneider
-  echo "$C9_USER" > /home/ec2-user/appd_c9_user.txt
+  echo "$C9_USER" > /home/ec2-user/appd_env_user.txt
 
   # write the Hostname to a file   example:  ip-172-31-14-237.us-west-1.compute.internal
-  echo "$HOSTNAME" > /home/ec2-user/appd_c9_host.txt
+  echo "$HOSTNAME" > /home/ec2-user/appd_env_host.txt
 
 fi	
 
