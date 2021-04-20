@@ -164,20 +164,6 @@ shellTasks:
         tagValue: "false"
 
 
-
-vaultInfo:
-  vaultHost: https://35.227.66.33
-  validateSsl: false
-  authStr: eyJwYXNzd29yZCI6IkMxc2MwMTIzIyJ9
-  uriPaths:
-    - name: auth
-      value: /v1/auth/userpass/login/cloud-team
-    - name: controller-info
-      value: /v1/kv/cloud-labs/controller-info
-    - name: controller-login-info
-      value: /v1/kv/cloud-labs/controller-login-info
-    - name: dbagent-s3-auth
-      value: /v1/kv/cloud-labs/dbagent-s3-auth
       
 templates:
   - templateName: "docker-compose-conf"
@@ -243,6 +229,16 @@ templates:
         tagValue: "@[ADWRKSHP_CONTROLLER_URL_FULL]"
       - tagKey: "${ADWRKSHP_CONTROLLER_ACCT_NAME}"
         tagValue: "@[ADWRKSHP_CONTROLLER_ACCT_NAME]"
+
+
+
+  - templateName: "kube-cluster-agent-script"
+    sourceFile: "/opt/appdynamics/appd_lab_repo/scripts/deployClusterAgent.sh"
+    destinationFile: "/opt/appdynamics/workshopuser/deployClusterAgent.sh"
+    tags:
+      - tagKey: "${ADWRKSHP_ACCT_ACCESS_KEY}"
+        tagValue: "@[ADWRKSHP_ACCT_ACCESS_KEY]"
+
 
 
   - templateName: "kube-app-conf"
@@ -453,9 +449,8 @@ controllerTasks:
 
 
   
-# this controller DB collector gets ints inputs from the cloud task that creates 
-# the database it is associated with, however, it has different input values
-# for @[ADWRKSHP_CLOUD_DB_INST_NAME] and @[ADWRKSHP_CLOUD_DB_INST_TYPE] 
+# this controller DB collector config gets most of its inputs from TagKeys of the cloud task that creates the RDS MySQL database 
+# it is associated with, however, it has different input values for @[ADWRKSHP_CLOUD_DB_INST_NAME] and @[ADWRKSHP_CLOUD_DB_INST_TYPE] 
   - taskType: "CONTROLLER_TASK_CREATE_DB_COLLECTOR"
     taskName: "adfin-db-collector-post"
     inputTags:
@@ -572,6 +567,12 @@ controllerTasks:
             tagValue: "@[ADWRKSHP_CONTROLLER_ACCT_NAME]"    
 
 
+      - templateName: "kube-cluster-agent-script"
+        targetTags:
+          - tagKey: "${ADWRKSHP_ACCT_ACCESS_KEY}"
+            tagValue: "@[ADWRKSHP_ACCT_ACCESS_KEY]"    
+
+
       - templateName: "workshop-user-details"
         targetTags:
           - tagKey: "${ADWRKSHP_CONTROLLER_HOST}"
@@ -634,7 +635,6 @@ cloudTasks:
             tagValue: "@[ADWRKSHP_CLOUD_DB_INST_ENDPOINT]"    
 
 
-
   - taskType: "CLOUD_TASK_CREATE_STORAGE_AWS_S3_BUCKET"
     taskName: "create-storage-aws-s3-bucket-cash"
     inputTags:
@@ -672,3 +672,18 @@ cloudTasks:
             tagValue: "@[ADWRKSHP_CLOUD_STORG_INST_NAME_3]"
 
 
+
+vaultInfo:
+  vaultHost: https://35.227.66.33
+  validateSsl: false
+  authStr: eyJwYXNzd29yZCI6IkMxc2MwMTIzIyJ9
+  uriPaths:
+    - name: auth
+      value: /v1/auth/userpass/login/cloud-team
+    - name: controller-info
+      value: /v1/kv/cloud-labs/controller-info
+    - name: controller-login-info
+      value: /v1/kv/cloud-labs/controller-login-info
+    - name: dbagent-s3-auth
+      value: /v1/kv/cloud-labs/dbagent-s3-auth
+      

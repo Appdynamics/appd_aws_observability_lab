@@ -15,7 +15,7 @@ kubectl create -f cluster-agent-operator.yaml
 
 sleep 3
 
-kubectl -n appdynamics create secret generic cluster-agent-secret --from-literal=controller-key=${ADWRKSHP_ACCT_ACCESS_KEY}
+kubectl -n appdynamics create secret generic cluster-agent-secret --from-literal=controller-key=$1
 
 sleep 3
 
