@@ -5,16 +5,18 @@ metadata:
 spec: 
   selector:
     matchLabels:
-      name: appd-infra-agent
+      name: appd-infra-agent  
   template: 
     metadata: 
       labels: 
         name: appd-infra-agent
     spec:
       serviceAccountName: appdynamics-infraviz
+      hostIPC: true
+      hostNetwork: true
       containers:
       - name: appd-infra-agent
-        image: appdynamics/machine-agent-analytics:latest
+        image: appdynamics/machine-agent-netviz:latest
         imagePullPolicy: IfNotPresent
         env:
         - name: APPDYNAMICS_SIM_ENABLED
@@ -28,6 +30,8 @@ spec:
             name: appd-app-config
         securityContext:
           privileged: true
+          capabilities:
+            add: ["NET_ADMIN", "NET_RAW"]
         resources:
           limits:
             cpu: "0.6"
@@ -37,6 +41,8 @@ spec:
             memory: "1G"
         ports:
           - containerPort: 9090
+          - containerPort: 3892
+            hostPort: 3892
         volumeMounts:
         - name: ma-log-volume
           mountPath: /opt/appdynamics/conf/logging/log4j.xml
@@ -72,6 +78,8 @@ spec:
   - name: "9090"
     port: 9090
     targetPort: 9090
+  - name: "3892"
+    port: 3892
+    targetPort: 3892
 status:
   loadBalancer: {}
-  

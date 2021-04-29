@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "CloudWorkshop|INFO|     - Deploying Application to the EKS Cluster"
+#echo "CloudWorkshop|INFO|     - Deploying Application to the EKS Cluster"
 
 cd /opt/appdynamics/workshopuser
 
@@ -132,5 +132,5 @@ echo "CloudWorkshop|INFO|     - Waiting for Application to Initialize ...."
 sleep 3
 echo "CloudWorkshop|INFO|     - Waiting for Application to Initialize ..."
 sleep 3
-echo "CloudWorkshop|INFO|     - Waiting for Application to Initialize .."
+echo "CloudWorkshop|INFO| - Finished Deploying Application to EKS"
 

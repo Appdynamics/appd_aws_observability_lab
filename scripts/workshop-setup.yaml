@@ -30,16 +30,17 @@ taskExecutionOrder:
     taskName: ""
   - taskType: "SHELL_TASK"
     taskName: "start-docker-app"  
-  - taskType: "SHELL_TASK"
-    taskName: "create-kube-cluster"    
-  - taskType: "SHELL_TASK"
-    taskName: "deploy-kube-application"
-  - taskType: "SHELL_TASK"
-    taskName: "deploy-kube-machine-agent"
-  - taskType: "SHELL_TASK"
-    taskName: "deploy-cluster-agent"
-  - taskType: "SHELL_TASK"
-    taskName: "expose-kube-website"
+
+#  - taskType: "SHELL_TASK"
+#    taskName: "create-kube-cluster"    
+#  - taskType: "SHELL_TASK"
+#    taskName: "deploy-kube-application"
+#  - taskType: "SHELL_TASK"
+#    taskName: "deploy-kube-machine-agent"
+#  - taskType: "SHELL_TASK"
+#    taskName: "deploy-cluster-agent"
+#  - taskType: "SHELL_TASK"
+#    taskName: "expose-kube-website"
 
     
 shellTasks:

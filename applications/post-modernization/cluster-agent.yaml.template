@@ -14,3 +14,4 @@ spec:
   ### Uncomment the following two lines if you need pull secrets
   #imagePullSecrets:
   #  name: "<your-docker-pull-secret-name>"
+  
