@@ -321,21 +321,35 @@ templates:
 
 
 controllerInitTasks:
-
 # !!! The license rule creation task should be the very first controller init task
-  - taskType: "CONTROLLER_TASK_CREATE_LICENSE_RULE"
+# NEW IBL L##ICENSE RULE TAG KEYS
+  - taskType: "CONTROLLER_TASK_CREATE_IBL_LICENSE_RULE"
     taskName: "create-license-rule"
     inputTags:
       - tagKey: "@[ADWRKSHP_LICENSE_RULE_NAME]"
         tagValue: "@[ADWRKSHP_LABUSER_KEY]-LicenseRule"
-      - tagKey: "@[ADWRKSHP_LICENSE_RULE_NBR_APM]"
-        tagValue: "24"
-      - tagKey: "@[ADWRKSHP_LICENSE_RULE_NBR_MA]"
+      - tagKey: "@[ADWRKSHP_IBL_LICENSE_RULE_ACCT_ID]"
+        tagValue: "23458"
+        #tagValue: "817"
+      - tagKey: "@[ADWRKSHP_IBL_LICENSE_RULE_NBR_ENTR]"
         tagValue: "0"
-      - tagKey: "@[ADWRKSHP_LICENSE_RULE_NBR_SIM]"
-        tagValue: "4"
-      - tagKey: "@[ADWRKSHP_LICENSE_RULE_NBR_NET]"
-        tagValue: "4"
+      - tagKey: "@[ADWRKSHP_IBL_LICENSE_RULE_NBR_PREM]"
+        tagValue: "60"
+
+# !!! The license rule creation task should be the very first controller init task
+#  - taskType: "CONTROLLER_TASK_CREATE_LICENSE_RULE"
+#    taskName: "create-license-rule"
+#    inputTags:
+#      - tagKey: "@[ADWRKSHP_LICENSE_RULE_NAME]"
+#        tagValue: "@[ADWRKSHP_LABUSER_KEY]-LicenseRule"
+#      - tagKey: "@[ADWRKSHP_LICENSE_RULE_NBR_APM]"
+#        tagValue: "24"
+#      - tagKey: "@[ADWRKSHP_LICENSE_RULE_NBR_MA]"
+#        tagValue: "0"
+#      - tagKey: "@[ADWRKSHP_LICENSE_RULE_NBR_SIM]"
+#        tagValue: "4"
+#      - tagKey: "@[ADWRKSHP_LICENSE_RULE_NBR_NET]"
+#        tagValue: "4"
 
 
 controllerTasks:
