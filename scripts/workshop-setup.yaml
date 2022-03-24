@@ -537,7 +537,7 @@ controllerTasks:
 
     inputTags:
       - tagKey: "@[ADWRKSHP_DEFAULT_RBAC_ROLE_IDS]"
-        tagValue: "286308,286305,286387,286459"    
+        tagValue: "286308,286387,286459"    
 
 
     templateTargets:   
