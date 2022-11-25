@@ -1,12 +1,13 @@
 !!com.appdynamics.cloud.modern.config.SetupConfig
 
 description: "AD-Advanced-Observability"
-teardownFilePath: "/opt/appdynamics/workshopuser/teardown/workshop-teardown.yaml"
-setupProgressDirectory: "/home/ec2-user"
+teardownFilePath: "/opt/appdynamics/workshopuser/state/workshop-teardown.yaml"
+setupHomeDirectory: "./"
+#setupStateDirectory: "/home/ec2-user"
+setupStateDirectory: "/opt/appdynamics/workshopuser/state"
 setupStepsFileName: "appd_workshop_setup.txt"
 cloudProvider: "aws"
 debugLogging: false
-
 
 # if machine agents are deployed, their ids must be collected
 # before the applications are stopped
@@ -15,8 +16,6 @@ teardownScript: "/opt/appdynamics/workshopuser/terminateApps.sh"
 
 taskExecutionOrder:
   - taskType: "SHELL_TASK"
-    taskName: "expand-disk-volume"
-  - taskType: "SHELL_TASK"
     taskName: "workshop-prereqs-sh"
   - taskType: "CONTROLLER_INIT_TASKS"
     taskName: ""
@@ -24,6 +23,9 @@ taskExecutionOrder:
     taskName: "deploy-db-agent"
   - taskType: "SHELL_TASK"
     taskName: "create-reboot-srvcs-sh"   
+  - taskType: "SHELL_TASK"
+    taskName: "get-ips-for-cloud-sg"
+
   - taskType: "CLOUD_TASKS"
     taskName: ""
   - taskType: "CONTROLLER_TASKS"
@@ -44,12 +46,18 @@ taskExecutionOrder:
 
     
 shellTasks:
-  - taskType: "SHELL_TASK_EXPAND_DISK_VOLUME"
-    taskName: "expand-disk-volume"
-    inputTags:
-      - tagKey: "@[ADWRKSHP_DISK_VOLUME_SIZE_GB]"
-        tagValue: "80"
 
+  - taskType: "SHELL_TASK_EXECUTE_SHELL_SCRIPT"
+    taskName: "get-ips-for-cloud-sg"
+    inputTags:
+      - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_FILEPATH]"
+        tagValue: "/opt/appdynamics/workshopuser/getIpsForCloudDbSecurityGroup.sh"
+      - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_BEGIN_MSG]"
+        tagValue: " - Start obtaining ip addresses for db security group"
+      - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_END_MSG]"
+        tagValue: " - Finished obtaining ip addresses for db security group"
+      - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_INHERIT_IO]"
+        tagValue: "false"
 
   - taskType: "SHELL_TASK_EXECUTE_SHELL_SCRIPT"
     taskName: "workshop-prereqs-sh"
@@ -57,9 +65,9 @@ shellTasks:
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_FILEPATH]"
         tagValue: "/opt/appdynamics/workshopuser/workshopPrereqs.sh"
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_BEGIN_MSG]"
-        tagValue: " - Starting rewrite of partition table : install of kubectl, eksctl, and docker-compose"
+        tagValue: " - Starting install of kubectl, eksctl, and docker-compose"
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_END_MSG]"
-        tagValue: " - Finished rewrite of partition table : install of kubectl, eksctl, and docker-compose"
+        tagValue: " - Finished install of kubectl, eksctl, and docker-compose"
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_INHERIT_IO]"
         tagValue: "true"
 
@@ -68,12 +76,15 @@ shellTasks:
     inputTags:
       - tagKey: "@[ADWRKSHP_DB_AGENT_HOME_DIR]"
         tagValue: "/opt/appdynamics/dbagent"
+      - tagKey: "@[ADWRKSHP_DB_AGENT_ZIP_URL]"
+        tagValue: "https://download-files.appdynamics.com/download-file/db-agent/22.3.0.2742/db-agent-22.3.0.2742.zip"
       - tagKey: "@[ADWRKSHP_DB_AGENT_NAME]"
         tagValue: "@[ADWRKSHP_LABUSER_KEY]-DBAgent"
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_BEGIN_MSG]"
-        tagValue: " - Starting Deployment of Database Agent"
+        tagValue: " - Start deployment of database agent"
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_END_MSG]"
-        tagValue: " - Finished Deployment of Database Agent"
+        tagValue: " - Finished deployment of database agent"
+
 
   - taskType: "SHELL_TASK_EXECUTE_SHELL_SCRIPT"
     taskName: "create-reboot-srvcs-sh"
@@ -334,7 +345,7 @@ controllerInitTasks:
       - tagKey: "@[ADWRKSHP_IBL_LICENSE_RULE_NBR_ENTR]"
         tagValue: "0"
       - tagKey: "@[ADWRKSHP_IBL_LICENSE_RULE_NBR_PREM]"
-        tagValue: "50"
+        tagValue: "100"
         
 
 # !!! The license rule creation task should be the very first controller init task
@@ -615,7 +626,8 @@ controllerTasks:
             tagValue: "@[ADWRKSHP_LABUSER_KEY]"
             
 
-            
+controllerFinalTasks:
+
             
 cloudTasks:
 
@@ -639,8 +651,16 @@ cloudTasks:
         tagValue: "Welcome1!"    
       - tagKey: "@[ADWRKSHP_CLOUD_DB_INST_ENDPOINT]"
         tagValue: "@[ADWRKSHP_CLOUD_DB_INST_ENDPOINT]"    
-      - tagKey: "@[ADWRKSHP_CLOUD_SECURITY_GROUP_ID]"
+      - tagKey: "@[ADWRKSHP_CLOUD_SECURITY_GROUP_NAME]"
         tagValue: "@[ADWRKSHP_LABUSER_KEY]-admod-workshop-sg"    
+      - tagKey: "@[ADWRKSHP_CLOUD_SEC_GROUP_CIDR_1]"
+        tagValue: "localprivip.txt"
+      - tagKey: "@[ADWRKSHP_CLOUD_SEC_GROUP_CIDR_2]"
+        tagValue: "localpubip.txt"
+      - tagKey: "@[ADWRKSHP_CLOUD_SEC_GROUP_CIDR_3]"
+        tagValue: "clusterprivips.txt"
+      - tagKey: "@[ADWRKSHP_CLOUD_SEC_GROUP_CIDR_4]"
+        tagValue: "clusterpubips.txt"
 
     taskTargets:    
       - taskType: "CONTROLLER_TASK_CREATE_DB_COLLECTOR"

@@ -9,29 +9,6 @@
 #       Optional variables have reasonable defaults, but you may override as needed.
 #---------------------------------------------------------------------------------------------------
 
-#set -x  # turn command display back ON.
-
-##### Increase the EBS disk size to 80GB
-
-# Rewrite the partition table so that the partition takes up all the space that it can.
-sudo growpart /dev/nvme0n1 1
-
-# Expand the size of the file system.
-sudo xfs_growfs -d /
-
-
-#if [ $(readlink -f /dev/xvda1) = "/dev/xvda1" ]
-#then
-  # Rewrite the partition table so that the partition takes up all the space that it can.
-  #sudo growpart /dev/xvda 1
-  # Expand the size of the file system.
-  #sudo resize2fs /dev/xvda1
-#else
-  # Rewrite the partition table so that the partition takes up all the space that it can.
-  #sudo growpart /dev/nvme0n1 1
-  # Expand the size of the file system.
-  #sudo resize2fs /dev/nvme0n1p1
-#fi
 
 ##### Install KUBECTL
 
@@ -70,4 +47,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 echo ""
 echo "Installed docker-compose version is:"
 docker-compose version
+
+##### Install EC2 Metadata Tool
+sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/APO-SRE/fso-lab-devops/main/provisioners/scripts/common/install_aws_ec2_instance_metadata_query_tool.sh)"
 

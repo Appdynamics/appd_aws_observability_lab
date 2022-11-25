@@ -39,7 +39,7 @@ echo ""
 echo ""
 echo ""
 
-java -DworkshopUtilsConf=/opt/appdynamics/workshopuser/teardown/workshop-teardown.yaml -DworkshopAction=teardown -DshowWorkshopBanner=false -jar /opt/appdynamics/appd_lab_repo/scripts/AD-Workshop-Utils.jar
+java -DworkshopUtilsConf=/opt/appdynamics/workshopuser/state/workshop-teardown.yaml -DworkshopAction=teardown -DshowWorkshopBanner=false -jar /opt/appdynamics/appd_lab_repo/scripts/AD-Workshop-Utils.jar
 
 echo ""
 echo ""

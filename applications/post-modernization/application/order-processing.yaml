@@ -25,7 +25,7 @@ spec:
           emptyDir: {}
       containers:
         - name: order-processing
-          image: james201010/adfinmod_java_services_post:latest   
+          image: public.ecr.aws/w3n5a5m8/adfinmod_java_services_post:latest   
           envFrom:
             - configMapRef:
                 name: appd-app-config

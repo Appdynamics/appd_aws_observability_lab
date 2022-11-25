@@ -40,28 +40,28 @@ services:
       - '3306:3306'
 
   mongo-stocks:
-    image: mongo
+    image: image: mongo:5
     container_name: mongo-stocks
     # hostname: mongo-stocks
     expose: 
       - 27017
 
   mongo-orders:
-    image: mongo
+    image: image: mongo:5
     container_name: mongo-orders
     # hostname: mongo-orders
     expose: 
       - 27017
 
   mongo-policies:
-    image: mongo
+    image: image: mongo:5
     container_name: mongo-policies
     # hostname: mongo-policies
     expose: 
       - 27017
 
   loan-services:
-    image: james201010/adfinmod_java_repositories_pre:latest
+    image: public.ecr.aws/w3n5a5m8/adfinmod_java_repositories_pre:latest
     # hostname: loan-services
     container_name: loan-services
     volumes:
@@ -82,7 +82,7 @@ services:
       - 8080
 
   balance-services:
-    image: james201010/adfinmod_java_repositories_pre:latest
+    image: public.ecr.aws/w3n5a5m8/adfinmod_java_repositories_pre:latest
     # hostname: balance-services
     container_name: balance-services
     volumes:
@@ -101,7 +101,7 @@ services:
       - 8080
 
   authentication-services:
-    image: james201010/adfinmod_java_services_pre:latest
+    image: public.ecr.aws/w3n5a5m8/adfinmod_java_services_pre:latest
     # hostname: authentication-services
     container_name: authentication-services
     volumes:
@@ -118,7 +118,7 @@ services:
       - 8080
 
   session-tracking:
-    image: james201010/adfinmod_java_services_pre:latest
+    image: public.ecr.aws/w3n5a5m8/adfinmod_java_services_pre:latest
     # hostname: session-tracking
     container_name: session-tracking
     volumes:
@@ -135,7 +135,7 @@ services:
       - 8080
 
   account-management:
-    image: james201010/adfinmod_java_services_pre:latest
+    image: public.ecr.aws/w3n5a5m8/adfinmod_java_services_pre:latest
     # hostname: account-management
     container_name: account-management
     volumes:
@@ -152,7 +152,7 @@ services:
       - 8080
 
   quote-services:
-    image: james201010/adfinmod_java_services_pre:latest
+    image: public.ecr.aws/w3n5a5m8/adfinmod_java_services_pre:latest
     # hostname: quote-services
     container_name: quote-services
     volumes:
@@ -171,7 +171,7 @@ services:
       - 8080
 
   order-processing:
-    image: james201010/adfinmod_java_services_pre:latest
+    image: public.ecr.aws/w3n5a5m8/adfinmod_java_services_pre:latest
     # hostname: order-processing
     container_name: order-processing
     volumes:
@@ -190,7 +190,7 @@ services:
       - 8080
 
   policy-services:
-    image: james201010/adfinmod_java_services_pre:latest
+    image: public.ecr.aws/w3n5a5m8/adfinmod_java_services_pre:latest
     # hostname: policy-services
     container_name: policy-services
     volumes:
@@ -209,7 +209,7 @@ services:
       - 8080
 
   web-front-end:
-    image: james201010/adfinmod_java_webapps_pre:latest
+    image: public.ecr.aws/w3n5a5m8/adfinmod_java_webapps_pre:latest
     # hostname: web-front-end
     container_name: web-front-end
     volumes:
@@ -226,7 +226,7 @@ services:
       - '8080:8080'
 
   browser-load:
-    image: james201010/adfinmod_loadgen_pre:latest
+    image: public.ecr.aws/w3n5a5m8/adfinmod_loadgen_pre:latest
     container_name: browser-load
     env_file: application.env
     environment:
@@ -236,7 +236,7 @@ services:
     restart: always
 
   approval-load:
-    image: james201010/adfinmod_loadgen_pre:latest
+    image: public.ecr.aws/w3n5a5m8/adfinmod_loadgen_pre:latest
     container_name: approval-load
     env_file: application.env
     environment:
