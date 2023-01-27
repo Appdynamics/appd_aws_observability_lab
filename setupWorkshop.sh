@@ -251,3 +251,7 @@ java -DworkshopUtilsConf=/opt/appdynamics/appd_lab_repo/scripts/workshop-setup.y
 
 fi
 # !!!!!!! END BIG IF BLOCK !!!!!!!
+
+cd /home/ec2-user/environment
+
+chmod +x *.sh
