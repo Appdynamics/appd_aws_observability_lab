@@ -124,7 +124,12 @@ if [ ! -d /opt/appdynamics ]; then
   chmod 777 /opt/appdynamics/workshopuser/getIpsForCloudDbSecurityGroup.sh
   cp /opt/appdynamics/appd_lab_repo/scripts/resizeAl2EbsVolume.sh /opt/appdynamics/workshopuser/
   chmod 777 /opt/appdynamics/workshopuser/resizeAl2EbsVolume.sh
-  
+
+  cp /opt/appdynamics/appd_lab_repo/scripts/reDeployEksApplication.sh /opt/appdynamics/workshopuser/
+  chmod +x /opt/appdynamics/workshopuser/reDeployEksApplication.sh
+
+  cp /opt/appdynamics/workshopuser/reDeployEksApplication.sh /home/ec2-user/environment/reDeployEksApplication.sh
+
   cp /opt/appdynamics/appd_lab_repo/start_premod_app.sh /home/ec2-user/environment/start_premod_app.sh
   chmod +x /home/ec2-user/environment/start_premod_app.sh
   cp /opt/appdynamics/appd_lab_repo/stop_premod_app.sh /home/ec2-user/environment/stop_premod_app.sh
