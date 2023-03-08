@@ -1,0 +1,37 @@
+!!com.appdynamics.cloud.modern.repos.utils.ReposConfig
+
+creditCheckUrl: "https://www.equifax.com"
+creditCheckLowerRandomIntervalStr: "1"
+creditCheckUpperRandomIntervalStr: "2"
+
+performanceModifiers:
+  - name: "loan_approval"
+    lowerRandomIntervalStr: "1"
+    upperRandomIntervalStr: "2"
+    lowerSleepTimeMillisStr: "2280"
+    upperSleepTimeMillisStr: "3216"
+    
+  - name: "loan_credit"
+    lowerRandomIntervalStr: "1"
+    upperRandomIntervalStr: "2"
+    lowerSleepTimeMillisStr: "1980"
+    upperSleepTimeMillisStr: "3134"
+    
+  - name: "loan_save"
+    lowerRandomIntervalStr: "1"
+    upperRandomIntervalStr: "2"
+    lowerSleepTimeMillisStr: "1880"
+    upperSleepTimeMillisStr: "3480"
+    
+  - name: "loan_underwrite"
+    lowerRandomIntervalStr: "1"
+    upperRandomIntervalStr: "2"
+    lowerSleepTimeMillisStr: "1980"
+    upperSleepTimeMillisStr: "3369"
+    
+  - name: "loan_verifydoc"
+    lowerRandomIntervalStr: "1"
+    upperRandomIntervalStr: "2"
+    lowerSleepTimeMillisStr: "2700"
+    upperSleepTimeMillisStr: "5179"
+    

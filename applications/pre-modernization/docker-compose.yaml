@@ -1,0 +1,256 @@
+version: '2'
+
+services:
+
+  java-agent:
+    container_name: java-agent
+    hostname: java-agent
+    image: appdynamics/java-agent:latest
+    volumes:
+      - java-agent:/opt/appdynamics  
+
+  machine-agent:
+    container_name: machine-agent
+    image: appdynamics/machine-agent-analytics:21.12.5  
+    restart: always
+    env_file: application.env
+    environment:
+      - APPDYNAMICS_SIM_ENABLED=true
+      - APPDYNAMICS_DOCKER_ENABLED=true
+      - APPDYNAMICS_AGENT_ENABLE_CONTAINERIDASHOSTID=true
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /:/hostroot:ro
+    expose:
+      - 9090
+
+  adfindb:
+    container_name: adfindb
+    image: mysql:5.7
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Welcome1!
+    ports:
+      - '3306:3306'
+
+  mongo-stocks:
+    image: mongo:5
+    container_name: mongo-stocks
+    expose: 
+      - 27017
+
+  mongo-orders:
+    image: mongo:5
+    container_name: mongo-orders
+    expose: 
+      - 27017
+
+  mongo-policies:
+    image: mongo:5
+    container_name: mongo-policies
+    expose: 
+      - 27017
+
+  loan-services:
+    image: public.ecr.aws/w3n5a5m8/adfinmod_java_repositories_pre:latest
+    container_name: loan-services
+    volumes:
+      - './repos-config.yaml:/repos-config.yaml'
+      - './app-graph.json:/app-graph.json'
+      - java-agent:/opt/appdynamics/java-agent/
+    env_file: application.env
+    environment: 
+      - REPOS_CONFIG_FILE=/repos-config.yaml
+      - GRAPH_FILE=/app-graph.json
+      - JAVA_TOOL_OPTIONS=-javaagent:/opt/appdynamics/java-agent/javaagent.jar
+      - DEBUG_LEVEL=debug
+      - APPDYNAMICS_AGENT_TIER_NAME=LoanServices
+      - APPDYNAMICS_AGENT_NODE_NAME=LoanServices-Node-1
+      - ADWRKSHP_TIER_SRVC_NAME=LoanServices      
+    depends_on:
+      - "adfindb"
+    expose:
+      - 8080
+
+  balance-services:
+    image: public.ecr.aws/w3n5a5m8/adfinmod_java_repositories_pre:latest
+    container_name: balance-services
+    volumes:
+      - './app-graph.json:/app-graph.json'
+      - java-agent:/opt/appdynamics/java-agent/
+    env_file: application.env
+    environment: 
+      - GRAPH_FILE=/app-graph.json
+      - JAVA_TOOL_OPTIONS=-javaagent:/opt/appdynamics/java-agent/javaagent.jar
+      - DEBUG_LEVEL=debug
+      - ADWRKSHP_TIER_SRVC_NAME=BalanceServices
+      - APPDYNAMICS_AGENT_TIER_NAME=BalanceServices
+      - APPDYNAMICS_AGENT_NODE_NAME=BalanceServices-Node-1
+    depends_on:
+      - "adfindb"
+    expose:
+      - 8080
+
+  authentication-services:
+    image: public.ecr.aws/w3n5a5m8/adfinmod_java_services_pre:latest
+    container_name: authentication-services
+    volumes:
+      - './app-graph.json:/app-graph.json'
+      - java-agent:/opt/appdynamics/java-agent/
+    env_file: application.env
+    environment: 
+      - GRAPH_FILE=/app-graph.json
+      - JAVA_TOOL_OPTIONS=-javaagent:/opt/appdynamics/java-agent/javaagent.jar
+      - DEBUG_LEVEL=debug
+      - ADWRKSHP_TIER_SRVC_NAME=AuthenticationServices
+      - APPDYNAMICS_AGENT_TIER_NAME=AuthenticationServices
+      - APPDYNAMICS_AGENT_NODE_NAME=AuthenticationServices-Node-1
+    expose:
+      - 8080
+
+  session-tracking:
+    image: public.ecr.aws/w3n5a5m8/adfinmod_java_services_pre:latest
+    container_name: session-tracking
+    volumes:
+      - './app-graph.json:/app-graph.json'
+      - java-agent:/opt/appdynamics/java-agent/
+    env_file: application.env
+    environment: 
+      - GRAPH_FILE=/app-graph.json
+      - JAVA_TOOL_OPTIONS=-javaagent:/opt/appdynamics/java-agent/javaagent.jar
+      - DEBUG_LEVEL=debug
+      - ADWRKSHP_TIER_SRVC_NAME=SessionTracking
+      - APPDYNAMICS_AGENT_TIER_NAME=SessionTracking
+      - APPDYNAMICS_AGENT_NODE_NAME=SessionTracking-Node-1
+    expose:
+      - 8080
+
+  account-management:
+    image: public.ecr.aws/w3n5a5m8/adfinmod_java_services_pre:latest
+    container_name: account-management
+    volumes:
+      - './app-graph.json:/app-graph.json'
+      - java-agent:/opt/appdynamics/java-agent/
+    env_file: application.env
+    environment: 
+      - GRAPH_FILE=/app-graph.json
+      - JAVA_TOOL_OPTIONS=-javaagent:/opt/appdynamics/java-agent/javaagent.jar
+      - DEBUG_LEVEL=debug
+      - ADWRKSHP_TIER_SRVC_NAME=AccountManagement
+      - APPDYNAMICS_AGENT_TIER_NAME=AccountManagement
+      - APPDYNAMICS_AGENT_NODE_NAME=AccountManagement-Node-1
+    expose:
+      - 8080
+
+  quote-services:
+    image: public.ecr.aws/w3n5a5m8/adfinmod_java_services_pre:latest
+    container_name: quote-services
+    volumes:
+      - './app-graph.json:/app-graph.json'
+      - java-agent:/opt/appdynamics/java-agent/
+    env_file: application.env
+    environment: 
+      - GRAPH_FILE=/app-graph.json
+      - JAVA_TOOL_OPTIONS=-javaagent:/opt/appdynamics/java-agent/javaagent.jar
+      - DEBUG_LEVEL=debug
+      - ADWRKSHP_TIER_SRVC_NAME=QuoteServices
+      - APPDYNAMICS_AGENT_TIER_NAME=QuoteServices
+      - APPDYNAMICS_AGENT_NODE_NAME=QuoteServices-Node-1
+    depends_on:
+      - "mongo-stocks"
+    expose:
+      - 8080
+
+  order-processing:
+    image: public.ecr.aws/w3n5a5m8/adfinmod_java_services_pre:latest
+    container_name: order-processing
+    volumes:
+      - './app-graph.json:/app-graph.json'
+      - java-agent:/opt/appdynamics/java-agent/
+    env_file: application.env
+    environment: 
+      - GRAPH_FILE=/app-graph.json
+      - JAVA_TOOL_OPTIONS=-javaagent:/opt/appdynamics/java-agent/javaagent.jar
+      - DEBUG_LEVEL=debug
+      - ADWRKSHP_TIER_SRVC_NAME=OrderProcessing
+      - APPDYNAMICS_AGENT_TIER_NAME=OrderProcessing
+      - APPDYNAMICS_AGENT_NODE_NAME=OrderProcessing-Node-1
+    depends_on:
+      - "mongo-orders"
+    expose:
+      - 8080
+
+  policy-services:
+    image: public.ecr.aws/w3n5a5m8/adfinmod_java_services_pre:latest
+    container_name: policy-services
+    volumes:
+      - './app-graph.json:/app-graph.json'
+      - java-agent:/opt/appdynamics/java-agent/
+    env_file: application.env
+    environment: 
+      - GRAPH_FILE=/app-graph.json
+      - JAVA_TOOL_OPTIONS=-javaagent:/opt/appdynamics/java-agent/javaagent.jar
+      - DEBUG_LEVEL=debug
+      - ADWRKSHP_TIER_SRVC_NAME=PolicyServices
+      - APPDYNAMICS_AGENT_TIER_NAME=PolicyServices
+      - APPDYNAMICS_AGENT_NODE_NAME=PolicyServices-Node-1
+    depends_on:
+      - "mongo-policies"
+    expose:
+      - 8080
+
+  web-front-end:
+    image: public.ecr.aws/w3n5a5m8/adfinmod_java_webapps_pre:latest
+    container_name: web-front-end
+    volumes:
+      - './app-graph.json:/app-graph.json'
+      - java-agent:/opt/appdynamics/java-agent/
+    env_file: application.env
+    environment: 
+      - GRAPH_FILE=/app-graph.json
+      - JAVA_TOOL_OPTIONS=-javaagent:/opt/appdynamics/java-agent/javaagent.jar
+      - DEBUG_LEVEL=debug
+      - ADWRKSHP_TIER_SRVC_NAME=WebFrontEnd
+      - APPDYNAMICS_AGENT_TIER_NAME=WebFrontEnd
+      - APPDYNAMICS_AGENT_NODE_NAME=WebFrontEnd-Node-1
+    ports:
+      - '8080:8080'
+
+  browser-load:
+    image: public.ecr.aws/w3n5a5m8/adfinmod_loadgen_pre:latest
+    container_name: browser-load
+    env_file: application.env
+    environment:
+      - ENABLE_BROWSER_LOAD=1
+      - ENABLE_APPROVAL_LOAD=0
+      - ENABLE_POLICY_LOAD=0
+      - ENABLE_LOAN_LOAD=0
+    restart: always
+
+  approval-load:
+    image: public.ecr.aws/w3n5a5m8/adfinmod_loadgen_pre:latest
+    container_name: approval-load
+    env_file: application.env
+    environment:
+      - ENABLE_BROWSER_LOAD=0
+      - ENABLE_APPROVAL_LOAD=1
+      - ENABLE_POLICY_LOAD=0
+      - ENABLE_LOAN_LOAD=0
+    restart: always
+
+  loan-load:
+    image: public.ecr.aws/w3n5a5m8/adfinmod_loadgen_pre:latest
+    container_name: loan-load
+    env_file: application.env
+    environment:
+      - ENABLE_BROWSER_LOAD=0
+      - ENABLE_APPROVAL_LOAD=0
+      - ENABLE_POLICY_LOAD=0
+      - ENABLE_LOAN_LOAD=1
+    restart: always
+
+
+volumes:
+  java-agent:

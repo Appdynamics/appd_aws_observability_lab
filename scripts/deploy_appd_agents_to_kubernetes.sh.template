@@ -1,0 +1,26 @@
+#!/bin/bash
+
+#
+# Script to deploy AppDynamics Agents to two different Kubernetes clusters using a Helm chart.
+#
+# The Helm chart is configured to deploy the following agent types:
+#
+# - Cluster Agent
+# - Java Agent
+# - ServerMonitoring Agent
+# - NetViz Agent
+#
+
+# set default values for input environment variables if not set. -----------------------------------
+
+
+# install the appdynamics helm charts into the local helm repo
+helm repo add appdynamics-charts https://ciscodevnet.github.io/appdynamics-charts
+
+# create appdynamics namespace in the EKS cluster
+kubectl create namespace appdynamics
+
+# install the appdynamics agents in the EKS cluster
+helm install -f ./applications/post-modernization/clusteragent/values-ca1.yaml "@[ADWRKSHP_CLUSTER_AGENT_NAME_01]" appdynamics-charts/cluster-agent --namespace=appdynamics
+
+

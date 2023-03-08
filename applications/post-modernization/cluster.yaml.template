@@ -1,0 +1,36 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: AD-Fin-Post-Mod-${ADWRKSHP_LABUSER_KEY}
+  region: ${ADWRKSHP_CLOUD_REGION}
+  version: "1.24"
+
+availabilityZones: ["${ADWRKSHP_CLOUD_REGION}a", "${ADWRKSHP_CLOUD_REGION}c"]
+
+managedNodeGroups:
+- name: nodegroup
+  instanceType: m5a.large
+  desiredCapacity: 2
+  ssh: # import inline public key
+    publicKey: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCEyVAKfQ/Oq2Cov6ZiGfEI3N2Rz3QG1oVQbz9mYZZMYoDpt67nov+wVDUuham7MG30jgQwMoyGSVUP0ol2R+IDyg+dzSS/XEByrA7IUlLLcYZY8d8VqJOKzoqImfSpTfE0ObbkuYiR1RgOCnQkaH3oHOHpQtse5YxTFdohOaEFlvkAAVe4kSU4/FrxcO1+AL+5CFbl0FqffvqdwNABYd+dNKXylO6rhrMz/v/xAltH2gycj0Xc7c5IGPAqhR08Ei4Q/rTNQeARrUAvkH+LwWP73lAzJNnvgDiGmUegA8ZnlMhvK1dSUftZ72HhO1lG05Q2Rm4U1F0wG+a0fm352Aif AppD-Cloud-Kickstart"
+    allow: true
+
+iam:
+  withOIDC: true
+  serviceAccounts:
+  - metadata:
+      name: appd-app-services
+      # if no namespace is set, "default" will be used;
+      # the namespace will be created if it doesn't exist already
+      # namespace: default
+      labels: {aws-usage: "application"}
+    attachPolicyARNs:
+    - "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+    - "arn:aws:iam::aws:policy/AmazonRDSFullAccess"
+
+
+# To enable all of the control plane logs, uncomment below:
+# cloudWatch:
+#  clusterLogging:
+#    enableTypes: ["*"]

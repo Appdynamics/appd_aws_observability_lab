@@ -2,69 +2,47 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: order-processing
+  labels:
+    framework: java
+    tiername: OrderProcessing
 spec:
   replicas: 1
   selector:
     matchLabels:
-      name: order-processing    
+      app: ad-financial
+      run: order-processing
   template:
     metadata:
       labels:
-        name: order-processing
+        app: ad-financial
+        run: order-processing
     spec:
       serviceAccountName: appd-app-services
-      initContainers:
-      - name: appd-agent-repo
-        image: appdynamics/java-agent:latest
-        command: ["cp", "-ra", "/opt/appdynamics/.", "/opt/temp"]
-        volumeMounts:
-        - mountPath: /opt/temp
-          name: shared-files
-      volumes:
-        - name: shared-files
-          emptyDir: {}
       containers:
         - name: order-processing
-          image: public.ecr.aws/w3n5a5m8/adfinmod_java_services_post:latest   
+          image: public.ecr.aws/w3n5a5m8/adfinmod_java_services_post:latest
           envFrom:
             - configMapRef:
                 name: appd-app-config
           env:
+            - name: HOST_NAME
+              value: "order-processing"
             - name: GRAPH_FILE
               value: /app-graph.json
-            - name: JAVA_TOOL_OPTIONS
-              value: -javaagent:/opt/appdynamics/javaagent.jar
-            - name: DEBUG_LEVEL
-              value: debug
-            - name: ADWRKSHP_TIER_SRVC_NAME
-              valueFrom: 
-                configMapKeyRef:
-                  name: appd-app-config
-                  key: ADWRKSHP_TIER_SRVC_NAME_ORDRPROCESSG
-
             - name: APPDYNAMICS_AGENT_TIER_NAME
-              valueFrom: 
-                configMapKeyRef:
-                  name: appd-app-config
-                  key: ADWRKSHP_TIER_NAME_ORDRPROCESSG
-
+              value: OrderProcessing              
+            - name: ADWRKSHP_TIER_SRVC_NAME
+              value: OrderProcessing
             - name: APPDYNAMICS_JAVA_AGENT_REUSE_NODE_NAME
               value: "true"
-
             - name: APPDYNAMICS_JAVA_AGENT_REUSE_NODE_NAME_PREFIX
-              valueFrom: 
-                configMapKeyRef:
-                  name: appd-app-config
-                  key: ADWRKSHP_NODE_PFX_ORDRPROCESSG
-
+              value: OrderProcessing_Node
             - name: ENABLE_IRP
               value: "true"
-          ports:
-          - containerPort: 8080
-          volumeMounts:
-            - mountPath: /opt/appdynamics
-              name: shared-files
+
           imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
       restartPolicy: Always
 
 ---
@@ -72,12 +50,13 @@ apiVersion: v1
 kind: Service
 metadata:
   name: order-processing
+  labels:
+    app: ad-financial
+    run: order-processing
 spec:
-  selector:
-    name: order-processing
   ports:
-  - name: "8080"
-    port: 8080
-    targetPort: 8080
-status:
-  loadBalancer: {}
+    - port: 8080
+      protocol: TCP
+  selector:
+    run: order-processing
+---

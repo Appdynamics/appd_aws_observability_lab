@@ -2,80 +2,59 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: per-loan-services
+  labels:
+    framework: java
+    tiername: PerLoanServices
 spec:
   replicas: 2
   selector:
     matchLabels:
-      name: per-loan-services    
+      app: ad-financial
+      run: per-loan-services
   template:
     metadata:
       labels:
-        name: per-loan-services
+        app: ad-financial
+        run: per-loan-services
     spec:
       serviceAccountName: appd-app-services
-      initContainers:
-      - name: appd-agent-repo
-        image: appdynamics/java-agent:latest
-        command: ["cp", "-ra", "/opt/appdynamics/.", "/opt/temp"]
-        volumeMounts:
-        - mountPath: /opt/temp
-          name: shared-files
-      volumes:
-        - name: shared-files
-          emptyDir: {}
       containers:
         - name: per-loan-services
-          image: public.ecr.aws/w3n5a5m8/adfinmod_java_repositories_pre:latest   
+          image: public.ecr.aws/w3n5a5m8/adfinmod_java_repositories_pre:latest
           envFrom:
             - configMapRef:
                 name: appd-app-config
           env:
-            - name: JAVA_TOOL_OPTIONS
-              value: -javaagent:/opt/appdynamics/javaagent.jar
-            - name: DEBUG_LEVEL
-              value: debug
-            - name: ADWRKSHP_TIER_SRVC_NAME
-              valueFrom: 
-                configMapKeyRef:
-                  name: appd-app-config
-                  key: ADWRKSHP_TIER_SRVC_NAME_PERLOANSRVCS
-
+            - name: HOST_NAME
+              value: "per-loan-services"
             - name: APPDYNAMICS_AGENT_TIER_NAME
-              valueFrom: 
-                configMapKeyRef:
-                  name: appd-app-config
-                  key: ADWRKSHP_TIER_NAME_PERLOANSRVCS
-
+              value: PerLoanServices              
+            - name: ADWRKSHP_TIER_SRVC_NAME
+              value: PerLoanServices
             - name: APPDYNAMICS_JAVA_AGENT_REUSE_NODE_NAME
               value: "true"
-
             - name: APPDYNAMICS_JAVA_AGENT_REUSE_NODE_NAME_PREFIX
-              valueFrom: 
-                configMapKeyRef:
-                  name: appd-app-config
-                  key: ADWRKSHP_NODE_PFX_PERLOANSRVCS
-
+              value: PerLoanServices_Node
             - name: ENABLE_IRP
               value: "true"
-          ports:
-          - containerPort: 8080
-          volumeMounts:
-            - mountPath: /opt/appdynamics
-              name: shared-files
-          imagePullPolicy: Always
-      restartPolicy: Always
 
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+      restartPolicy: Always
+              
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: per-loan-services
+  labels:
+    app: ad-financial
+    run: per-loan-services
 spec:
-  selector:
-    name: per-loan-services
   ports:
-  - name: "8080"
-    port: 8080
-    targetPort: 8080
-status:
-  loadBalancer: {}
+    - port: 8080
+      protocol: TCP
+  selector:
+    run: per-loan-services
+---

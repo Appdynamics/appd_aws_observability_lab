@@ -1,0 +1,50 @@
+installClusterAgent: true
+installInfraViz: true
+
+# AppDynamics controller info
+controllerInfo:
+  url: ${ADWRKSHP_CONTROLLER_URL_FULL}:443
+  account: ${ADWRKSHP_CONTROLLER_ACCT_NAME}
+  username: @[ADWRKSHP_ELV_LABUSER_KEY]
+  password: @[ADWRKSHP_ELV_LABUSER_PWD]
+  accessKey: @[ADWRKSHP_ACCT_ACCESS_KEY]
+  globalAccount: ${ADWRKSHP_CONTROLLER_GLOBAL_ACCT_NAME}
+  
+# Cluster agent config
+clusterAgent:
+  nsToMonitorRegex: default
+
+instrumentationConfig:
+  enabled: true
+  instrumentationMethod: env
+  nsToInstrumentRegex: default
+  defaultAppName: ${ADWRKSHP_APM_APP_NAME}
+  appNameStrategy: manual
+  tierNameStrategy: label
+  tierNameLabel: tiername
+  instrumentationRules:
+    - namespaceRegex: default
+      language: java
+      labelMatch:
+        - framework: java
+      imageInfo:
+        image: docker.io/appdynamics/java-agent:latest
+        agentMountPath: /opt/appdynamics
+        imagePullPolicy: Always
+
+# InfraViz config
+infraViz:
+  nodeOS: "linux"
+  enableMasters: false
+  stdoutLogging: true
+  enableContainerHostId: false
+  enableServerViz: true
+  enableDockerViz: false
+
+# Netviz config
+netViz:
+  enabled: true
+  netVizPort: 3892
+  
+install:
+  metrics-server: true

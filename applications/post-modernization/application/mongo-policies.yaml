@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: mongo-policies
-          image: mongo:5   
+          image: mongo:5 
           ports:
           - containerPort: 27017
           imagePullPolicy: Always

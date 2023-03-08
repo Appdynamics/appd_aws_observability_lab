@@ -1,0 +1,17 @@
+#!/bin/bash
+
+#
+# Script to undeploy AppDynamics Agents from two different Kubernetes clusters using a Helm chart.
+#
+# The Helm chart is configured to undeploy the following agent types:
+#
+# - Cluster Agent
+# - Java Agent - requires application restart
+# - ServerMonitoring Agent
+# - NetViz Agent
+#
+
+# set default values for input environment variables if not set. -----------------------------------
+
+# uninstall the appdynamics agents from the EKS cluster
+helm uninstall "@[ADWRKSHP_CLUSTER_AGENT_NAME_01]" --namespace=appdynamics

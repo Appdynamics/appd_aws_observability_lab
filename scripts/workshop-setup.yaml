@@ -1,57 +1,93 @@
 !!com.appdynamics.cloud.modern.config.SetupConfig
 
-description: "AD-Advanced-Observability"
-teardownFilePath: "/opt/appdynamics/workshopuser/state/workshop-teardown.yaml"
+description: "AD-Modernization-Workshop"
+teardownFilePath: "./scripts/state/workshop-teardown.yaml"
 setupHomeDirectory: "./"
-#setupStateDirectory: "/home/ec2-user"
-setupStateDirectory: "/opt/appdynamics/workshopuser/state"
+setupStateDirectory: "./scripts/state"
 setupStepsFileName: "appd_workshop_setup.txt"
 cloudProvider: "aws"
 debugLogging: false
 
+
 # if machine agents are deployed, their ids must be collected
 # before the applications are stopped
-teardownScript: "/opt/appdynamics/workshopuser/terminateApps.sh"
+teardownScript: "./scripts/terminate_applications.sh"
 
 
 taskExecutionOrder:
   - taskType: "SHELL_TASK"
     taskName: "workshop-prereqs-sh"
-  - taskType: "CONTROLLER_INIT_TASKS"
-    taskName: ""
   - taskType: "SHELL_TASK"
     taskName: "deploy-db-agent"
   - taskType: "SHELL_TASK"
-    taskName: "create-reboot-srvcs-sh"   
+    taskName: "create-dbagent-srvc-sh"   
+  - taskType: "SHELL_TASK"
+    taskName: "create-pre-mod-srvc-sh"
   - taskType: "SHELL_TASK"
     taskName: "get-ips-for-cloud-sg"
+  - taskType: "SHELL_TASK"
+    taskName: "update-deploy-agents-sh"
+  - taskType: "SHELL_TASK"
+    taskName: "update-undeploy-agents-sh"
 
   - taskType: "CLOUD_TASKS"
     taskName: ""
   - taskType: "CONTROLLER_TASKS"
     taskName: ""
   - taskType: "SHELL_TASK"
-    taskName: "start-docker-app"  
+    taskName: "start-pre-mod-app"
+
+#  - taskType: "SHELL_TASK"
+#    taskName: "launch-sim-agent"
+#  - taskType: "SHELL_TASK"
+#    taskName: "create-simagent-srvc-sh"
+
+#  - taskType: "CONTROLLER_FINAL_TASKS"
+#    taskName: "create-bt-art-health-rule-pre"
+#  - taskType: "CONTROLLER_FINAL_TASKS"
+#    taskName: "create-nodes-art-health-rule-pre"
+#  - taskType: "CONTROLLER_FINAL_TASKS"
+#    taskName: "ungroup-rename-flowmap-comps-pre"
+#  - taskType: "CONTROLLER_FINAL_TASKS"
+#    taskName: "create-db-to-collector-links-pre"
 
 #  - taskType: "SHELL_TASK"
 #    taskName: "create-kube-cluster"    
 #  - taskType: "SHELL_TASK"
 #    taskName: "deploy-kube-application"
 #  - taskType: "SHELL_TASK"
-#    taskName: "deploy-kube-machine-agent"
-#  - taskType: "SHELL_TASK"
 #    taskName: "deploy-cluster-agent"
 #  - taskType: "SHELL_TASK"
 #    taskName: "expose-kube-website"
 
+#  - taskType: "SHELL_TASK"
+#    taskName: "expand-disk-volume"
     
 shellTasks:
+  - taskType: "SHELL_TASK_EXPAND_DISK_VOLUME"
+    taskName: "expand-disk-volume"
+    inputTags:
+      - tagKey: "@[ADWRKSHP_DISK_VOLUME_SIZE_GB]"
+        tagValue: "80"
+
+
+  - taskType: "SHELL_TASK_EXECUTE_SHELL_SCRIPT"
+    taskName: "workshop-prereqs-sh"
+    inputTags:
+      - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_FILEPATH]"
+        tagValue: "./scripts/install_al2_workshop_prerequisites.sh"
+      - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_BEGIN_MSG]"
+        tagValue: " - Start installing workshop prerequisite software"
+      - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_END_MSG]"
+        tagValue: " - Finished installing workshop prerequisite software"
+      - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_INHERIT_IO]"
+        tagValue: "true"
 
   - taskType: "SHELL_TASK_EXECUTE_SHELL_SCRIPT"
     taskName: "get-ips-for-cloud-sg"
     inputTags:
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_FILEPATH]"
-        tagValue: "/opt/appdynamics/workshopuser/getIpsForCloudDbSecurityGroup.sh"
+        tagValue: "./scripts/get_ips_for_cloud_db_security_group.sh"
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_BEGIN_MSG]"
         tagValue: " - Start obtaining ip addresses for db security group"
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_END_MSG]"
@@ -59,17 +95,39 @@ shellTasks:
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_INHERIT_IO]"
         tagValue: "false"
 
-  - taskType: "SHELL_TASK_EXECUTE_SHELL_SCRIPT"
-    taskName: "workshop-prereqs-sh"
-    inputTags:
-      - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_FILEPATH]"
-        tagValue: "/opt/appdynamics/workshopuser/workshopPrereqs.sh"
-      - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_BEGIN_MSG]"
-        tagValue: " - Starting install of kubectl, eksctl, and docker-compose"
-      - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_END_MSG]"
-        tagValue: " - Finished install of kubectl, eksctl, and docker-compose"
-      - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_INHERIT_IO]"
-        tagValue: "true"
+#  - taskType: "SHELL_TASK_DEPLOY_JAVA_AGENT"
+#    taskName: "deploy-java-agent"
+#    inputTags:
+#      - tagKey: "@[ADWRKSHP_JAVA_AGENT_HOME_DIR]"
+#        tagValue: "/opt/appdynamics/javaagent"
+#      - tagKey: "@[ADWRKSHP_JAVA_AGENT_ZIP_URL]"
+#        tagValue: "https://download-files.appdynamics.com/download-file/sun-jvm/22.3.0.33637/AppServerAgent-22.3.0.33637.zip"
+#      - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_BEGIN_MSG]"
+#        tagValue: " - Start deployment of java apm agent"
+#      - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_END_MSG]"
+#        tagValue: " - Finished deployment of java apm agent"
+
+#  - taskType: "SHELL_TASK_DEPLOY_SIM_AGENT"
+#    taskName: "deploy-sim-agent"
+#    inputTags:
+#      - tagKey: "@[ADWRKSHP_SIM_AGENT_HOME_DIR]"
+#        tagValue: "/opt/appdynamics/simagent"
+#      - tagKey: "@[ADWRKSHP_SIM_AGENT_ZIP_URL]"
+#        tagValue: "https://download-files.appdynamics.com/download-file/machine-bundle/21.12.0.3201/machineagent-bundle-64bit-linux-21.12.0.3201.zip"
+#      - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_BEGIN_MSG]"
+#        tagValue: " - Start deployment of server monitoring agent"
+#      - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_END_MSG]"
+#        tagValue: " - Finished deployment of server monitoring agent"
+
+#  - taskType: "SHELL_TASK_LAUNCH_SIM_AGENT"
+#    taskName: "launch-sim-agent"
+#    inputTags:
+#      - tagKey: "@[ADWRKSHP_SIM_AGENT_HOME_DIR]"
+#        tagValue: "/opt/appdynamics/simagent"
+#      - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_BEGIN_MSG]"
+#        tagValue: " - Start launch of server monitoring agent"
+#      - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_END_MSG]"
+#        tagValue: " - Finished launch of server monitoring agent"
 
   - taskType: "SHELL_TASK_DEPLOY_DB_AGENT"
     taskName: "deploy-db-agent"
@@ -77,9 +135,10 @@ shellTasks:
       - tagKey: "@[ADWRKSHP_DB_AGENT_HOME_DIR]"
         tagValue: "/opt/appdynamics/dbagent"
       - tagKey: "@[ADWRKSHP_DB_AGENT_ZIP_URL]"
-        tagValue: "https://download-files.appdynamics.com/download-file/db-agent/22.3.0.2742/db-agent-22.3.0.2742.zip"
+        tagValue: "https://download-files.appdynamics.com/download-file/db-agent/23.2.0.3027/db-agent-23.2.0.3027.zip"
+       #tagValue: "https://download-files.appdynamics.com/download-file/db-agent/22.3.0.2742/db-agent-22.3.0.2742.zip"
       - tagKey: "@[ADWRKSHP_DB_AGENT_NAME]"
-        tagValue: "@[ADWRKSHP_LABUSER_KEY]-DBAgent"
+        tagValue: "adfin-mod-@[ADWRKSHP_LABUSER_KEY]-DBAgent"
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_BEGIN_MSG]"
         tagValue: " - Start deployment of database agent"
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_END_MSG]"
@@ -87,26 +146,76 @@ shellTasks:
 
 
   - taskType: "SHELL_TASK_EXECUTE_SHELL_SCRIPT"
-    taskName: "create-reboot-srvcs-sh"
+    taskName: "create-dbagent-srvc-sh"
     inputTags:
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_FILEPATH]"
-        tagValue: "/opt/appdynamics/workshopuser/createSrvcs.sh"
+        tagValue: "./scripts/create_dbagent_srvc_sudo.sh"
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_BEGIN_MSG]"
-        tagValue: " - Starting service entry creation"
+        tagValue: " - Starting service entry creation for database agent"
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_END_MSG]"
-        tagValue: " - Finished service entry creation"
+        tagValue: " - Finished service entry creation for database agent"
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_INHERIT_IO]"
         tagValue: "false"
 
   - taskType: "SHELL_TASK_EXECUTE_SHELL_SCRIPT"
-    taskName: "start-docker-app"
+    taskName: "create-pre-mod-srvc-sh"
     inputTags:
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_FILEPATH]"
-        tagValue: "/opt/appdynamics/workshopuser/pre-mod-docker/start.sh"
+        tagValue: "./scripts/create_pre_app_srvc_sudo.sh"
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_BEGIN_MSG]"
-        tagValue: " - Starting Deployment of Local Docker Application"
+        tagValue: " - Starting service entry creation for pre-modernization application"
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_END_MSG]"
-        tagValue: " - Finished Deployment of Local Docker Application"
+        tagValue: " - Finished service entry creation for pre-modernization application"
+      - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_INHERIT_IO]"
+        tagValue: "false"
+
+#  - taskType: "SHELL_TASK_EXECUTE_SHELL_SCRIPT"
+#    taskName: "create-simagent-srvc-sh"
+#    inputTags:
+#      - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_FILEPATH]"
+#        tagValue: "./scripts/create_simagent_srvc_sudo.sh"
+#      - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_BEGIN_MSG]"
+#        tagValue: " - Starting service entry creation for server monitoring agent"
+#      - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_END_MSG]"
+#        tagValue: " - Finished service entry creation for server monitoring agent"
+#      - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_INHERIT_IO]"
+#        tagValue: "false"
+
+  - taskType: "SHELL_TASK_UPDATE_EXTERNAL_FILE"
+    taskName: "update-deploy-agents-sh"
+    inputTags:
+      - tagKey: "@[ADWRKSHP_UPDATE_EXTERNAL_FILE_SOURCEFILE]"
+        tagValue: "./scripts/deploy_appd_agents_to_kubernetes.sh.template"
+      - tagKey: "@[ADWRKSHP_UPDATE_EXTERNAL_FILE_DESTFILE]"
+        tagValue: "./scripts/deploy_appd_agents_to_kubernetes.sh"
+      - tagKey: "@[ADWRKSHP_HELM_CLUSTER_AGENT_DEPLOYMENT]"
+        tagValue: "true"
+      - tagKey: "@[ADWRKSHP_CLUSTER_AGENT_NAME_01]"
+        tagValue: "adfin-post-mod-@[ADWRKSHP_LABUSER_KEY]-eks"
+ 
+
+  - taskType: "SHELL_TASK_UPDATE_EXTERNAL_FILE"
+    taskName: "update-undeploy-agents-sh"
+    inputTags:
+      - tagKey: "@[ADWRKSHP_UPDATE_EXTERNAL_FILE_SOURCEFILE]"
+        tagValue: "./scripts/undeploy_appd_agents_from_kubernetes.sh.template"
+      - tagKey: "@[ADWRKSHP_UPDATE_EXTERNAL_FILE_DESTFILE]"
+        tagValue: "./scripts/undeploy_appd_agents_from_kubernetes.sh"
+      - tagKey: "@[ADWRKSHP_HELM_CLUSTER_AGENT_DEPLOYMENT]"
+        tagValue: "true"
+      - tagKey: "@[ADWRKSHP_CLUSTER_AGENT_NAME_01]"
+        tagValue: "adfin-post-mod-@[ADWRKSHP_LABUSER_KEY]-eks"
+        
+
+  - taskType: "SHELL_TASK_EXECUTE_SHELL_SCRIPT"
+    taskName: "start-pre-mod-app"
+    inputTags:
+      - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_FILEPATH]"
+        tagValue: "./applications/pre-modernization/start_app.sh"
+      - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_BEGIN_MSG]"
+        tagValue: " - Starting deployment of pre-modernization application"
+      - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_END_MSG]"
+        tagValue: " - Finished deployment of pre-modernization application"
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_INHERIT_IO]"
         tagValue: "true"
 
@@ -115,11 +224,11 @@ shellTasks:
     taskName: "create-kube-cluster"
     inputTags:
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_FILEPATH]"
-        tagValue: "/opt/appdynamics/workshopuser/deployEksCluster.sh"
+        tagValue: "./scripts/create_eks_cluster.sh"
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_BEGIN_MSG]"
-        tagValue: " - Starting Creation of EKS Cluster"
+        tagValue: " - Starting creation of EKS cluster"
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_END_MSG]"
-        tagValue: " - Finished Creation of EKS Cluster"
+        tagValue: " - Finished creation of EKS cluster"
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_INHERIT_IO]"
         tagValue: "true"
 
@@ -128,71 +237,63 @@ shellTasks:
     taskName: "deploy-kube-application"
     inputTags:
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_FILEPATH]"
-        tagValue: "/opt/appdynamics/workshopuser/deployEksApplication.sh"
+        tagValue: "./scripts/deploy_eks_application.sh"
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_BEGIN_MSG]"
-        tagValue: " - Starting Deployment of Application to EKS Cluster"
+        tagValue: " - Starting deployment of application to EKS cluster"
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_END_MSG]"
-        tagValue: " - Finished Deployment of Application to EKS Cluster"
+        tagValue: " - Finished deployment of application to EKS cluster"
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_INHERIT_IO]"
         tagValue: "true"
 
 
   - taskType: "SHELL_TASK_EXECUTE_SHELL_SCRIPT"
-    taskName: "deploy-kube-machine-agent"
-    inputTags:
-      - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_FILEPATH]"
-        tagValue: "/opt/appdynamics/workshopuser/deployMachineAgent.sh"
-      - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_BEGIN_MSG]"
-        tagValue: " - Starting Deployment of Machine Agent to EKS Cluster"
-      - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_END_MSG]"
-        tagValue: " - Finished Deployment of Machine Agent to EKS Cluster"
-      - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_INHERIT_IO]"
-        tagValue: "false"
-
-  - taskType: "SHELL_TASK_EXECUTE_SHELL_SCRIPT"
     taskName: "deploy-cluster-agent"
     inputTags:
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_FILEPATH]"
-        tagValue: "/opt/appdynamics/workshopuser/deployClusterAgent.sh"
-      - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_ARGUMENTS]"
-        tagValue: "@[ADWRKSHP_ACCT_ACCESS_KEY]"
+        tagValue: "./scripts/deploy_appd_agents_to_kubernetes.sh"
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_BEGIN_MSG]"
-        tagValue: " - Starting Deployment of Cluster Agent"
+        tagValue: " - Starting deployment of application to EKS cluster"
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_END_MSG]"
-        tagValue: " - Finished Deployment of Cluster Agent"
+        tagValue: " - Finished deployment of application to EKS cluster"
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_INHERIT_IO]"
-        tagValue: "false"
+        tagValue: "true"
+
 
   - taskType: "SHELL_TASK_EXECUTE_SHELL_SCRIPT"
     taskName: "expose-kube-website"
     inputTags:
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_FILEPATH]"
-        tagValue: "/opt/appdynamics/workshopuser/exposeEksWebsite.sh"
+        tagValue: "./scripts/expose_eks_web_application.sh"
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_BEGIN_MSG]"
-        tagValue: " - Starting Exposure of Website within EKS Cluster"
+        tagValue: " - Starting exposure of website within EKS cluster"
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_END_MSG]"
-        tagValue: " - Finished Exposure of Website within EKS Cluster"
+        tagValue: " - Finished exposure of website within EKS cluster"
       - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_INHERIT_IO]"
         tagValue: "false"
 
 
       
 templates:
-  - templateName: "docker-compose-conf"
-    sourceFile: "/opt/appdynamics/appd_lab_repo/applications/pre-modernization/docker-compose.yaml.template"
-    destinationFile: "/opt/appdynamics/workshopuser/pre-mod-docker/docker-compose.yaml"
+  - templateName: "cluster-agent-conf"
+    sourceFile: "./applications/post-modernization/clusteragent/values-ca1.yaml.template"
+    destinationFile: "./applications/post-modernization/clusteragent/values-ca2.yaml.template"
     tags:
-      - tagKey: "${ADWRKSHP_RANDOM_UUID}"
-        tagValue: "@[ADWRKSHP_RANDOM_UUID]"
+      - tagKey: "${ADWRKSHP_CONTROLLER_URL_FULL}"
+        tagValue: "@[ADWRKSHP_CONTROLLER_URL_FULL]"
+        
+      - tagKey: "${ADWRKSHP_CONTROLLER_ACCT_NAME}"
+        tagValue: "@[ADWRKSHP_CONTROLLER_ACCT_NAME]"
 
-      - tagKey: "${ADWRKSHP_LABUSER_KEY}"
-        tagValue: "@[ADWRKSHP_LABUSER_KEY]"
+      - tagKey: "${ADWRKSHP_CONTROLLER_GLOBAL_ACCT_NAME}"
+        tagValue: "@[ADWRKSHP_CONTROLLER_GLOBAL_ACCT_NAME]"
+                
+      - tagKey: "${ADWRKSHP_APM_APP_NAME}"
+        tagValue: "@[ADWRKSHP_APM_APP_NAME_POST]"        
 
 
-
-  - templateName: "docker-app-conf"
-    sourceFile: "/opt/appdynamics/appd_lab_repo/applications/pre-modernization/application.env.template"
-    destinationFile: "/opt/appdynamics/workshopuser/pre-mod-docker/application.env"
+  - templateName: "pre-mod-app-conf"
+    sourceFile: "./applications/pre-modernization/application.env.template"
+    destinationFile: "./applications/pre-modernization/.env/application.env"
     tags:
       - tagKey: "${ADWRKSHP_CONTROLLER_HOST}"
         tagValue: "@[ADWRKSHP_CONTROLLER_HOST]"
@@ -213,16 +314,44 @@ templates:
         tagValue: "@[ADWRKSHP_EUM_APP_KEY_PRE]"
         
       - tagKey: "${ADWRKSHP_DB_AGENT_NAME}"
-        tagValue: "@[ADWRKSHP_LABUSER_KEY]-DBAgent"
+        tagValue: "adfin-mod-@[ADWRKSHP_LABUSER_KEY]-DBAgent"
         
       - tagKey: "${ADWRKSHP_LABUSER_KEY}"
         tagValue: "@[ADWRKSHP_LABUSER_KEY]"
         
  
-       
+  - templateName: "pre-mod-app-conf-examp"
+    sourceFile: "./applications/pre-modernization/application.env.template"
+    destinationFile: "./applications/pre-modernization/application.env"
+    tags:
+      - tagKey: "${ADWRKSHP_CONTROLLER_HOST}"
+        tagValue: "@[ADWRKSHP_CONTROLLER_HOST]"
+        
+      - tagKey: "${ADWRKSHP_CONTROLLER_ACCT_NAME}"
+        tagValue: "@[ADWRKSHP_CONTROLLER_ACCT_NAME]"
+                
+      - tagKey: "${ADWRKSHP_ACCT_ACCESS_KEY}"
+        tagValue: "df4d049a-9f78-4e95-a8ad-9261a53a5954"
+
+      - tagKey: "${ADWRKSHP_APM_APP_NAME}"
+        tagValue: "@[ADWRKSHP_APM_APP_NAME_PRE]"
+        
+      - tagKey: "${ADWRKSHP_EUM_APP_NAME}"
+        tagValue: "@[ADWRKSHP_EUM_APP_NAME_PRE]"
+        
+      - tagKey: "${ADWRKSHP_EUM_APP_KEY}"
+        tagValue: "@[ADWRKSHP_EUM_APP_KEY_PRE]"
+        
+      - tagKey: "${ADWRKSHP_DB_AGENT_NAME}"
+        tagValue: "adfin-mod-@[ADWRKSHP_LABUSER_KEY]-DBAgent"
+        
+      - tagKey: "${ADWRKSHP_LABUSER_KEY}"
+        tagValue: "@[ADWRKSHP_LABUSER_KEY]"
+    
+
   - templateName: "kube-cluster-conf"
-    sourceFile: "/opt/appdynamics/appd_lab_repo/applications/post-modernization/aws-cluster.yaml.template"
-    destinationFile: "/opt/appdynamics/workshopuser/post-mod-kube-cluster/cluster.yaml"
+    sourceFile: "./applications/post-modernization/cluster.yaml.template"
+    destinationFile: "./applications/post-modernization/cluster.yaml"
     tags:
       - tagKey: "${ADWRKSHP_CLOUD_REGION}"
         tagValue: "@[ADWRKSHP_CLOUD_REGION]"
@@ -230,32 +359,9 @@ templates:
         tagValue: "@[ADWRKSHP_LABUSER_KEY]"
 
 
-
-  - templateName: "kube-cluster-agent-conf"
-    sourceFile: "/opt/appdynamics/appd_lab_repo/applications/post-modernization/cluster-agent.yaml.template"
-    destinationFile: "/opt/appdynamics/workshopuser/post-mod-kube-ca/cluster-agent.yaml"
-    tags:
-      - tagKey: "${ADWRKSHP_APM_APP_NAME}"
-        tagValue: "@[ADWRKSHP_APM_APP_NAME_POST]"
-      - tagKey: "${ADWRKSHP_CONTROLLER_URL_FULL}"
-        tagValue: "@[ADWRKSHP_CONTROLLER_URL_FULL]"
-      - tagKey: "${ADWRKSHP_CONTROLLER_ACCT_NAME}"
-        tagValue: "@[ADWRKSHP_CONTROLLER_ACCT_NAME]"
-
-
-
-  - templateName: "kube-cluster-agent-script"
-    sourceFile: "/opt/appdynamics/appd_lab_repo/scripts/deployClusterAgent.sh"
-    destinationFile: "/opt/appdynamics/workshopuser/deployClusterAgent.sh"
-    tags:
-      - tagKey: "${ADWRKSHP_ACCT_ACCESS_KEY}"
-        tagValue: "@[ADWRKSHP_ACCT_ACCESS_KEY]"
-
-
-
   - templateName: "kube-app-conf"
-    sourceFile: "/opt/appdynamics/appd_lab_repo/applications/post-modernization/config-map.yaml.template"
-    destinationFile: "/opt/appdynamics/workshopuser/post-mod-kube-app/config-map.yaml"
+    sourceFile: "./applications/post-modernization/config-map.yaml.template"
+    destinationFile: "./applications/post-modernization/application/.env/config-map.yaml"
     tags:
       - tagKey: "${ADWRKSHP_RANDOM_UUID}"
         tagValue: "@[ADWRKSHP_RANDOM_UUID]"
@@ -279,7 +385,7 @@ templates:
         tagValue: "@[ADWRKSHP_EUM_APP_KEY_POST]"
         
       - tagKey: "${ADWRKSHP_DB_AGENT_NAME}"
-        tagValue: "@[ADWRKSHP_LABUSER_KEY]-DBAgent"
+        tagValue: "adfin-mod-@[ADWRKSHP_LABUSER_KEY]-DBAgent"
         
       - tagKey: "${ADWRKSHP_DB1_URL_PART}"
         tagValue: "@[ADWRKSHP_CLOUD_DB_INST_ENDPOINT]"
@@ -302,9 +408,61 @@ templates:
       - tagKey: "${ADWRKSHP_LABUSER_KEY}"
         tagValue: "@[ADWRKSHP_LABUSER_KEY]"    
 
+
+
+  - templateName: "kube-app-conf-example"
+    sourceFile: "./applications/post-modernization/config-map.yaml.template"
+    destinationFile: "./applications/post-modernization/application/config-map.yaml"
+    tags:
+      - tagKey: "${ADWRKSHP_RANDOM_UUID}"
+        tagValue: "@[ADWRKSHP_RANDOM_UUID]"
+
+      - tagKey: "${ADWRKSHP_CONTROLLER_HOST}"
+        tagValue: "@[ADWRKSHP_CONTROLLER_HOST]"
+        
+      - tagKey: "${ADWRKSHP_CONTROLLER_ACCT_NAME}"
+        tagValue: "@[ADWRKSHP_CONTROLLER_ACCT_NAME]"
+        
+      - tagKey: "${ADWRKSHP_APM_APP_NAME}"
+        tagValue: "@[ADWRKSHP_APM_APP_NAME_POST]"
+        
+      - tagKey: "${ADWRKSHP_ACCT_ACCESS_KEY}"
+        tagValue: "df4d049a-9f78-4e95-a8ad-9261a53a5954"
+        
+      - tagKey: "${ADWRKSHP_EUM_APP_NAME}"
+        tagValue: "@[ADWRKSHP_EUM_APP_NAME_POST]"
+        
+      - tagKey: "${ADWRKSHP_EUM_APP_KEY}"
+        tagValue: "@[ADWRKSHP_EUM_APP_KEY_POST]"
+        
+      - tagKey: "${ADWRKSHP_DB_AGENT_NAME}"
+        tagValue: "adfin-mod-@[ADWRKSHP_LABUSER_KEY]-DBAgent"
+        
+      - tagKey: "${ADWRKSHP_DB1_URL_PART}"
+        tagValue: "@[ADWRKSHP_CLOUD_DB_INST_ENDPOINT]"
+        
+      - tagKey: "${ADWRKSHP_CLOUD_REGION}"
+        tagValue: "@[ADWRKSHP_CLOUD_REGION]"
+
+      - tagKey: "${ADWRKSHP_CLOUD_MODE}"
+        tagValue: "@[ADWRKSHP_CLOUD_MODE]"
+        
+      - tagKey: "${ADWRKSHP_CLOUD_STORG_INST_1}"
+        tagValue: "@[ADWRKSHP_CLOUD_STORG_INST_NAME_1]"
+        
+      - tagKey: "${ADWRKSHP_CLOUD_STORG_INST_2}"
+        tagValue: "@[ADWRKSHP_CLOUD_STORG_INST_NAME_2]"
+        
+      - tagKey: "${ADWRKSHP_CLOUD_STORG_INST_3}"
+        tagValue: "@[ADWRKSHP_CLOUD_STORG_INST_NAME_3]"
+        
+      - tagKey: "${ADWRKSHP_LABUSER_KEY}"
+        tagValue: "@[ADWRKSHP_LABUSER_KEY]"    
+
+
   - templateName: "workshop-user-details"
-    sourceFile: "/opt/appdynamics/appd_lab_repo/scripts/workshop-user-details.txt.template"
-    destinationFile: "/home/ec2-user/environment/workshop-user-details.txt"
+    sourceFile: "./scripts/workshop-user-details.txt.template"
+    destinationFile: "./workshop-user-details.txt"
     tags:
       - tagKey: "${ADWRKSHP_CONTROLLER_HOST}"
         tagValue: "@[ADWRKSHP_CONTROLLER_HOST]"
@@ -334,18 +492,18 @@ templates:
 controllerInitTasks:
 # !!! The license rule creation task should be the very first controller init task
 # NEW IBL L##ICENSE RULE TAG KEYS
-  - taskType: "CONTROLLER_TASK_CREATE_IBL_LICENSE_RULE"
-    taskName: "create-license-rule"
-    inputTags:
-      - tagKey: "@[ADWRKSHP_LICENSE_RULE_NAME]"
-        tagValue: "@[ADWRKSHP_LABUSER_KEY]-LicenseRule"
-      - tagKey: "@[ADWRKSHP_IBL_LICENSE_RULE_ACCT_ID]"
-        tagValue: "23458"
-        #tagValue: "817"
-      - tagKey: "@[ADWRKSHP_IBL_LICENSE_RULE_NBR_ENTR]"
-        tagValue: "50"
-      - tagKey: "@[ADWRKSHP_IBL_LICENSE_RULE_NBR_PREM]"
-        tagValue: "50"
+#  - taskType: "CONTROLLER_TASK_CREATE_IBL_LICENSE_RULE"
+#    taskName: "create-license-rule"
+#    inputTags:
+#      - tagKey: "@[ADWRKSHP_LICENSE_RULE_NAME]"
+#        tagValue: "adfin-mod-@[ADWRKSHP_LABUSER_KEY]-LicenseRule"
+#      - tagKey: "@[ADWRKSHP_IBL_LICENSE_RULE_ACCT_ID]"
+#        tagValue: "23458"
+#        #tagValue: "817"
+#      - tagKey: "@[ADWRKSHP_IBL_LICENSE_RULE_NBR_ENTR]"
+#        tagValue: "0"
+#      - tagKey: "@[ADWRKSHP_IBL_LICENSE_RULE_NBR_PREM]"
+#        tagValue: "50"
         
 
 # !!! The license rule creation task should be the very first controller init task
@@ -367,13 +525,18 @@ controllerInitTasks:
 controllerTasks:
 
   - taskType: "CONTROLLER_TASK_CREATE_APM_APP"
-    taskName: "create-apm-app-premod"
+    taskName: "create-apm-app-pre"
     inputTags:
       - tagKey: "@[ADWRKSHP_APM_APP_NAME_PRE]"
-        tagValue: "@[ADWRKSHP_LABUSER_KEY]-AD-Fin-PreMod"
+        tagValue: "adfin-pre-mod-@[ADWRKSHP_LABUSER_KEY]"
         
-    templateTargets:    
-      - templateName: "docker-app-conf"
+    templateTargets:        
+      - templateName: "pre-mod-app-conf"
+        targetTags:
+          - tagKey: "${ADWRKSHP_APM_APP_NAME}"
+            tagValue: "@[ADWRKSHP_APM_APP_NAME_PRE]"
+
+      - templateName: "pre-mod-app-conf-examp"
         targetTags:
           - tagKey: "${ADWRKSHP_APM_APP_NAME}"
             tagValue: "@[ADWRKSHP_APM_APP_NAME_PRE]"
@@ -385,10 +548,10 @@ controllerTasks:
 
 
   - taskType: "CONTROLLER_TASK_CREATE_BRUM_APP"
-    taskName: "create-brum-app-premod"
+    taskName: "create-brum-app-pre"
     inputTags:
       - tagKey: "@[ADWRKSHP_EUM_APP_NAME_PRE]"
-        tagValue: "@[ADWRKSHP_LABUSER_KEY]-AD-Fin-PreMod-Web"
+        tagValue: "adfin-pre-mod-@[ADWRKSHP_LABUSER_KEY]-web"
       - tagKey: "@[ADWRKSHP_EUM_APP_CONF_UPDATE]"
         tagValue: "true"
       - tagKey: "@[ADWRKSHP_EUM_APP_CONF_SLOWT_TYPE]"
@@ -401,7 +564,14 @@ controllerTasks:
         tagValue: "2600"
   
     templateTargets:
-      - templateName: "docker-app-conf"
+      - templateName: "pre-mod-app-conf"
+        targetTags:
+          - tagKey: "${ADWRKSHP_EUM_APP_KEY}"
+            tagValue: "@[ADWRKSHP_EUM_APP_KEY_PRE]"  
+          - tagKey: "${ADWRKSHP_EUM_APP_NAME}"
+            tagValue: "@[ADWRKSHP_EUM_APP_NAME_PRE]"
+
+      - templateName: "pre-mod-app-conf-examp"
         targetTags:
           - tagKey: "${ADWRKSHP_EUM_APP_KEY}"
             tagValue: "@[ADWRKSHP_EUM_APP_KEY_PRE]"  
@@ -417,12 +587,12 @@ controllerTasks:
  
   
   - taskType: "CONTROLLER_TASK_CREATE_APM_APP"
-    taskName: "create-apm-app-postmod"
+    taskName: "create-apm-app-post"
     inputTags:
       - tagKey: "@[ADWRKSHP_APM_APP_NAME_POST]"
-        tagValue: "@[ADWRKSHP_LABUSER_KEY]-AD-Fin-PostMod"
-      - tagKey: "@[ADWRKSHP_APM_APP_TYPE]"
-        tagValue: "@[ADWRKSHP_APM_APP_TYPE_K8S]"
+        tagValue: "adfin-post-mod-@[ADWRKSHP_LABUSER_KEY]"
+#      - tagKey: "@[ADWRKSHP_APM_APP_TYPE]"
+#        tagValue: "@[ADWRKSHP_APM_APP_TYPE_K8S]"
   
     templateTargets:
     
@@ -431,12 +601,15 @@ controllerTasks:
           - tagKey: "${ADWRKSHP_APM_APP_NAME}"
             tagValue: "@[ADWRKSHP_APM_APP_NAME_POST]"
 
-
-      - templateName: "kube-cluster-agent-conf"
+      - templateName: "kube-app-conf-example"
         targetTags:
           - tagKey: "${ADWRKSHP_APM_APP_NAME}"
             tagValue: "@[ADWRKSHP_APM_APP_NAME_POST]"
 
+      - templateName: "cluster-agent-conf"
+        targetTags:
+          - tagKey: "${ADWRKSHP_APM_APP_NAME}"
+            tagValue: "@[ADWRKSHP_APM_APP_NAME_POST]"
             
       - templateName: "workshop-user-details"
         targetTags:
@@ -445,10 +618,10 @@ controllerTasks:
 
 
   - taskType: "CONTROLLER_TASK_CREATE_BRUM_APP"
-    taskName: "create-brum-app-postmod"
+    taskName: "create-brum-app-post"
     inputTags:
       - tagKey: "@[ADWRKSHP_EUM_APP_NAME_POST]"
-        tagValue: "@[ADWRKSHP_LABUSER_KEY]-AD-Fin-PostMod-Web"  
+        tagValue: "adfin-post-mod-@[ADWRKSHP_LABUSER_KEY]-web"  
       - tagKey: "@[ADWRKSHP_EUM_APP_CONF_UPDATE]"
         tagValue: "true"
       - tagKey: "@[ADWRKSHP_EUM_APP_CONF_SLOWT_TYPE]"
@@ -468,6 +641,13 @@ controllerTasks:
             tagValue: "@[ADWRKSHP_EUM_APP_KEY_POST]"  
           - tagKey: "${ADWRKSHP_EUM_APP_NAME}"
             tagValue: "@[ADWRKSHP_EUM_APP_NAME_POST]"
+
+      - templateName: "kube-app-conf-example"
+        targetTags:
+          - tagKey: "${ADWRKSHP_EUM_APP_KEY}"
+            tagValue: "@[ADWRKSHP_EUM_APP_KEY_POST]"  
+          - tagKey: "${ADWRKSHP_EUM_APP_NAME}"
+            tagValue: "@[ADWRKSHP_EUM_APP_NAME_POST]"
             
       - templateName: "workshop-user-details"
         targetTags:
@@ -481,12 +661,14 @@ controllerTasks:
   - taskType: "CONTROLLER_TASK_CREATE_DB_COLLECTOR"
     taskName: "adfin-db-collector-post"
     inputTags:
+      - tagKey: "@[ADWRKSHP_APM_APP_NAME]"
+        tagValue: "adfin-post-mod-@[ADWRKSHP_LABUSER_KEY]"      
       - tagKey: "@[ADWRKSHP_CLOUD_DB_INST_NAME]"
-        tagValue: "@[ADWRKSHP_LABUSER_KEY]-AD-Fin-PostMod"    
+        tagValue: "adfin-post-mod-@[ADWRKSHP_LABUSER_KEY]-mysql"    
       - tagKey: "@[ADWRKSHP_CLOUD_DB_INST_TYPE]"
         tagValue: "MYSQL"    
       - tagKey: "@[ADWRKSHP_DB_AGENT_NAME]"
-        tagValue: "@[ADWRKSHP_LABUSER_KEY]-DBAgent"
+        tagValue: "adfin-mod-@[ADWRKSHP_LABUSER_KEY]-DBAgent"
       - tagKey: "@[ADWRKSHP_CLOUD_DB_INST_PORT]"
         tagValue: "@[ADWRKSHP_CLOUD_DB_INST_PORT]"
       - tagKey: "@[ADWRKSHP_CLOUD_DB_INST_USER]"
@@ -497,21 +679,28 @@ controllerTasks:
         tagValue: "@[ADWRKSHP_CLOUD_DB_INST_ENDPOINT]"    
 
     templateTargets:    
+
       - templateName: "kube-app-conf"
         targetTags:
           - tagKey: "${ADWRKSHP_DB1_URL_PART}"
             tagValue: "@[ADWRKSHP_CLOUD_DB_INST_ENDPOINT]"
 
+      - templateName: "kube-app-conf-example"
+        targetTags:
+          - tagKey: "${ADWRKSHP_DB1_URL_PART}"
+            tagValue: "@[ADWRKSHP_CLOUD_DB_INST_ENDPOINT]"
 
   - taskType: "CONTROLLER_TASK_CREATE_DB_COLLECTOR"
     taskName: "adfin-db-collector-pre"
     inputTags:
+      - tagKey: "@[ADWRKSHP_APM_APP_NAME]"
+        tagValue: "adfin-pre-mod-@[ADWRKSHP_LABUSER_KEY]"      
       - tagKey: "@[ADWRKSHP_CLOUD_DB_INST_NAME]"
-        tagValue: "@[ADWRKSHP_LABUSER_KEY]-AD-Fin-PreMod"    
+        tagValue: "adfin-pre-mod-@[ADWRKSHP_LABUSER_KEY]-mysql"    
       - tagKey: "@[ADWRKSHP_CLOUD_DB_INST_TYPE]"
         tagValue: "MYSQL"    
       - tagKey: "@[ADWRKSHP_DB_AGENT_NAME]"
-        tagValue: "@[ADWRKSHP_LABUSER_KEY]-DBAgent"
+        tagValue: "adfin-mod-@[ADWRKSHP_LABUSER_KEY]-DBAgent"
       - tagKey: "@[ADWRKSHP_CLOUD_DB_INST_PORT]"
         tagValue: "3306"
       - tagKey: "@[ADWRKSHP_CLOUD_DB_INST_USER]"
@@ -548,16 +737,16 @@ controllerTasks:
 
     inputTags:
       - tagKey: "@[ADWRKSHP_DEFAULT_RBAC_ROLE_IDS]"
-        tagValue: "286308,286387,286459,286305"    
-
+        tagValue: "286459,286308,286387"
+        #tagValue: "286459,286305,286308,286387,288654"
+        # 286459 = Analytics Viewer
+        # 286305 = DB Monitoring User
+        # 286308 = Server Monitoring User
+        # 286387 = viewinfraentity - Cluster Agent
+        # 288654 = SecureApp View Only
 
     templateTargets:   
-      - templateName: "docker-compose-conf"
-        targetTags:
-          - tagKey: "${ADWRKSHP_RANDOM_UUID}"
-            tagValue: "@[ADWRKSHP_RANDOM_UUID]"    
-
-      - templateName: "docker-app-conf"
+      - templateName: "pre-mod-app-conf"
         targetTags:
           - tagKey: "${ADWRKSHP_CONTROLLER_HOST}"
             tagValue: "@[ADWRKSHP_CONTROLLER_HOST]"    
@@ -571,6 +760,19 @@ controllerTasks:
           - tagKey: "${ADWRKSHP_LABUSER_KEY}"
             tagValue: "@[ADWRKSHP_LABUSER_KEY]"    
 
+      - templateName: "pre-mod-app-conf-examp"
+        targetTags:
+          - tagKey: "${ADWRKSHP_CONTROLLER_HOST}"
+            tagValue: "@[ADWRKSHP_CONTROLLER_HOST]"    
+
+          - tagKey: "${ADWRKSHP_CONTROLLER_ACCT_NAME}"
+            tagValue: "@[ADWRKSHP_CONTROLLER_ACCT_NAME]" 
+
+          #- tagKey: "${ADWRKSHP_ACCT_ACCESS_KEY}"
+          #  tagValue: "@[ADWRKSHP_ACCT_ACCESS_KEY]"
+
+          - tagKey: "${ADWRKSHP_LABUSER_KEY}"
+            tagValue: "@[ADWRKSHP_LABUSER_KEY]"    
 
       - templateName: "kube-app-conf"
         targetTags:
@@ -589,20 +791,30 @@ controllerTasks:
           - tagKey: "${ADWRKSHP_RANDOM_UUID}"
             tagValue: "@[ADWRKSHP_RANDOM_UUID]"    
 
-
-      - templateName: "kube-cluster-agent-conf"
+      - templateName: "kube-app-conf-example"
         targetTags:
-          - tagKey: "${ADWRKSHP_CONTROLLER_URL_FULL}"
-            tagValue: "@[ADWRKSHP_CONTROLLER_URL_FULL]"
-            
+          - tagKey: "${ADWRKSHP_CONTROLLER_HOST}"
+            tagValue: "@[ADWRKSHP_CONTROLLER_HOST]"    
+
           - tagKey: "${ADWRKSHP_CONTROLLER_ACCT_NAME}"
             tagValue: "@[ADWRKSHP_CONTROLLER_ACCT_NAME]"    
 
+          - tagKey: "${ADWRKSHP_LABUSER_KEY}"
+            tagValue: "@[ADWRKSHP_LABUSER_KEY]"    
 
-      - templateName: "kube-cluster-agent-script"
+          - tagKey: "${ADWRKSHP_RANDOM_UUID}"
+            tagValue: "@[ADWRKSHP_RANDOM_UUID]"    
+
+      - templateName: "cluster-agent-conf"
         targetTags:
-          - tagKey: "${ADWRKSHP_ACCT_ACCESS_KEY}"
-            tagValue: "@[ADWRKSHP_ACCT_ACCESS_KEY]"    
+          - tagKey: "${ADWRKSHP_CONTROLLER_URL_FULL}"
+            tagValue: "@[ADWRKSHP_CONTROLLER_URL_FULL]"
+
+          - tagKey: "${ADWRKSHP_CONTROLLER_ACCT_NAME}"
+            tagValue: "@[ADWRKSHP_CONTROLLER_ACCT_NAME]"    
+
+          - tagKey: "${ADWRKSHP_CONTROLLER_GLOBAL_ACCT_NAME}"
+            tagValue: "@[ADWRKSHP_CONTROLLER_GLOBAL_ACCT_NAME]"    
 
 
       - templateName: "workshop-user-details"
@@ -624,10 +836,91 @@ controllerTasks:
         targetTags:
           - tagKey: "${ADWRKSHP_LABUSER_KEY}"
             tagValue: "@[ADWRKSHP_LABUSER_KEY]"
+
             
-
 controllerFinalTasks:
+  - taskType: "CONTROLLER_TASK_CREATE_BT_ART_HEALTH_RULE"
+    taskName: "create-bt-art-health-rule-pre"
+    inputTags:
+      - tagKey: "@[ADWRKSHP_APM_APP_NAME_PRE]"
+        tagValue: "adfin-pre-mod-@[ADWRKSHP_LABUSER_KEY]"
+      - tagKey: "@[ADWRKSHP_HEALTH_RULE_NAME]"
+        tagValue: "Transaction Response Health"
+      - tagKey: "@[ADWRKSHP_HEALTH_RULE_ART_MILLIS]"
+        tagValue: "1000"
+      - tagKey: "@[ADWRKSHP_BT_ORIGNAL_NAME_01]"
+        tagValue: "/rest/loanVerifyDocumentation"
+      - tagKey: "@[ADWRKSHP_BT_ORIGNAL_NAME_02]"
+        tagValue: "/rest/loanUnderwritingComplete"
+      - tagKey: "@[ADWRKSHP_BT_ORIGNAL_NAME_03]"
+        tagValue: "/rest/loanCreditCheck"
 
+  - taskType: "CONTROLLER_TASK_CREATE_NODES_ART_HEALTH_RULE"
+    taskName: "create-nodes-art-health-rule-pre"
+    inputTags:
+      - tagKey: "@[ADWRKSHP_APM_APP_NAME_PRE]"
+        tagValue: "adfin-pre-mod-@[ADWRKSHP_LABUSER_KEY]"
+      - tagKey: "@[ADWRKSHP_HEALTH_RULE_NAME]"
+        tagValue: "Transaction Response Time"
+      - tagKey: "@[ADWRKSHP_HEALTH_RULE_ART_MILLIS]"
+        tagValue: "1000"
+
+# In order to ungroup flowmap components, you must include every Tier definition, Individual backend definition, 
+# and a definition for each backend group that initially shows up on the flowmap
+  - taskType: "CONTROLLER_TASK_UNGROUP_RENAME_FLOWMAP_COMPONENTS"
+    taskName: "ungroup-rename-flowmap-comps-pre"
+    inputTags:
+      - tagKey: "@[ADWRKSHP_APM_APP_NAME_PRE]"
+        tagValue: "adfin-pre-mod-@[ADWRKSHP_LABUSER_KEY]"
+        # format for the tagValue for "@[ADWRKSHP_FLOWMAP_COMPONENT]" is
+        # componentType (see "Flowmap Components" in com.appdynamics.cloud.modern.ApplicationConstants)
+        # componentOrginalName (as original seen on the flowmap),
+        # componentNewName (can be anything except a null or zero lenth string when renameComponent: false), (otherwise it will rename the component )
+        # renameComponent (true or false)
+        #
+        # (example - DB Component) - tagValue: "FM_DB_COMP,CASHACCOUNTS-MySQL-LOCALHOST-5.5.5-10.2.38-MariaDB,MySQL-5.7.38-CASHACCOUNTS,true"
+        # (example - Tier Component) - tagValue: "FM_TIER_COMP,FinancialServices,xxx,false"
+        # (example - Backend Group Component) - tagValue: "FM_BACKEND_GROUP_COMPBackendGoup1,xxx,false"
+        #
+        # Note: For "FM_BACKEND_GROUP_COMP" types, componentOrginalName can be anything except null or a zero length string,
+        # and the "componentNewName" value can be arbitrary since their will be no renaming on these
+        # For "FM_TIER_COMP"
+        # It's advised to name each tagKey as "@[ADWRKSHP_FLOWMAP_COMPONENT" with a unique number as the suffix
+      - tagKey: "@[ADWRKSHP_FLOWMAP_COMPONENT_01]"
+        tagValue: "FM_TIER_COMP,FinancialServices,xxx,false"
+      - tagKey: "@[ADWRKSHP_FLOWMAP_COMPONENT_02]"
+        tagValue: "FM_TIER_COMP,WebFrontEnd,xxx,false"
+      - tagKey: "@[ADWRKSHP_FLOWMAP_COMPONENT_03]"
+        tagValue: "FM_DB_JDBC_MYSQL_COMP,LOANACCOUNTS-MySQL-LOCALHOST-5.5.5-10.2.38-MariaDB,MySQL-5.7.38-LOANACCOUNTS,true"
+      - tagKey: "@[ADWRKSHP_FLOWMAP_COMPONENT_04]"
+        tagValue: "FM_DB_JDBC_MYSQL_COMP,LOANACCOUNTS-MySQL-LOCALHOST-5.5.5-10.2.38-MariaDB,MySQL-5.7.38-LOANACCOUNTS,true"
+      - tagKey: "@[ADWRKSHP_FLOWMAP_COMPONENT_05]"
+        tagValue: "FM_DB_JDBC_MYSQL_COMP,CASHACCOUNTS-MySQL-LOCALHOST-5.5.5-10.2.38-MariaDB,MySQL-5.7.38-CASHACCOUNTS,true"
+      - tagKey: "@[ADWRKSHP_FLOWMAP_COMPONENT_06]"
+        tagValue: "FM_RS_HTTP_COMP,fso-payment-gw-sim.azurewebsites.net:443,mcard-payment-gw-sim.mcard.net:443,true"
+      - tagKey: "@[ADWRKSHP_FLOWMAP_COMPONENT_07]"
+        tagValue: "FM_RS_HTTP_COMP,amex-fso-payment-gw-sim.azurewebsites.net:443,amex-payment-gw-sim.amex.net:443,true"
+      - tagKey: "@[ADWRKSHP_FLOWMAP_COMPONENT_08]"
+        tagValue: "FM_RS_HTTP_COMP,www.equifax.com:443,xxx,false"
+      - tagKey: "@[ADWRKSHP_FLOWMAP_COMPONENT_09]"
+        tagValue: "FM_RS_MONGODB_COMP,localhost.27017.stocks,MongoDB.27017.stocks,true"
+      - tagKey: "@[ADWRKSHP_FLOWMAP_COMPONENT_10]"
+        tagValue: "FM_RS_MONGODB_COMP,localhost.27017.orders,MongoDB.27017.orders,true"
+      - tagKey: "@[ADWRKSHP_FLOWMAP_COMPONENT_11]"
+        tagValue: "FM_RS_MONGODB_COMP,localhost.27017.policies,MongoDB.27017.policies,true"
+      - tagKey: "@[ADWRKSHP_FLOWMAP_COMPONENT_12]"
+        tagValue: "FM_BACKEND_GROUP_COMP,BackendGoup1,xxx,false"
+      - tagKey: "@[ADWRKSHP_FLOWMAP_COMPONENT_13]"
+        tagValue: "FM_BACKEND_GROUP_COMP,BackendGoup2,xxx,false"
+      - tagKey: "@[ADWRKSHP_FLOWMAP_COMPONENT_14]"
+        tagValue: "FM_BACKEND_GROUP_COMP,BackendGoup3,xxx,false"
+
+  - taskType: "CONTROLLER_TASK_CREATE_DB_TO_COLLECTOR_LINKS"
+    taskName: "create-db-to-collector-links-pre"
+    inputTags:
+      - tagKey: "@[ADWRKSHP_APM_APP_NAME_PRE]"
+        tagValue: "adfin-pre-mod-@[ADWRKSHP_LABUSER_KEY]"
+            
             
 cloudTasks:
 
@@ -638,7 +931,7 @@ cloudTasks:
     taskName: "create-db-aws-rds-mysql"
     inputTags:
       - tagKey: "@[ADWRKSHP_CLOUD_DB_INST_NAME]"
-        tagValue: "@[ADWRKSHP_LABUSER_KEY]-adfin-mysql-post"    
+        tagValue: "adfin-post-mod-@[ADWRKSHP_LABUSER_KEY]-mysql"    
       - tagKey: "@[ADWRKSHP_CLOUD_DB_INST_SIZE]"
         tagValue: "db.t2.small"    
       - tagKey: "@[ADWRKSHP_CLOUD_DB_INST_TYPE]"
@@ -652,7 +945,7 @@ cloudTasks:
       - tagKey: "@[ADWRKSHP_CLOUD_DB_INST_ENDPOINT]"
         tagValue: "@[ADWRKSHP_CLOUD_DB_INST_ENDPOINT]"    
       - tagKey: "@[ADWRKSHP_CLOUD_SECURITY_GROUP_NAME]"
-        tagValue: "@[ADWRKSHP_LABUSER_KEY]-admod-workshop-sg"    
+        tagValue: "adfin-post-mod-@[ADWRKSHP_LABUSER_KEY]-sg"
       - tagKey: "@[ADWRKSHP_CLOUD_SEC_GROUP_CIDR_1]"
         tagValue: "localprivip.txt"
       - tagKey: "@[ADWRKSHP_CLOUD_SEC_GROUP_CIDR_2]"
@@ -680,31 +973,41 @@ cloudTasks:
     taskName: "create-storage-aws-s3-bucket-cash"
     inputTags:
       - tagKey: "@[ADWRKSHP_CLOUD_STORG_INST_NAME_1]"
-        tagValue: "adfin1-@[ADWRKSHP_LABUSER_KEY]-cashaccts"    
+        tagValue: "adfin-pm1-@[ADWRKSHP_LABUSER_KEY]-cashaccts"    
+    
     templateTargets:    
       - templateName: "kube-app-conf"
         targetTags:
           - tagKey: "${ADWRKSHP_CLOUD_STORG_INST_1}"
             tagValue: "@[ADWRKSHP_CLOUD_STORG_INST_NAME_1]"
 
+      - templateName: "kube-app-conf-example"
+        targetTags:
+          - tagKey: "${ADWRKSHP_CLOUD_STORG_INST_1}"
+            tagValue: "@[ADWRKSHP_CLOUD_STORG_INST_NAME_1]"
 
   - taskType: "CLOUD_TASK_CREATE_STORAGE_AWS_S3_BUCKET"
     taskName: "create-storage-aws-s3-bucket-bizloans"
     inputTags:
       - tagKey: "@[ADWRKSHP_CLOUD_STORG_INST_NAME_2]"
-        tagValue: "adfin2-@[ADWRKSHP_LABUSER_KEY]-bizloans"    
+        tagValue: "adfin-pm2-@[ADWRKSHP_LABUSER_KEY]-bizloans"    
+    
     templateTargets:    
       - templateName: "kube-app-conf"
         targetTags:
           - tagKey: "${ADWRKSHP_CLOUD_STORG_INST_2}"
             tagValue: "@[ADWRKSHP_CLOUD_STORG_INST_NAME_2]"
 
+      - templateName: "kube-app-conf-example"
+        targetTags:
+          - tagKey: "${ADWRKSHP_CLOUD_STORG_INST_2}"
+            tagValue: "@[ADWRKSHP_CLOUD_STORG_INST_NAME_2]"
 
   - taskType: "CLOUD_TASK_CREATE_STORAGE_AWS_S3_BUCKET"
     taskName: "create-storage-aws-s3-bucket-perloans"
     inputTags:
       - tagKey: "@[ADWRKSHP_CLOUD_STORG_INST_NAME_3]"
-        tagValue: "adfin3-@[ADWRKSHP_LABUSER_KEY]-perloans"
+        tagValue: "adfin-pm3-@[ADWRKSHP_LABUSER_KEY]-perloans"
         
     templateTargets:    
       - templateName: "kube-app-conf"
@@ -712,6 +1015,10 @@ cloudTasks:
           - tagKey: "${ADWRKSHP_CLOUD_STORG_INST_3}"
             tagValue: "@[ADWRKSHP_CLOUD_STORG_INST_NAME_3]"
 
+      - templateName: "kube-app-conf-example"
+        targetTags:
+          - tagKey: "${ADWRKSHP_CLOUD_STORG_INST_3}"
+            tagValue: "@[ADWRKSHP_CLOUD_STORG_INST_NAME_3]"
 
 
 vaultInfo:

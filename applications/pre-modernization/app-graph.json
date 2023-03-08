@@ -1,0 +1,619 @@
+{
+
+    "PolicyServices": {
+        "tier_type" : "java",
+        "paths" : {
+
+            "/policies/api/policypayment": {
+                "actions": [
+                    
+                    {
+                        "name": "policy-processing",
+                        "type": "ProcessingAction",
+                        "properties": {
+                            "minDuration": 300,
+                            "maxDuration": 500,
+                            "numCores": 2,
+                            "numThreadsPerCore": 3,
+                            "load": 0.2
+                        }
+                    },
+
+                    {
+                        "name": "mongo-policies",
+                        "type": "MongoAction",
+                        "properties": {
+                            "action": "Insert",
+                            "connectionString": "mongo-policies:27017",
+                            "database": "policies",
+                            "collection": "policies"
+                        }
+                    }
+
+                ]
+            },
+
+
+            "*": {
+                "actions": [
+                    {
+                        "name": "catch-all-processing",
+                        "type": "ProcessingAction",
+                        "properties": {
+                            "minDuration": 150,
+                            "maxDuration": 800,
+                            "numCores": 2,
+                            "numThreadsPerCore": 3,
+                            "load": 0.2
+                        }
+                    }
+                ]
+            }
+
+
+        }
+    },
+
+
+
+
+    "OrderProcessing": {
+        "tier_type" : "java",
+        
+        "paths" : {
+
+            "/orders/api/processtrade": {
+                "actions": [
+                    
+                    {
+                        "name": "order-processing",
+                        "type": "ProcessingAction",
+                        "properties": {
+                            "minDuration": 300,
+                            "maxDuration": 600,
+                            "numCores": 2,
+                            "numThreadsPerCore": 3,
+                            "load": 0.5
+                        }
+                    },
+
+                    {
+                        "name": "mongo-orders",
+                        "type": "MongoAction",
+                        "properties": {
+                            "action": "Insert",
+                            "connectionString": "mongo-orders:27017",
+                            "database": "orders",
+                            "collection": "orders"
+                        }
+                    }
+
+                ]
+            },
+
+
+            "*": {
+                "actions": [
+                    {
+                        "name": "catch-all-processing",
+                        "type": "ProcessingAction",
+                        "properties": {
+                            "minDuration": 150,
+                            "maxDuration": 800,
+                            "numCores": 2,
+                            "numThreadsPerCore": 3,
+                            "load": 0.2
+                        }
+                    }
+                ]
+            }
+
+
+        }
+    },
+
+
+
+    "QuoteServices": {
+        "tier_type" : "java",
+        "paths" : {
+
+            "/quotes/api/getquote": {
+                "actions": [
+                    
+                    {
+                        "name": "quote-processing",
+                        "type": "ProcessingAction",
+                        "properties": {
+                            "minDuration": 400,
+                            "maxDuration": 500,
+                            "numCores": 2,
+                            "numThreadsPerCore": 3,
+                            "load": 0.2
+                        }
+                    },
+
+                    {
+                        "name": "mongo-quotes",
+                        "type": "MongoAction",
+                        "properties": {
+                            "action": "Insert",
+                            "connectionString": "mongo-stocks:27017",
+                            "database": "stocks",
+                            "collection": "stocks"
+                        }
+                    }
+
+                ]
+            },
+
+
+            "*": {
+                "actions": [
+                    {
+                        "name": "catch-all-processing",
+                        "type": "ProcessingAction",
+                        "properties": {
+                            "minDuration": 150,
+                            "maxDuration": 800,
+                            "numCores": 2,
+                            "numThreadsPerCore": 3,
+                            "load": 0.2
+                        }
+                    }
+                ]
+            }
+
+
+        }
+    },
+
+
+
+
+    "AuthenticationServices": {
+        "tier_type" : "java",
+        "paths" : {
+
+
+            "/auth/api/login": {
+                "actions": [
+                    
+                    {
+                        "name": "session-login",
+                        "type": "HttpAction",
+                        "properties": {
+                            "requestMethod": "GET",
+                            "url": "http://session-tracking:8080/session/api/login"
+                        }
+                    },
+                    {
+                        "name": "login-processing",
+                        "type": "ProcessingAction",
+                        "properties": {
+                            "minDuration": 300,
+                            "maxDuration": 400,
+                            "numCores": 2,
+                            "numThreadsPerCore": 3,
+                            "load": 0.2
+                        }
+                    }
+
+                ]
+            },
+
+
+            "*": {
+                "actions": [
+                    {
+                        "name": "catch-all-processing",
+                        "type": "ProcessingAction",
+                        "properties": {
+                            "minDuration": 150,
+                            "maxDuration": 800,
+                            "numCores": 2,
+                            "numThreadsPerCore": 3,
+                            "load": 0.2
+                        }
+                    }
+                ]
+            }
+
+
+        }
+    },
+
+
+
+    "SessionTracking": {
+        "tier_type" : "java",
+        "paths": {
+
+            "/session/api/login": {
+                "actions": [
+                    {
+                        "name": "login-processing",
+                        "type": "ProcessingAction",
+                        "properties": {
+                            "minDuration": 200,
+                            "maxDuration": 300,
+                            "numCores": 2,
+                            "numThreadsPerCore": 1,
+                            "load": 0.2
+                        }
+                    }
+                ]
+            },
+
+
+            "*": {
+                "actions": [
+                    {
+                        "name": "catch-all-processing",
+                        "type": "ProcessingAction",
+                        "properties": {
+                            "minDuration": 150,
+                            "maxDuration": 800,
+                            "numCores": 2,
+                            "numThreadsPerCore": 3,
+                            "load": 0.2
+                        }
+                    }
+                ]
+            }
+
+
+        }
+    },
+
+
+
+    "AccountManagement": {
+        "tier_type": "java",
+        "paths": {
+
+            "/accounts/api/accounts-summary": {
+                "actions": [
+                    {
+                        "name": "session-login",
+                        "type": "HttpAction",
+                        "properties": {
+                            "requestMethod": "GET",
+                            "url": "http://session-tracking:8080/session/api/login"
+                        }
+                    },
+                    {
+                        "name": "cash-accounts-summary",
+                        "type": "HttpAction",
+                        "properties": {
+                            "requestMethod": "GET",
+                            "url": "http://balance-services:8080/balances/api/accounts-summary"
+                        }
+                    },
+                    {
+                        "name": "loan-accounts-summary",
+                        "type": "HttpAction",
+                        "properties": {
+                            "requestMethod": "GET",
+                            "url": "http://loan-services:8080/loans/api/accounts-summary"
+                        }
+                    }
+
+                ]
+            },
+
+
+            "/accounts/api/cashacctdetails": {
+                "actions": [
+                    {
+                        "name": "session-login",
+                        "type": "HttpAction",
+                        "properties": {
+                            "requestMethod": "GET",
+                            "url": "http://session-tracking:8080/session/api/login"
+                        }
+                    },
+                    {
+                        "name": "cash-account-summary",
+                        "type": "HttpAction",
+                        "properties": {
+                            "requestMethod": "GET",
+                            "url": "http://balance-services:8080/balances/api/account-summary"
+                        }
+                    },
+                    {
+                        "name": "cash-account-details",
+                        "type": "HttpAction",
+                        "properties": {
+                            "requestMethod": "GET",
+                            "url": "http://balance-services:8080/balances/api/account-details"
+                        }
+                    }
+
+                ]
+            },
+
+
+            "/accounts/api/loanacctdetails": {
+                "actions": [
+                    {
+                        "name": "session-login",
+                        "type": "HttpAction",
+                        "properties": {
+                            "requestMethod": "GET",
+                            "url": "http://session-tracking:8080/session/api/login"
+                        }
+                    },
+                    {
+                        "name": "loan-account-summary",
+                        "type": "HttpAction",
+                        "properties": {
+                            "requestMethod": "GET",
+                            "url": "http://loan-services:8080/loans/api/account-summary"
+                        }
+                    },
+                    {
+                        "name": "loan-account-details",
+                        "type": "HttpAction",
+                        "properties": {
+                            "requestMethod": "GET",
+                            "url": "http://loan-services:8080/loans/api/account-details"
+                        }
+                    }
+
+                ]
+            },
+
+
+            "/accounts/api/policypayment": {
+                "actions": [
+                    
+                    {
+                        "name": "policy-payment",
+                        "type": "HttpAction",
+                        "properties": {
+                            "requestMethod": "GET",
+                            "url": "http://policy-services:8080/policies/api/policypayment"
+                        }
+                    }
+
+                ]
+            },
+
+
+
+            "/accounts/api/loanPayment": {
+                "actions": [
+                    {
+                        "name": "session-login",
+                        "type": "HttpAction",
+                        "properties": {
+                            "requestMethod": "GET",
+                            "url": "http://session-tracking:8080/session/api/login"
+                        }
+                    },
+                    {
+                        "name": "loan-processing",
+                        "type": "ProcessingAction",
+                        "properties": {
+                            "minDuration": 800,
+                            "maxDuration": 1100,
+                            "numCores": 2,
+                            "numThreadsPerCore": 1,
+                            "load": 0.2
+                        }
+                    },
+                    {
+                        "name": "loan-payment",
+                        "type": "HttpAction",
+                        "properties": {
+                            "requestMethod": "GET",
+                            "url": "http://loan-services:8080/loans/api/loanPayment/"
+                        }
+                    }
+
+                ]
+            },
+
+
+            "/accounts/api/loanApplication": {
+                "actions": [
+                    {
+                        "name": "session-login",
+                        "type": "HttpAction",
+                        "properties": {
+                            "requestMethod": "GET",
+                            "url": "http://session-tracking:8080/session/api/login"
+                        }
+                    },
+                    {
+                        "name": "loan-processing",
+                        "type": "ProcessingAction",
+                        "properties": {
+                            "minDuration": 200,
+                            "maxDuration": 400,
+                            "numCores": 2,
+                            "numThreadsPerCore": 1,
+                            "load": 0.2
+                        }
+                    },
+                    {
+                        "name": "loan-application",
+                        "type": "HttpAction",
+                        "properties": {
+                            "requestMethod": "GET",
+                            "url": "http://loan-services:8080/loans/api/loanApplication/"
+                        }
+                    }
+
+                ]
+            },
+
+
+
+            "/accounts/api/loanVerifyDocumentation": {
+                "actions": [
+                    {
+                        "name": "session-login",
+                        "type": "HttpAction",
+                        "properties": {
+                            "requestMethod": "GET",
+                            "url": "http://session-tracking:8080/session/api/login"
+                        }
+                    },
+                    {
+                        "name": "loan-processing",
+                        "type": "ProcessingAction",
+                        "properties": {
+                            "minDuration": 900,
+                            "maxDuration": 1200,
+                            "numCores": 2,
+                            "numThreadsPerCore": 1,
+                            "load": 0.1
+                        }
+                    },
+                    {
+                        "name": "loan-verify",
+                        "type": "HttpAction",
+                        "properties": {
+                            "requestMethod": "GET",
+                            "url": "http://loan-services:8080/loans/api/loanVerifyDocumentation/"
+                        }
+                    }
+
+                ]
+            },
+
+
+
+            "/accounts/api/loanCreditCheck": {
+                "actions": [
+                    {
+                        "name": "session-login",
+                        "type": "HttpAction",
+                        "properties": {
+                            "requestMethod": "GET",
+                            "url": "http://session-tracking:8080/session/api/login"
+                        }
+                    },
+                    {
+                        "name": "loan-processing",
+                        "type": "ProcessingAction",
+                        "properties": {
+                            "minDuration": 200,
+                            "maxDuration": 500,
+                            "numCores": 2,
+                            "numThreadsPerCore": 1,
+                            "load": 0.2
+                        }
+                    },
+                    {
+                        "name": "loan-creditcheck",
+                        "type": "HttpAction",
+                        "properties": {
+                            "requestMethod": "GET",
+                            "url": "http://loan-services:8080/loans/api/loanCreditCheck/"
+                        }
+                    }
+
+                ]
+            },
+
+
+
+            "/accounts/api/loanUnderwritingComplete": {
+                "actions": [
+                    {
+                        "name": "session-login",
+                        "type": "HttpAction",
+                        "properties": {
+                            "requestMethod": "GET",
+                            "url": "http://session-tracking:8080/session/api/login"
+                        }
+                    },
+                    {
+                        "name": "loan-processing",
+                        "type": "ProcessingAction",
+                        "properties": {
+                            "minDuration": 300,
+                            "maxDuration": 500,
+                            "numCores": 2,
+                            "numThreadsPerCore": 1,
+                            "load": 0.3
+                        }
+                    },
+                    {
+                        "name": "loan-underwriting",
+                        "type": "HttpAction",
+                        "properties": {
+                            "requestMethod": "GET",
+                            "url": "http://loan-services:8080/loans/api/loanUnderwritingComplete/"
+                        }
+                    }
+
+                ]
+            },
+
+
+
+
+            "/accounts/api/loanApproved": {
+                "actions": [
+                    {
+                        "name": "session-login",
+                        "type": "HttpAction",
+                        "properties": {
+                            "requestMethod": "GET",
+                            "url": "http://session-tracking:8080/session/api/login"
+                        }
+                    },
+                    {
+                        "name": "loan-processing",
+                        "type": "ProcessingAction",
+                        "properties": {
+                            "minDuration": 200,
+                            "maxDuration": 400,
+                            "numCores": 2,
+                            "numThreadsPerCore": 1,
+                            "load": 0.2
+                        }
+                    },
+                    {
+                        "name": "loan-approved",
+                        "type": "HttpAction",
+                        "properties": {
+                            "requestMethod": "GET",
+                            "url": "http://loan-services:8080/loans/api/loanApproved/"
+                        }
+                    }
+
+                ]
+            },
+
+
+
+            "*": {
+                "actions": [
+                    {
+                        "name": "catch-all-processing",
+                        "type": "ProcessingAction",
+                        "properties": {
+                            "minDuration": 150,
+                            "maxDuration": 800,
+                            "numCores": 2,
+                            "numThreadsPerCore": 3,
+                            "load": 0.2
+                        }
+                    }
+                ]
+            }
+
+
+
+        }
+    }
+
+
+
+
+}

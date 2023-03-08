@@ -1,0 +1,82 @@
+!!com.appdynamics.cloud.modern.config.SetupConfig
+
+description: "AppDynamics Agent Setup"
+teardownFilePath: 
+setupHomeDirectory: "./"
+setupStateDirectory: "./scripts/state"
+setupStepsFileName: 
+cloudProvider: "aws"
+debugLogging: false
+
+teardownScript: 
+
+
+taskExecutionOrder:
+  - taskType: "SHELL_TASK"
+    taskName: "update-cluster-agent-conf"
+  - taskType: "SHELL_TASK"
+    taskName: "deploy-appd-agents"
+
+    
+shellTasks:
+
+  - taskType: "SHELL_TASK_UPDATE_EXTERNAL_FILE"
+    taskName: "update-cluster-agent-conf"
+    inputTags:
+      - tagKey: "@[ADWRKSHP_UPDATE_EXTERNAL_FILE_SOURCEFILE]"
+        tagValue: "./applications/post-modernization/clusteragent/values-ca2.yaml.template"
+
+      - tagKey: "@[ADWRKSHP_UPDATE_EXTERNAL_FILE_DESTFILE]"
+        tagValue: "./applications/post-modernization/clusteragent/values-ca1.yaml"
+
+      - tagKey: "@[ADWRKSHP_ELV_LABUSER_KEY]"
+        tagValue: "@[ADWRKSHP_ELV_LABUSER_KEY]"
+        
+      - tagKey: "@[ADWRKSHP_ELV_LABUSER_PWD]"
+        tagValue: "@[ADWRKSHP_ELV_LABUSER_PWD]"
+
+      - tagKey: "@[ADWRKSHP_ACCT_ACCESS_KEY]"
+        tagValue: "@[ADWRKSHP_ACCT_ACCESS_KEY]"
+
+#      - tagKey: "@[ADWRKSHP_CONTROLLER_URL_FULL]"
+#        tagValue: "@[ADWRKSHP_CONTROLLER_URL_FULL]"
+#      - tagKey: "@[ADWRKSHP_CONTROLLER_ACCT_NAME]"
+#        tagValue: "@[ADWRKSHP_CONTROLLER_ACCT_NAME]"
+#      - tagKey: "@[ADWRKSHP_CONTROLLER_GLOBAL_ACCT_NAME]"
+#        tagValue: "@[ADWRKSHP_CONTROLLER_GLOBAL_ACCT_NAME]"
+
+
+  - taskType: "SHELL_TASK_EXECUTE_SHELL_SCRIPT"
+    taskName: "deploy-appd-agents"
+    inputTags:
+      - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_FILEPATH]"
+        tagValue: "./scripts/deploy_appd_agents_to_kubernetes.sh"
+      - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_BEGIN_MSG]"
+        tagValue: " - Starting Deployment of Cluster Agent to K8s Cluster"
+      - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_END_MSG]"
+        tagValue: " - Finished Deployment of Cluster Agent to K8s Cluster"
+      - tagKey: "@[ADWRKSHP_SHELL_SCRIPT_INHERIT_IO]"
+        tagValue: "true"
+        
+
+controllerInitTasks:
+
+controllerTasks:
+            
+cloudTasks:
+
+vaultInfo:
+  vaultHost: 
+  validateSsl: false
+  authStr: 
+  uriPaths:
+    - name: auth
+      value: /v1/auth/userpass/login/cloud-team
+    - name: controller-info
+      value: /v1/kv/cloud-labs/controller-info
+    - name: controller-login-info
+      value: /v1/kv/cloud-labs/controller-login-info
+    - name: dbagent-s3-auth
+      value: /v1/kv/cloud-labs/dbagent-s3-auth
+    - name: intersight-info
+      value: /v1/kv/cloud-labs/intersight-info

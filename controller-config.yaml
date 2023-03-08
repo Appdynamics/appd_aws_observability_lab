@@ -1,0 +1,12 @@
+!!com.appdynamics.cloud.modern.config.FileControllerConfig
+
+controllerAccessKey: ""
+controllerAccount: "mycontroller"
+controllerGlobalAccount: ""
+controllerHostName: "mycontroller.saas.appdynamics.com"
+controllerPort: 443
+controllerSslEnabled: true
+controllerUrlFull: "https://mycontroller.saas.appdynamics.com"
+controllerUsername: ""
+controllerPass: ""
+

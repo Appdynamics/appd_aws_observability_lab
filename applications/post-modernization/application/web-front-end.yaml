@@ -2,80 +2,59 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: web-front-end
+  labels:
+    framework: java
+    tiername: WebFrontEnd
 spec:
   replicas: 2
   selector:
     matchLabels:
-      name: web-front-end    
+      app: ad-financial
+      run: web-front-end
   template:
     metadata:
       labels:
-        name: web-front-end
+        app: ad-financial
+        run: web-front-end
     spec:
       serviceAccountName: appd-app-services
-      initContainers:
-      - name: appd-agent-repo
-        image: appdynamics/java-agent:latest
-        command: ["cp", "-ra", "/opt/appdynamics/.", "/opt/temp"]
-        volumeMounts:
-        - mountPath: /opt/temp
-          name: shared-files
-      volumes:
-        - name: shared-files
-          emptyDir: {}
       containers:
         - name: web-front-end
-          image: public.ecr.aws/w3n5a5m8/adfinmod_java_webapps_pre:latest   
+          image: public.ecr.aws/w3n5a5m8/adfinmod_java_webapps_pre:latest
           envFrom:
             - configMapRef:
                 name: appd-app-config
           env:
-            - name: JAVA_TOOL_OPTIONS
-              value: -javaagent:/opt/appdynamics/javaagent.jar
-            - name: DEBUG_LEVEL
-              value: debug
-            - name: ADWRKSHP_TIER_SRVC_NAME
-              valueFrom: 
-                configMapKeyRef:
-                  name: appd-app-config
-                  key: ADWRKSHP_TIER_SRVC_NAME_WEBFRNTEND
-
+            - name: HOST_NAME
+              value: "web-front-end"
             - name: APPDYNAMICS_AGENT_TIER_NAME
-              valueFrom: 
-                configMapKeyRef:
-                  name: appd-app-config
-                  key: ADWRKSHP_TIER_NAME_WEBFRNTEND
-
+              value: WebFrontEnd              
+            - name: ADWRKSHP_TIER_SRVC_NAME
+              value: WebFrontEnd
             - name: APPDYNAMICS_JAVA_AGENT_REUSE_NODE_NAME
               value: "true"
-
             - name: APPDYNAMICS_JAVA_AGENT_REUSE_NODE_NAME_PREFIX
-              valueFrom: 
-                configMapKeyRef:
-                  name: appd-app-config
-                  key: ADWRKSHP_NODE_PFX_WEBFRNTEND
-
+              value: WebFrontEnd_Node
             - name: ENABLE_IRP
               value: "true"
-          ports:
-          - containerPort: 8080
-          volumeMounts:
-            - mountPath: /opt/appdynamics
-              name: shared-files
-          imagePullPolicy: Always
-      restartPolicy: Always
 
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+      restartPolicy: Always
+              
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: web-front-end
+  labels:
+    app: ad-financial
+    run: web-front-end
 spec:
-  selector:
-    name: web-front-end
   ports:
-  - name: "8080"
-    port: 8080
-    targetPort: 8080
-status:
-  loadBalancer: {}
+    - port: 8080
+      protocol: TCP
+  selector:
+    run: web-front-end
+---
