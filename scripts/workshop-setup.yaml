@@ -738,7 +738,7 @@ controllerTasks:
 
     inputTags:
       - tagKey: "@[ADWRKSHP_DEFAULT_RBAC_ROLE_IDS]"
-        tagValue: "286459,286308,286387"
+        tagValue: "286459,286308,286387,286305"
         #tagValue: "286459,286305,286308,286387,288654"
         # 286459 = Analytics Viewer
         # 286305 = DB Monitoring User
