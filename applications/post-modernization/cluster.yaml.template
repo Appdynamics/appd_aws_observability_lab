@@ -4,7 +4,7 @@ kind: ClusterConfig
 metadata:
   name: AD-Fin-Post-Mod-${ADWRKSHP_LABUSER_KEY}
   region: ${ADWRKSHP_CLOUD_REGION}
-  version: "1.24"
+  version: "1.25"
 
 availabilityZones: ["${ADWRKSHP_CLOUD_REGION}a", "${ADWRKSHP_CLOUD_REGION}c"]
 
