@@ -37,8 +37,10 @@ kubectl create -f ./mongo-stocks.yaml
 kubectl create -f ./quote-services.yaml
 kubectl create -f ./web-front-end.yaml
 kubectl create -f ./biz-loan-load-01.yaml
+kubectl create -f ./biz-loan-load-02.yaml
 kubectl create -f ./browser-load.yaml
 kubectl create -f ./per-loan-load-01.yaml
+kubectl create -f ./per-loan-load-02.yaml
 
 # Wait 30 seconds : 30 secs
 echo "CloudWorkshop|INFO|     - Waiting for Application to Initialize .............................................................."
