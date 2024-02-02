@@ -29,7 +29,7 @@ echo " "
 
 cd /home/ec2-user/environment/modernization_workshop/applications/post-modernization
 
-eksctl delete cluster -f ./cluster.yaml
+eksctl delete cluster -f ./cluster.yaml --disable-nodegroup-eviction
 
 echo " "
 echo "CloudWorkshop|INFO| - Finished EKS Cluster Deletion"
